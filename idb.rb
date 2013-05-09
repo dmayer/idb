@@ -25,6 +25,13 @@ while line = Readline.readline('idb > ', true)
       exit
     when "install"
       $idb.handle_install line
+    when "cert"
+      $idb.handle_cert line
+    when "screenshot"
+      $idb.handle_screen_shot line
+    when "list"
+      # make this list app also add list handlers etc.
+      $idb.handle_list
   end
 end
 
