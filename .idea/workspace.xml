@@ -2,18 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fe531e36-25ee-47d8-a027-b9c5286bc016" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/device_idb.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/local_operations.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/plist_util.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ssh_operations.rb" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/options_handler.rb" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/idb.iml" afterPath="$PROJECT_DIR$/.idea/idb.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gemfile.lock" afterPath="$PROJECT_DIR$/Gemfile.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gemfile" afterPath="$PROJECT_DIR$/Gemfile" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/idb.rb" afterPath="$PROJECT_DIR$/idb.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/screen_shot_util.rb" afterPath="$PROJECT_DIR$/screen_shot_util.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulator_idb.rb" afterPath="$PROJECT_DIR$/simulator_idb.rb" />
     </list>
     <ignored path="idb.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -36,7 +25,13 @@
         <entry file="file://$PROJECT_DIR$/idb.rb">
           <provider selected="true" editor-type-id="text-editor">
             <state line="36" column="2" selection-start="1166" selection-end="1166" vertical-scroll-proportion="0.0">
-              <folding />
+              <folding>
+                <marker date="1368222161000" expanded="true" signature="233:906" placeholder="do ... end" />
+                <marker date="1368222161000" expanded="true" signature="313:451" placeholder="heredoc ..." />
+                <marker date="1368222161000" expanded="true" signature="1012:1167" placeholder="if ... end" />
+                <marker date="1368222161000" expanded="true" signature="1169:1576" placeholder="while ... end" />
+                <marker date="1368222161000" expanded="true" signature="1218:1572" placeholder="case ... end" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -54,7 +49,11 @@
         <entry file="file://$PROJECT_DIR$/common_idb.rb">
           <provider selected="true" editor-type-id="text-editor">
             <state line="30" column="8" selection-start="738" selection-end="738" vertical-scroll-proportion="0.0">
-              <folding />
+              <folding>
+                <marker date="1368223280000" expanded="true" signature="323:755" placeholder="do ... end" />
+                <marker date="1368223280000" expanded="true" signature="434:747" placeholder="{ ... }" />
+                <marker date="1368223280000" expanded="true" signature="554:739" placeholder="{ ... }" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -72,7 +71,12 @@
         <entry file="file://$PROJECT_DIR$/simulator_idb.rb">
           <provider selected="true" editor-type-id="text-editor">
             <state line="63" column="13" selection-start="1324" selection-end="1324" vertical-scroll-proportion="0.0">
-              <folding />
+              <folding>
+                <marker date="1368223136000" expanded="true" signature="92:200" placeholder=" ... end" />
+                <marker date="1368223136000" expanded="true" signature="95:196" placeholder="if ... end" />
+                <marker date="1368223136000" expanded="true" signature="112:190" placeholder="if ... end" />
+                <marker date="1368223136000" expanded="true" signature="220:3728" placeholder=" ... end" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -98,7 +102,7 @@
       <file leaf-file-name="ssh_operations.rb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ssh_operations.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="56" column="0" selection-start="1117" selection-end="1117" vertical-scroll-proportion="0.9424084">
+            <state line="37" column="0" selection-start="813" selection-end="813" vertical-scroll-proportion="0.19633508">
               <folding />
             </state>
           </provider>
@@ -108,7 +112,15 @@
         <entry file="file://$PROJECT_DIR$/local_operations.rb">
           <provider selected="true" editor-type-id="text-editor">
             <state line="24" column="19" selection-start="297" selection-end="297" vertical-scroll-proportion="0.0">
-              <folding />
+              <folding>
+                <marker date="1368207834000" expanded="true" signature="21:311" placeholder=" ... end" />
+                <marker date="1368207834000" expanded="true" signature="42:69" placeholder=" ... end" />
+                <marker date="1368207834000" expanded="true" signature="87:113" placeholder=" ... end" />
+                <marker date="1368207834000" expanded="true" signature="137:167" placeholder=" ... end" />
+                <marker date="1368207834000" expanded="true" signature="185:211" placeholder=" ... end" />
+                <marker date="1368207834000" expanded="true" signature="228:256" placeholder=" ... end" />
+                <marker date="1368207834000" expanded="true" signature="277:305" placeholder=" ... end" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -154,7 +166,7 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="y" value="22" />
-    <option name="width" value="1920" />
+    <option name="width" value="1280" />
     <option name="height" value="738" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
@@ -228,7 +240,7 @@
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="options.lastSelected" value="Errors" />
+    <property name="options.lastSelected" value="reference.settingsdialog.IDE.editor.colors" />
     <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
   </component>
@@ -329,18 +341,24 @@
       <created>1367849320842</created>
       <updated>1367849320842</updated>
     </task>
+    <task id="LOCAL-00001" summary="first on-device features">
+      <created>1368304891249</created>
+      <updated>1368304891249</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1920" height="738" extended-state="6" />
-    <editor active="false" />
+    <frame x="0" y="22" width="1280" height="738" extended-state="6" />
+    <editor active="true" />
     <layout>
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.328125" sideWeight="0.49675852" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2497332" sideWeight="0.21840873" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2497332" sideWeight="0.44305772" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.37925446" sideWeight="0.21840873" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.37925446" sideWeight="0.44305772" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32761312" sideWeight="0.98719317" order="-1" side_tool="true" content_ui="tabs" />
@@ -389,7 +407,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" />
+    <option name="LAST_COMMIT_MESSAGE" value="first on-device features" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -402,6 +420,7 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
+    <MESSAGE value="first on-device features" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -440,14 +459,28 @@
     <entry file="file://$PROJECT_DIR$/local_operations.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="24" column="19" selection-start="297" selection-end="297" vertical-scroll-proportion="0.0">
-          <folding />
+          <folding>
+            <marker date="1368207834000" expanded="true" signature="21:311" placeholder=" ... end" />
+            <marker date="1368207834000" expanded="true" signature="42:69" placeholder=" ... end" />
+            <marker date="1368207834000" expanded="true" signature="87:113" placeholder=" ... end" />
+            <marker date="1368207834000" expanded="true" signature="137:167" placeholder=" ... end" />
+            <marker date="1368207834000" expanded="true" signature="185:211" placeholder=" ... end" />
+            <marker date="1368207834000" expanded="true" signature="228:256" placeholder=" ... end" />
+            <marker date="1368207834000" expanded="true" signature="277:305" placeholder=" ... end" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/idb.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="36" column="2" selection-start="1166" selection-end="1166" vertical-scroll-proportion="0.0">
-          <folding />
+          <folding>
+            <marker date="1368222161000" expanded="true" signature="233:906" placeholder="do ... end" />
+            <marker date="1368222161000" expanded="true" signature="313:451" placeholder="heredoc ..." />
+            <marker date="1368222161000" expanded="true" signature="1012:1167" placeholder="if ... end" />
+            <marker date="1368222161000" expanded="true" signature="1169:1576" placeholder="while ... end" />
+            <marker date="1368222161000" expanded="true" signature="1218:1572" placeholder="case ... end" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -461,14 +494,23 @@
     <entry file="file://$PROJECT_DIR$/common_idb.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="30" column="8" selection-start="738" selection-end="738" vertical-scroll-proportion="0.0">
-          <folding />
+          <folding>
+            <marker date="1368223280000" expanded="true" signature="323:755" placeholder="do ... end" />
+            <marker date="1368223280000" expanded="true" signature="434:747" placeholder="{ ... }" />
+            <marker date="1368223280000" expanded="true" signature="554:739" placeholder="{ ... }" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/simulator_idb.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="63" column="13" selection-start="1324" selection-end="1324" vertical-scroll-proportion="0.0">
-          <folding />
+          <folding>
+            <marker date="1368223136000" expanded="true" signature="92:200" placeholder=" ... end" />
+            <marker date="1368223136000" expanded="true" signature="95:196" placeholder="if ... end" />
+            <marker date="1368223136000" expanded="true" signature="112:190" placeholder="if ... end" />
+            <marker date="1368223136000" expanded="true" signature="220:3728" placeholder=" ... end" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -488,7 +530,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ssh_operations.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="56" column="0" selection-start="1117" selection-end="1117" vertical-scroll-proportion="0.9424084">
+        <state line="37" column="0" selection-start="813" selection-end="813" vertical-scroll-proportion="0.19633508">
           <folding />
         </state>
       </provider>
