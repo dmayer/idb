@@ -5,6 +5,11 @@ GEM
     highline (1.6.18)
     launchy (2.3.0)
       addressable (~> 2.3)
+    net-sftp (2.1.2)
+      net-ssh (>= 2.6.5)
+    net-ssh (2.6.7)
+    plist (3.1.0)
+    trollop (2.0)
 
 PLATFORMS
   ruby
@@ -12,3 +17,7 @@ PLATFORMS
 DEPENDENCIES
   highline
   launchy
+  net-sftp
+  net-ssh
+  plist
+  trollop

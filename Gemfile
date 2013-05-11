@@ -5,3 +5,7 @@ source "https://rubygems.org"
 
 gem 'highline'
 gem 'launchy'
+gem 'plist'
+gem 'trollop'
+gem 'net-ssh'
+gem 'net-sftp'
