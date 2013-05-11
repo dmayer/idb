@@ -2,17 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fe531e36-25ee-47d8-a027-b9c5286bc016" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/screen_shot_util.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/device_idb.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/local_operations.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/plist_util.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ssh_operations.rb" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/options_handler.rb" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/idb.iml" afterPath="$PROJECT_DIR$/.idea/idb.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gemfile.lock" afterPath="$PROJECT_DIR$/Gemfile.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gemfile" afterPath="$PROJECT_DIR$/Gemfile" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/auto_complete_handlers.rb" afterPath="$PROJECT_DIR$/auto_complete_handlers.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/idb.rb" afterPath="$PROJECT_DIR$/idb.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulator_certificate_installer.rb" afterPath="$PROJECT_DIR$/simulator_certificate_installer.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/screen_shot_util.rb" afterPath="$PROJECT_DIR$/screen_shot_util.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulator_idb.rb" afterPath="$PROJECT_DIR$/simulator_idb.rb" />
     </list>
     <ignored path="idb.iws" />
@@ -35,11 +35,26 @@
       <file leaf-file-name="idb.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/idb.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="32" column="53" selection-start="655" selection-end="655" vertical-scroll-proportion="0.0">
-              <folding>
-                <marker date="1367967309000" expanded="true" signature="324:689" placeholder="while ... end" />
-                <marker date="1367967309000" expanded="true" signature="373:685" placeholder="case ... end" />
-              </folding>
+            <state line="36" column="2" selection-start="1166" selection-end="1166" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="device_idb.rb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/device_idb.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="62" column="6" selection-start="1377" selection-end="1377" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="common_idb.rb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/common_idb.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="30" column="8" selection-start="738" selection-end="738" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -53,19 +68,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="simulator_idb.rb" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="simulator_idb.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/simulator_idb.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="58" column="16" selection-start="1339" selection-end="1339" vertical-scroll-proportion="0.7877462">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="README.md" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="2" selection-start="144" selection-end="144" vertical-scroll-proportion="0.0">
+            <state line="63" column="13" selection-start="1324" selection-end="1324" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -74,27 +80,34 @@
       <file leaf-file-name="screen_shot_util.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/screen_shot_util.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="8" selection-start="740" selection-end="740" vertical-scroll-proportion="0.0">
+            <state line="33" column="0" selection-start="767" selection-end="767" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="simulator_certificate_installer.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/simulator_certificate_installer.rb">
+      <file leaf-file-name="plist_util.rb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/plist_util.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="0" selection-start="159" selection-end="159" vertical-scroll-proportion="0.0">
-              <folding>
-                <marker date="1367945668000" expanded="true" signature="1186:1257" placeholder="#..." />
-              </folding>
+            <state line="8" column="0" selection-start="177" selection-end="177" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="options_handler.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/options_handler.rb">
+      <file leaf-file-name="ssh_operations.rb" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/ssh_operations.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="35" column="37" selection-start="788" selection-end="788" vertical-scroll-proportion="0.0">
+            <state line="56" column="0" selection-start="1117" selection-end="1117" vertical-scroll-proportion="0.9424084">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="local_operations.rb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/local_operations.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="24" column="19" selection-start="297" selection-end="297" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -103,7 +116,7 @@
       <file leaf-file-name="Gemfile" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Gemfile">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="12" selection-start="94" selection-end="94" vertical-scroll-proportion="0.0">
+            <state line="11" column="13" selection-start="149" selection-end="149" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -126,17 +139,42 @@
         <option value="$PROJECT_DIR$/simulator_certificate_installer.rb" />
         <option value="$PROJECT_DIR$/auto_complete_handlers.rb" />
         <option value="$PROJECT_DIR$/README.md" />
-        <option value="$PROJECT_DIR$/idb.rb" />
-        <option value="$PROJECT_DIR$/screen_shot_util.rb" />
         <option value="$PROJECT_DIR$/Gemfile" />
+        <option value="$PROJECT_DIR$/ssh_wrapper.rb" />
+        <option value="$PROJECT_DIR$/local_operations.rb" />
+        <option value="$PROJECT_DIR$/idb.rb" />
+        <option value="$PROJECT_DIR$/plist_util.rb" />
         <option value="$PROJECT_DIR$/simulator_idb.rb" />
+        <option value="$PROJECT_DIR$/common_idb.rb" />
+        <option value="$PROJECT_DIR$/device_idb.rb" />
+        <option value="$PROJECT_DIR$/screen_shot_util.rb" />
+        <option value="$PROJECT_DIR$/ssh_operations.rb" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
     <option name="y" value="22" />
     <option name="width" value="1920" />
-    <option name="height" value="1002" />
+    <option name="height" value="738" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>Spelling</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>SpellCheckingInspection</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -190,7 +228,7 @@
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="options.lastSelected" value="org.jetbrains.plugins.ruby.settings.RubyIdeSdkConfigurable" />
+    <property name="options.lastSelected" value="Errors" />
     <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
   </component>
@@ -294,19 +332,19 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1920" height="1002" extended-state="6" />
-    <editor active="true" />
+    <frame x="0" y="22" width="1920" height="738" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329653" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.328125" sideWeight="0.49675852" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2497332" sideWeight="0.17458564" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2497332" sideWeight="0.3524862" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2497332" sideWeight="0.21840873" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2497332" sideWeight="0.44305772" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.46519336" sideWeight="0.49839914" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.46519336" sideWeight="0.49786553" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32761312" sideWeight="0.98719317" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.325" sideWeight="0.49675852" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -369,35 +407,11 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/options_handler.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="37" selection-start="788" selection-end="788" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/simulator_certificate_installer.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="7" column="0" selection-start="159" selection-end="159" vertical-scroll-proportion="0.0">
           <folding>
-            <marker date="1367945668000" expanded="true" signature="1186:1257" placeholder="#..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/auto_complete_handlers.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="32" selection-start="56" selection-end="56" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/idb.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="53" selection-start="655" selection-end="655" vertical-scroll-proportion="0.0">
-          <folding>
-            <marker date="1367967309000" expanded="true" signature="324:689" placeholder="while ... end" />
-            <marker date="1367967309000" expanded="true" signature="373:685" placeholder="case ... end" />
+            <marker date="1367945668000" expanded="true" signature="-1:-1" placeholder="#..." />
           </folding>
         </state>
       </provider>
@@ -409,23 +423,72 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Gemfile">
+    <entry file="file://$PROJECT_DIR$/auto_complete_handlers.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="12" selection-start="94" selection-end="94" vertical-scroll-proportion="0.0">
+        <state line="2" column="32" selection-start="56" selection-end="56" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/screen_shot_util.rb">
+    <entry file="file://$PROJECT_DIR$/Gemfile">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="8" selection-start="740" selection-end="740" vertical-scroll-proportion="0.0">
+        <state line="11" column="13" selection-start="149" selection-end="149" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/local_operations.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="19" selection-start="297" selection-end="297" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idb.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="2" selection-start="1166" selection-end="1166" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/plist_util.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="0" selection-start="177" selection-end="177" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common_idb.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="8" selection-start="738" selection-end="738" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/simulator_idb.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="16" selection-start="1339" selection-end="1339" vertical-scroll-proportion="0.7877462">
+        <state line="63" column="13" selection-start="1324" selection-end="1324" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/device_idb.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="62" column="6" selection-start="1377" selection-end="1377" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/screen_shot_util.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="0" selection-start="767" selection-end="767" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ssh_operations.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="56" column="0" selection-start="1117" selection-end="1117" vertical-scroll-proportion="0.9424084">
           <folding />
         </state>
       </provider>

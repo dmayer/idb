@@ -1,23 +1,40 @@
 require 'readline'
-require_relative 'options_handler'
+require 'trollop'
 require_relative 'simulator_idb'
+require_relative 'device_idb'
 require_relative 'auto_complete_handlers'
 
 # Store the state of the terminal
 stty_save = `stty -g`.chomp
 
+options = Trollop::options do
+  version "v0.9 (c) 2013 Daniel A. Mayer, Matasano Security"
+  banner <<-EOS
+Command line utility to perform common tasks on iDevices and the iOS simulator.
 
-options = OptionsHandler.new.parse()
+Usage:
+       ruby irb.rb [options]
+where [options] are:
+
+EOS
+  opt :simulator, "Use simulator", :default => false, :type => :boolean
+  opt :device, "Use iOS device via SSH", :default => false, :type => :boolean
+  opt :username, "SSH username", :type => :string, :default => "root"
+  opt :password, "SSH password", :type => :string
+  opt :hostname, "SSH hostname", :type => :string
+  opt :port, "SSH port", :type => :int, :default => 22
+  conflicts :simulator, :device
+  depends :device, :password, :hostname
+end
+
+Trollop::die "requires either --simulator or --device" unless options[:simulator] || options[:device]
 
 
 if options[:simulator]
   $idb = SimulatorIDB.new
 else
-  puts "Unimplemented"
-  exit
+  $idb = DeviceIDB.new options[:username], options[:password], options[:hostname], options[:port]
 end
-
-
 
 while line = Readline.readline('idb > ', true)
   case line.split(" ").first
@@ -32,6 +49,8 @@ while line = Readline.readline('idb > ', true)
     when "list"
       # make this list app also add list handlers etc.
       $idb.handle_list
+    when "app"
+      $idb.handle_app line
   end
 end
 

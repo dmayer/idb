@@ -1,15 +1,24 @@
-require 'highline/import'
-require "highline/system_extensions"
-require_relative 'simulator_certificate_installer'
-require_relative 'screen_shot_util'
-require 'launchy'
+require_relative 'common_idb'
+require_relative 'local_operations'
+def ensure_app_is_selected
+  if @app.nil?
+    if handle_select_app.nil?
+      raise "Error retrieving list of apps."
+    end
+  end
+end
 
-class SimulatorIDB
+class SimulatorIDB < CommonIDB
+
   def initialize
     @sim_dir = list_simulators
     @app_dir = @sim_dir + "/Applications"
     @app = nil
+    @ops = LocalOperations.new
   end
+
+
+
 
   def list_simulators
     basedir = ENV['HOME'] + '/Library/Application Support/iPhone Simulator'
@@ -17,6 +26,7 @@ class SimulatorIDB
       puts "No simulators found in #{basedir}."
       exit 1
     end
+
 
     dirs = Dir.glob("#{basedir}/**")
     case dirs.length
@@ -43,15 +53,14 @@ class SimulatorIDB
 
   def handle_screen_shot line
     ensure_app_is_selected
-    su = ScreenShotUtil.new "#{@app_dir}/#{@app}"
+    su = ScreenShotUtil.new "#{@app_dir}/#{@app}", @ops, true
 
     ask "Launch the app in the simulator. [press enter to continue]"
-
-    su.sim_mark
+    su.mark
 
     ask "Now place the app into the background. [press enter to continue]"
 
-    result = su.sim_check
+    result = su.check
     if result.nil?
       say "No screen shot found"
     else
@@ -71,8 +80,6 @@ class SimulatorIDB
       app_name = get_appname_from_id id
       "#{id} (#{app_name})"
     }
-
-
 
     h = HighLine.new
     puts h.list apps
@@ -100,34 +107,57 @@ class SimulatorIDB
   end
 
 
-  def handle_select_app
-    dirs = get_list_of_apps
-    return nil if dirs.nil?
+  def handle_app line
+    tokens = line.split(' ')
 
-    choose do |menu|
-      menu.header = "Select which application to use"
-      menu.prompt = "Choice:"
-
-      dirs.each { |d|
-        id = File.basename d
-        app_name = get_appname_from_id id
-        menu.choice("#{id} (#{app_name})") {
-          say("[*] Using application #{id}.")
-          @app = id
-        }
-      }
+    if tokens.length < 2
+      puts "app [schemes|bundleid|name|select|info_plist]"
+      return
     end
+
+    case tokens[1]
+      when "select"
+        handle_select_app
+
+      when "schemes"
+        ensure_app_is_selected
+        puts "Registered URL schemes for #{@app}:"
+        h = HighLine.new
+        puts h.list @plist.schemas
+
+      when "bundleid"
+        ensure_app_is_selected
+        puts "Bundle identifier for #{@app}:"
+        puts @plist.bundle_identifier
+
+      when "name"
+        ensure_app_is_selected
+        puts "Bianry name for #{@app}:"
+        puts @plist.binary_name
+
+      when "info_plist"
+        if tokens.length != 3
+          puts "app info_plist [dump|print|open]"
+          return
+        end
+
+        ensure_app_is_selected
+        case tokens[2]
+          when "dump"
+            puts File.open(@plist.plist_file).read
+          when "print"
+            pp @plist.plist_data
+          when "open"
+            Launchy.open @plist.plist_file
+        end
+    end
+  end
+
+  def get_plist_file plist_file
+    return plist_file
   end
 
   private
-
-  def ensure_app_is_selected
-    if @app.nil?
-      if handle_select_app.nil?
-        raise "Simulator or application installation appears broken."
-      end
-    end
-  end
 
   def get_list_of_apps
     if not Dir.exists? @app_dir
