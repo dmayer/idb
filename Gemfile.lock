@@ -2,6 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     addressable (2.3.4)
+    eventmachine (1.0.3)
     highline (1.6.18)
     launchy (2.3.0)
       addressable (~> 2.3)
@@ -9,6 +10,8 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.6.7)
     plist (3.1.0)
+    rbkb (0.6.12)
+      eventmachine (>= 0.12.8)
     trollop (2.0)
 
 PLATFORMS
@@ -20,4 +23,5 @@ DEPENDENCIES
   net-sftp
   net-ssh
   plist
+  rbkb
   trollop

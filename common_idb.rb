@@ -15,8 +15,8 @@ class CommonIDB
     return nil if dirs.nil?
 
     choose do |menu|
-      menu.header = "Select which application to use"
-      menu.prompt = "Choice:"
+      menu.header = 'Select which application to use'
+      menu.prompt = 'Choice:'
 
       dirs.each { |d|
         id = File.basename d

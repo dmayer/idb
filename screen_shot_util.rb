@@ -24,9 +24,8 @@ class ScreenShotUtil
     # there should really be only one directory in here which is named
     # based on the bundle id of the app. lets go through all, just in case.
 
-    puts @snapshot_path
-
     snap_dirs = @ops.list_dir("#{@snapshot_path}/").reject {|e| e =~ /^\.\.?$/}
+
 
     snap_dirs.each { |dir|
       full_snap_dir = "#{@snapshot_path}/#{dir}"

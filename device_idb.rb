@@ -4,17 +4,32 @@ require_relative 'ssh_operations'
 
 class DeviceIDB < CommonIDB
 
-  def initialize username, password, hostname, port
+  def initialize(username, password, hostname, port)
     @username = username
     @password = password
     @hostname = hostname
     @port = port
 
-    @app_dir ="/private/var/mobile/Applications"
+    @app_dir = '/private/var/mobile/Applications'
 
     @app = nil
     @ops = SSHOperations.new username, password, hostname, port
   end
+
+  def handle_app_download
+
+
+  end
+
+  def handle_app_decrypt
+
+
+  end
+
+  def handle_install
+
+  end
+
 
 
 
@@ -24,19 +39,22 @@ class DeviceIDB < CommonIDB
     ensure_app_is_selected
     su = ScreenShotUtil.new "#{@app_dir}/#{@app}", @ops, false
 
-    ask "Launch the app on the device. [press enter to continue]"
     su.mark
+    ask 'Launch the app on the device. [press enter to continue]'
 
-    ask "Now place the app into the background. [press enter to continue]"
+
+    ask 'Now place the app into the background. [press enter to continue]'
 
     result = su.check
     if result.nil?
-      say "No screen shot found"
+      say 'No screen shot found'
     else
-      say "New screen shot found:"
+      say 'New screen shot found:'
       puts result
-      a = agree "Do you want to download and view it? (y/n)"
+      a = agree 'Do you want to download and view it? (y/n)'
       if a
+        local_path = "tmp/#{@app}/#{File.basename result}"
+        @ops.download result, local_path
         @ops.open result
       end
     end
@@ -61,6 +79,8 @@ class DeviceIDB < CommonIDB
       puts "Application directory #{@app_dir} not found."
       return false
     end
+
+    puts '[*] Retrieving list of applications...'
 
     dirs = @ops.dir_glob("#{@app_dir}/","**")
     if dirs.length == 0

@@ -22,8 +22,8 @@ class SimulatorIDB < CommonIDB
 
   def list_simulators
     basedir = ENV['HOME'] + '/Library/Application Support/iPhone Simulator'
-    if not Dir.exists? basedir
-      puts "No simulators found in #{basedir}."
+    unless Dir.exists? basedir
+      puts 'No simulators found in #{basedir}.'
       exit 1
     end
 
@@ -38,8 +38,8 @@ class SimulatorIDB < CommonIDB
     end
 
     choose do |menu|
-      menu.header = "Multiple simulators found:"
-      menu.prompt = "Choice:"
+      menu.header = 'Multiple simulators found:'
+      menu.prompt = 'Choice:'
 
       dirs.each { |d|
         menu.choice(d) {
@@ -62,7 +62,7 @@ class SimulatorIDB < CommonIDB
 
     result = su.check
     if result.nil?
-      say "No screen shot found"
+      say 'No screen shot found"
     else
       say "New screen shot found:"
       puts result

@@ -1,8 +1,5 @@
 class LocalOperations
 
-  def list_dir path
-    Dir.entries path
-  end
 
   def file? path
     File.file? path
