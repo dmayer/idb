@@ -9,36 +9,36 @@ class SSHOperations
     @password = password
     @port = port
 
-    puts "[*] Establishing SSH Session..."
+    puts '[*] Establishing SSH Session...'
     @ssh = Net::SSH.start hostname, username, :password => password, :port => port
 
     # initiali:wze sftp connection and wait until it is open
-    puts "[*] Establishing SFTP Session..."
+    puts '[*] Establishing SFTP Session...'
     @sftp = Net::SFTP::Session.new @ssh
     @sftp.loop { @sftp.opening? }
 
   end
 
 
-  def execute command
+  def execute(command)
     @ssh.exec! command
   end
 
-  def download remote_path
-    @sftp.download!(remote_path)
+  def download(remote_path, local_path = nil)
+    if local_path.nil?
+      @sftp.download! remote_path
+    else
+      @sftp.download! remote_path, local_path
+    end
   end
 
-  def download remote_path, local_path
-    @sftp.download!(remote_path, local_path)
-  end
-
-  def upload local_path, remote_path
+  def upload(local_path, remote_path)
     @sftp.upload local_path, remote_path
   end
 
   def list_dir dir
 
-    @sftp.dir.entries(dir).map {|x| "#{dir}/#{x.name}"}
+    @sftp.dir.entries(dir).map {|x| x.name}
   end
 
   def file_exists? path
@@ -49,6 +49,10 @@ class SSHOperations
       return false
     end
 
+  end
+
+  def launch path
+    @ssh.exec path
   end
 
   def dir_glob path, pattern
@@ -67,7 +71,11 @@ class SSHOperations
   end
 
   def mtime path
-    @sftp.stat!(path).mtime
+    Time.new @sftp.stat!(path).mtime
+  end
+
+  def open path
+    Launchy.open path
   end
 
 end
