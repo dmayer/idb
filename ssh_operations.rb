@@ -33,7 +33,7 @@ class SSHOperations
   end
 
   def upload(local_path, remote_path)
-    @sftp.upload local_path, remote_path
+    @sftp.upload! local_path, remote_path
   end
 
   def list_dir dir
