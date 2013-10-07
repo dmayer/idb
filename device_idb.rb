@@ -17,19 +17,46 @@ class DeviceIDB < CommonIDB
   end
 
   def handle_app_download
+    # download app binary.
+
 
 
   end
 
   def handle_app_decrypt
+    # decrypt and download app binary
 
 
   end
 
-  def handle_install
+  def handle_install line
+    tokens = line.split(' ')
 
+    if tokens.length < 2
+      puts "install [killswitch|dumpdecrypted]"
+      return
+    end
+
+    case tokens[1]
+      when "killswitch"
+        install_killswitch
+      when "dumpdecrypted"
+        install_dumpdecrypted
+    end
   end
 
+  def handle_list
+    dirs = get_list_of_apps
+    apps = dirs.map { |x|
+      id = File.basename x
+      app_name = get_appname_from_id id
+      "#{id} (#{app_name})"
+    }
+
+    h = HighLine.new
+    puts h.list apps
+
+  end
 
 
 
@@ -55,12 +82,38 @@ class DeviceIDB < CommonIDB
       if a
         local_path = "tmp/#{@app}/#{File.basename result}"
         @ops.download result, local_path
-        @ops.open result
+        @ops.open local_path
       end
     end
   end
 
   private
+
+
+  def install_killswitch
+    puts "[*] Uploading Debian package..."
+    @ops.upload("utils/ios-ssl-kill-switch/com.isecpartners.nabla.sslkillswitch_v0.5-iOS_6.1.deb","/var/root/com.isecpartners.nabla.sslkillswitch_v0.5-iOS_6.1.deb")
+    puts "[*] Installing Debian package..."
+    @ops.execute("/usr/bin/dpkg -i /var/root/com.isecpartners.nabla.sslkillswitch_v0.5-iOS_6.1.deb")
+    puts "[*] Restarting SpringBoard..."
+    @ops.execute("killall -HUP SpringBoard")
+    puts "[*] iOS SSL Killswitch installed successfully."
+    puts "[**] NOTE: If you need to intercept system applications you should reboot the device."
+    a = agree 'Reboot now? (y/n)'
+    if a
+      puts "[*] Rebooting now. Please wait."
+      @ops.execute("/sbin/reboot")
+      puts "[*] idb exiting."
+      exit
+    end
+  end
+
+
+  def install_dumpdecrypted
+    puts "[*] Uploading dumpdecrypted library..."
+    @ops.upload("utils/dumpdecrypted/dumpdecrypted.dylib","/var/root/dumpdecrypted.dylib")
+    puts "[*] 'dumpdecrypted' installed successfully."
+  end
 
 
   def get_plist_file plist_file

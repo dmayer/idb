@@ -1,10 +1,11 @@
 # autocomplete
 LIST = [
-    'cert', 'screenshot', 'list', 'quit', 'exit',
+    'cert', 'screenshot', 'list', 'quit', 'exit', 'install'
 ].sort
 
 
 CERT_CMDS = ['install', 'uninstall', 'reinstall']
+INSTALL_CMDS = ['dumpdecrypted', 'killswitch']
 
 comp = proc { |s|
   l = Readline.line_buffer
@@ -26,6 +27,10 @@ comp = proc { |s|
       end
 
     when "screenshot"
+    when "install"
+      if tokens.length  == 1 or (tokens.length == 2 and not l.end_with? " ")
+        next INSTALL_CMDS.grep( /^#{Regexp.escape(s)}/ )
+      end
 
   end
 
