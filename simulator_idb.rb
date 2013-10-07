@@ -12,9 +12,13 @@ class SimulatorIDB < CommonIDB
 
   def initialize
     @sim_dir = list_simulators
-    @app_dir = @sim_dir + "/Applications"
+    @apps_dir = @sim_dir + "/Applications"
     @app = nil
     @ops = LocalOperations.new
+  end
+
+ def method_missing(name, *args, &block)
+    puts "Method %s not implemented for the simulator." % name # name is a symbol
   end
 
 
@@ -53,7 +57,7 @@ class SimulatorIDB < CommonIDB
 
   def handle_screen_shot line
     ensure_app_is_selected
-    su = ScreenShotUtil.new "#{@app_dir}/#{@app}", @ops, true
+    su = ScreenShotUtil.new "#{@apps_dir}/#{@app}", @ops, true
 
     ask "Launch the app in the simulator. [press enter to continue]"
     su.mark
@@ -62,7 +66,7 @@ class SimulatorIDB < CommonIDB
 
     result = su.check
     if result.nil?
-      say 'No screen shot found"
+      say "No screen shot found"
     else
       say "New screen shot found:"
       puts result
@@ -157,24 +161,28 @@ class SimulatorIDB < CommonIDB
     return plist_file
   end
 
+  def handle_install
+    puts "Install not available for the simulator."
+  end
+
   private
 
   def get_list_of_apps
-    if not Dir.exists? @app_dir
-      puts "Application directory #{@app_dir} not found."
+    if not Dir.exists? @apps_dir
+      puts "Application directory #{@apps_dir} not found."
       return false
     end
 
-    dirs = Dir.glob("#{@app_dir}/**")
+    dirs = Dir.glob("#{@apps_dir}/**")
     if dirs.length == 0
-      puts "No applications found in #{@app_dir}."
+      puts "No applications found in #{@apps_dir}."
       return nil
     end
     return dirs
   end
 
   def get_appname_from_id id
-    return File.basename Dir.glob("#{@app_dir}/#{id}/*app").first
+    return File.basename Dir.glob("#{@apps_dir}/#{id}/*app").first
   end
 
 

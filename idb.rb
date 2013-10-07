@@ -36,7 +36,9 @@ else
   $idb = DeviceIDB.new options[:username], options[:password], options[:hostname], options[:port]
 end
 
-while line = Readline.readline('idb > ', true)
+$prompt = 'idb > '
+
+while line = Readline.readline($prompt, true)
   case line.split(" ").first
     when "quit", "exit"
       exit
@@ -51,6 +53,14 @@ while line = Readline.readline('idb > ', true)
       $idb.handle_list
     when "app"
       $idb.handle_app line
+    when "help"
+      puts "install - Install various utilities."
+      puts "cert - Installs certificates in simulator key store."
+      puts "screenshot - Util to detect if an app stores screenshots on backgrounding."
+      puts "app - Various application related tools (list, download, decrypt)"
+    else
+      puts "Command not found. Try 'help'"
+
   end
 end
 

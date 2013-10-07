@@ -1,6 +1,6 @@
 require 'openssl'
 require 'digest/sha1'
-require 'sqlite3'
+#require 'sqlite3'
 require 'rbkb'
 
 # Adapted from Mike Tracy's ios_sim_ts_insert.rb
