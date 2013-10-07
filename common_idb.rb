@@ -24,7 +24,10 @@ class CommonIDB
         menu.choice("#{id} (#{app_name})") {
           say("[*] Using application #{id}.")
           @app = id
+          @app_dir = d
+          $prompt = "idb [#{id}] > "
 
+          puts d
           plist_file = get_plist_file(get_plist_file_name(d))
           @plist = PlistUtil.new plist_file
 

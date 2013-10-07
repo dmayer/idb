@@ -60,8 +60,6 @@ class SSHOperations
   end
 
   def directory? path
-    puts "directory?"
-    puts path
     @sftp.stat!(path).directory?
   end
 
