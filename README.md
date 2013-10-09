@@ -10,7 +10,7 @@ It is still a work in prorgress but already provides a bunch of (hopefully) usef
 
 # Documentation
 
-* [Getting Started](http://github.chi.matasano.com/daniel/idb/blob/master/doc/idb_command_reference.md)
+* [Getting Started](http://github.chi.matasano.com/daniel/idb/blob/master/doc/idb_getting_started.md)
 * [idb Usage](http://github.chi.matasano.com/daniel/idb/blob/master/doc/idb_usage.md)
 * [idb Command Reference](http://github.chi.matasano.com/daniel/idb/blob/master/doc/idb_command_reference.md)
 * [How-To: SSHing via USB](http://github.chi.matasano.com/daniel/idb/blob/master/doc/usb_ssh.md)
