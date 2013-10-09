@@ -22,7 +22,8 @@ It is still a work in prorgress but already provides a bunch of (hopefully) usef
 * SSH access
 
 # Documentation
- * [doc/usb_ssh.md](How-To: SSHing via USB)
- * [doc/idb_usage.md](idb Usage)
- * [doc/idb_command_reference.md](idb Command Reference)
+
+* [How-To: SSHing via USB](doc/usb_ssh.md)
+* [idb Usage](doc/idb_usage.md)
+* [idb Command Reference](doc/idb_command_reference.md)
 
