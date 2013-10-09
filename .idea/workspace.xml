@@ -2,20 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fe531e36-25ee-47d8-a027-b9c5286bc016" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/idb.iml" afterPath="$PROJECT_DIR$/.idea/idb.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gemfile.lock" afterPath="$PROJECT_DIR$/Gemfile.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gemfile" afterPath="$PROJECT_DIR$/Gemfile" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/auto_complete_handlers.rb" afterPath="$PROJECT_DIR$/auto_complete_handlers.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/common_idb.rb" afterPath="$PROJECT_DIR$/common_idb.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/device_idb.rb" afterPath="$PROJECT_DIR$/device_idb.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/idb.rb" afterPath="$PROJECT_DIR$/idb.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/local_operations.rb" afterPath="$PROJECT_DIR$/local_operations.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/plist_util.rb" afterPath="$PROJECT_DIR$/plist_util.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulator_certificate_installer.rb" afterPath="$PROJECT_DIR$/simulator_certificate_installer.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulator_idb.rb" afterPath="$PROJECT_DIR$/simulator_idb.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ssh_operations.rb" afterPath="$PROJECT_DIR$/ssh_operations.rb" />
     </list>
     <ignored path="idb.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -92,11 +79,11 @@
       </file>
       <file leaf-file-name="README.md" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README.md">
-          <provider editor-type-id="MarkdownPreviewEditor">
+          <provider selected="true" editor-type-id="MarkdownPreviewEditor">
             <state />
           </provider>
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="68" selection-start="500" selection-end="500" vertical-scroll-proportion="0.15306123">
+          <provider editor-type-id="text-editor">
+            <state line="236" column="47" selection-start="7953" selection-end="7953" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -554,11 +541,11 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
-      <provider editor-type-id="MarkdownPreviewEditor">
+      <provider selected="true" editor-type-id="MarkdownPreviewEditor">
         <state />
       </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="68" selection-start="500" selection-end="500" vertical-scroll-proportion="0.15306123">
+      <provider editor-type-id="text-editor">
+        <state line="236" column="47" selection-start="7953" selection-end="7953" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>

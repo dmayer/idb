@@ -66,10 +66,10 @@ idb can be used in two ways as an interactive shell or as a command line utility
 
     Usage:
            ruby irb.rb [options] [optional command]
-if [optional command] is specified, it is executed and idb exits. If it is omitted,
- an intractive idb prompt is displayed
+    if [optional command] is specified, it is executed and idb exits. If it is omitted,
+     an intractive idb prompt is displayed
 
-Valid [options] are:
+    Valid [options] are:
          --simulator, -s:   Use simulator
             --device, -d:   Use iOS device via SSH
       --username, -u <s>:   SSH username (default: root)
@@ -173,7 +173,7 @@ The `app` command provides various functions related to installed apps.
     url_handlers - Lists URL handleres registered by app.
 
 
-#### `app list`
+#### app list
 
 Lists all installed apps including identifiers and binary names.
 
@@ -184,7 +184,7 @@ Lists all installed apps including identifiers and binary names.
     E3AD855E-90C9-428C-AC31-9FC521165B2F (TV Guide.app)
     FCD785FC-B7F0-49D8-8A62-6A24EAF19B6C (Weather.app)
 
-#### `app select`
+#### app select
 
 Selects an app to be used with the remaining app commands. This is also automatically triggered when a
 command requires an app to be selected. Once an app is selected, its id is displayed as part of the
@@ -204,7 +204,7 @@ idb prompt. The selected app can be changed by running `app select` again.
     [*] Parsing plist file..
     idb [E3AD855E-90C9-428C-AC31-9FC521165B2F] > app select
 
-#### `app download`
+#### app download
 
 Download the application binary to a `tmp` folder.
 
@@ -217,7 +217,7 @@ This example assumes that an app has been selected already. If not, it will prom
     [*] Downloading binary /private/var/mobile/Applications/E3AD855E-90C9-428C-AC31-9FC521165B2F//TV Guide.app/TV Guide
     [*] Binary downloaded to tmp/E3AD855E-90C9-428C-AC31-9FC521165B2F/TV Guide.app
 
-#### `app decrypt` (iDevice only)
+#### app decrypt (iDevice only)
 
 Attempt to decrypt and then download an application binary.
 
@@ -243,7 +243,7 @@ Attempt to decrypt and then download an application binary.
     [*] Decryption failed. File may not be encrypted. Try 'app download' instead.
 
 
-#### `app get_plists`
+#### app get_plists
 
 Finds all `.plist` files in the app directory and lists them. The user can then choose to either view it on screen
 or open it in an external editor associated with `.plist`. This is helpful to check for insecure storage
@@ -302,7 +302,7 @@ mechanism via `NSUserDefaults`.
 
 
 
-#### `app get_sqlite`
+#### app get_sqlite
 
 
 Finds all `.sqlite` files in the app directory and lists them. The user can then choose to either download the file,
@@ -326,7 +326,7 @@ Finds all `.sqlite` files in the app directory and lists them. The user can then
 
 
 
-#### `app get_cachedb`
+#### app get_cachedb
 
 
 Finds all `Cache.db` files in the app directory and lists them. The user can then choose to either download the file or
@@ -350,7 +350,7 @@ Finds all `Cache.db` files in the app directory and lists them. The user can the
     ?  1
 
 
-#### `app launch`
+#### app launch
 
 Launches the application. For running this on the iDevice the `open` command (`com.conradkramer.open`) needs to be installed. When `apt-get` is available on te device,
 idb will do that automatically.
@@ -361,7 +361,7 @@ idb will do that automatically.
     [*] Launching app...
 
 
-#### `app url_handlers`
+#### app url_handlers
 
 Parses the `Info.plist` file and lists all the registered URL handlers / schemes.
 
@@ -373,7 +373,7 @@ Parses the `Info.plist` file and lists all the registered URL handlers / schemes
     tvguide
 
 
-#### `app archive`
+#### app archive
 
 Creates a `.tar.gz` of the entire application folder and downloads it.
 
@@ -385,7 +385,7 @@ Creates a `.tar.gz` of the entire application folder and downloads it.
     [*] App archive downloaded to tmp/E3AD855E-90C9-428C-AC31-9FC521165B2F/app_archive.tar.gz.
 
 
-#### `app bundleid`
+#### app bundleid
 
 Prints the bundle identifier of the currently selected app.
 
@@ -395,7 +395,7 @@ Prints the bundle identifier of the currently selected app.
     Bundle identifier for 973B4F94-80BD-40CE-90F5-A2864C023D5E:
     com.krvw.iGoat
 
-#### `app name`
+#### app name
 
 Prints the name of the currently selected app.
 
@@ -408,7 +408,7 @@ Prints the name of the currently selected app.
 
 
 
-#### `app info_plist`
+#### app info_plist
 
 Downloads, outputs, or opens the `Info.plist` file of the current app.
 
@@ -466,9 +466,9 @@ certificates using this method. However, one can create wild-card certificates i
  work fine. Still working on getting CA certs to work again.
 
 
-#### `cert install <cert_file>`
+#### cert install cert_file
 
-Installs the X.509 certificate `<cert_file>` into the simulator trust store.
+Installs the X.509 certificate `cert_file` into the simulator trust store.
 
 **Example:**
 
@@ -478,9 +478,9 @@ Installs the X.509 certificate `<cert_file>` into the simulator trust store.
     [*] Operation complete
 
 
-#### `cert uninstall <cert_file>`
+#### cert uninstall cert_file
 
-Removes the X.509 certificate `<cert_file>` from the simulator trust store.
+Removes the X.509 certificate `cert_file` from the simulator trust store.
 
 
 
@@ -494,7 +494,7 @@ Removes the X.509 certificate `<cert_file>` from the simulator trust store.
     [*] Operation complete
 
 
-#### `cert list`
+#### cert list
 
 Lists the subjects of all certificates installed into the trust store.
 
@@ -504,9 +504,9 @@ Lists the subjects of all certificates installed into the trust store.
     0  - Subject: /C=PortSwigger/O=PortSwigger/OU=PortSwigger CA/CN=*.client.com
          Details: #<OpenSSL::X509::Certificate subject=/C=PortSwigger/O=PortSwigger/OU=PortSwigger CA/CN=*.client.com, issuer=/C=PortSwigger/ST=PortSwigger/L=PortSwigger/O=PortSwigger/OU=PortSwigger CA/CN=PortSwigger CA, serial=928128029, not_before=2013-04-23 14:35:54 UTC, not_after=2032-09-19 21:04:27 UTC>
 
-####  `cert reinstall <cert_file>`
+####  cert reinstall cert_file
 
-Removes and re-installs the X.509 certificate `<cert_file>`.
+Removes and re-installs the X.509 certificate `cert_file`.
 
 **Example:**
 
@@ -523,7 +523,7 @@ Removes and re-installs the X.509 certificate `<cert_file>`.
 
 `install` can be used to copy and install various utilities onto an iDevice.
 
-#### `install killswitch`
+#### install killswitch
 
 Installs iSEC Partners iOS SSL Killswitch which disables certain kinds of certficate pinning and then allows
 interception of SSL traffic. If one wants to intercept the Apple store or any other kind of system applications
@@ -546,7 +546,7 @@ interception of SSL traffic. If one wants to intercept the Apple store or any ot
     n
 
 
-#### `install dumpdecrypted`
+#### install dumpdecrypted
 
 Installs Stefan Esser's `dumpdecrypted` dynamic library which, once injected into an app at run time,
  decrypts iOS binaries and writes them to disk.  For more information see:
@@ -561,7 +561,7 @@ Installs Stefan Esser's `dumpdecrypted` dynamic library which, once injected int
     [*] 'dumpdecrypted' installed successfully.
 
 
-#### `install open`
+#### install open
 
 Installs Konrad Kramer's `open` (http://moreinfo.thebigboss.org/moreinfo/depiction.php?file=openData) which can be
  used to launch apps on the command line (via SSH). The installation requires `apt-get` to be installed via
