@@ -21,35 +21,12 @@ class DeviceIDB < CommonIDB
     puts "Method %s not implemented for a device." % name # name is a symbol
   end
 
-  def handle_app line
-    tokens = line.split(' ')
-
-    if tokens.length < 2
-      puts "app [list|select|download|decrypt]"
-      return
-    end
-
-    case tokens[1]
-      when "select"
-        handle_select_app
-      when "list"
-        app_list
-      when "download"
-        app_download
-      when "decrypt"
-        app_decrypt
-      when "url_handlers"
-        app_url_handlers
-      when "archive"
-        app_archive
-    end
-  end
 
   def handle_install line
     tokens = line.split(' ')
 
     if tokens.length < 2
-      puts "install [killswitch|dumpdecrypted]"
+      puts "install [killswitch|dumpdecrypted|open]"
       return
     end
 
@@ -58,6 +35,8 @@ class DeviceIDB < CommonIDB
         install_killswitch
       when "dumpdecrypted"
         install_dumpdecrypted
+      when "open"
+        install_open
     end
   end
 
@@ -93,17 +72,19 @@ class DeviceIDB < CommonIDB
 
   private
 
-  def app_url_handlers
+  def app_launch
     ensure_app_is_selected
-    puts "[*] Registered URL schemas based on Info.plist:"
-    puts @plist.schemas
+    if ensure_open_is_installed
+      cmd = 'open'
+      puts "[*] Launching app..."
+      @ops.launch_app cmd, @plist.bundle_identifier
+    end
   end
-
 
   def app_archive
     ensure_app_is_selected
     puts "[*] Creating tar.gz of #{@app_dir}. This may take a while..."
-    @ops.execute "/usr/bin/tar cfz /var/root/app_archive.tar.gz #{@app_dir}"
+    @ops.execute "/usr/bin/tar cfz /var/root/app_archive.tar.gz \"#{@app_dir}\""
 
     local_path = "tmp/#{@app}/app_archive.tar.gz"
 
@@ -113,18 +94,6 @@ class DeviceIDB < CommonIDB
     puts "[*] App archive downloaded to #{local_path}."
   end
 
-  def app_list
-    dirs = get_list_of_apps
-    apps = dirs.map { |x|
-      id = File.basename x
-      app_name = get_appname_from_id id
-      "#{id} (#{app_name})"
-    }
-
-    h = HighLine.new
-    puts h.list apps
-
-  end
 
   def app_decrypt
     ensure_app_is_selected
@@ -149,17 +118,6 @@ class DeviceIDB < CommonIDB
     @ops.download decrypted_path, local_path
 
     puts "[*] Decrypted binary downloaded to #{local_path}"
-  end
-
-  def app_download
-    ensure_app_is_selected
-
-    full_remote_path = path_to_app_binary
-    puts "[*] Downloading binary #{full_remote_path}"
-    local_path = "tmp/#{@app}/#{@plist.binary_name}.app"
-    @ops.download full_remote_path, local_path
-
-    puts "[*] Binary downloaded to #{local_path}"
   end
 
 
@@ -228,24 +186,52 @@ class DeviceIDB < CommonIDB
     return File.basename @ops.dir_glob("#{@apps_dir}/#{id}/","*app").first
   end
 
-  def path_to_app_binary
-    puts "[*] Locating application binary..."
-    dirs = @ops.dir_glob("#{@app_dir}/","**")
-    dirs.select! { |f|
-      @ops.file_exists? "#{f}/#{@plist.binary_name}"
-    }
 
-    "#{dirs.first}/#{@plist.binary_name}"
+  def
+
   end
 
-
-  def ensure_dumpdecrypted_is_installed
+  ensure_dumpdecrypted_is_installed
     puts "[*] Checking if dumpdecrypted is installed..."
     if not @ops.file_exists? "/var/root/dumpdecrypted.dylib"
       puts "[*] dumpdecrypted not found. Installing..."
       install_dumpdecrypted
     else
       puts "[*] dumpdecrypted found."
+    end
+  end
+
+  def install_open
+    if apt_get_installed?
+      puts "[*] Installing open..."
+      @ops.execute("/usr/bin/apt-get update")
+      @ops.execute("/usr/bin/apt-get install com.conradkramer.open")
+      return true
+    else
+      puts "[*] Apt-get not available. Aborting."
+      return false
+    end
+  end
+
+  def ensure_open_is_installed
+    puts "[*] Checking if open is installed..."
+    if not @ops.file_exists? "/usr/bin/open"
+      puts "[*] open not found. Installing..."
+      return install_open
+    else
+      puts "[*] open found."
+      return true
+    end
+  end
+
+  def apt_get_installed?
+    puts "[*] Checking if apt-get is installed..."
+    if not @ops.file_exists? "/usr/bin/apt-get"
+      puts "[*] apt-get not found. Aboorting..."
+      return false
+    else
+      puts "[*] apt-get found."
+      return true
     end
   end
 

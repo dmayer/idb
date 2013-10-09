@@ -8,13 +8,17 @@ require_relative 'auto_complete_handlers'
 stty_save = `stty -g`.chomp
 
 options = Trollop::options do
-  version "v0.9 (c) 2013 Daniel A. Mayer, Matasano Security"
+  version "v1.0 (c) 2013 Daniel A. Mayer, Matasano Security"
   banner <<-EOS
 Command line utility to perform common tasks on iDevices and the iOS simulator.
 
 Usage:
-       ruby irb.rb [options]
-where [options] are:
+       ruby irb.rb [options] [optional command]
+
+if [optional command] is specified, it is executed and idb exits. If it is omitted,
+ an intractive idb prompt is displayed
+
+Valid [options] are:
 
 EOS
   opt :simulator, "Use simulator", :default => false, :type => :boolean
@@ -36,9 +40,7 @@ else
   $idb = DeviceIDB.new options[:username], options[:password], options[:hostname], options[:port]
 end
 
-$prompt = 'idb > '
-
-while line = Readline.readline($prompt, true)
+def process_command line
   case line.split(" ").first
     when "quit", "exit"
       exit
@@ -62,5 +64,18 @@ while line = Readline.readline($prompt, true)
       puts "Command not found. Try 'help'"
 
   end
+
+end
+
+if not ARGV[0].nil?
+  command = ARGV.join(' ')
+  process_command command
+  exit
+end
+
+$prompt = 'idb > '
+
+while line = Readline.readline($prompt, true)
+  process_command line
 end
 
