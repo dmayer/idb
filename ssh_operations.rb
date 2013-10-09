@@ -25,11 +25,18 @@ class SSHOperations
   end
 
   def download(remote_path, local_path = nil)
-    if local_path.nil?
-      @sftp.download! remote_path
-    else
-      @sftp.download! remote_path, local_path
+    begin
+      if local_path.nil?
+        @sftp.download! remote_path
+      else
+        @sftp.download! remote_path, local_path
+      end
+    rescue
+      puts "Error downloading file."
+      return false
     end
+    return true
+
   end
 
   def upload(local_path, remote_path)
@@ -74,6 +81,10 @@ class SSHOperations
 
   def open path
     Launchy.open path
+  end
+
+  def launch_app command, app
+    self.execute("#{command} \"#{app}\"")
   end
 
 end

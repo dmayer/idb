@@ -1,6 +1,6 @@
 require 'openssl'
 require 'digest/sha1'
-#require 'sqlite3'
+require 'sqlite3'
 require 'rbkb'
 
 # Adapted from Mike Tracy's ios_sim_ts_insert.rb
@@ -10,6 +10,25 @@ class SimulatorCertificateInstaller
     @sim_path = sim_path
     @store_path = "/Library/Keychains/TrustStore.sqlite3"
     @db_path = @sim_path + @store_path
+  end
+
+  def list
+    query = %Q|SELECT * FROM "tsettings";|
+    begin
+      db = SQLite3::Database.new(@db_path)
+      result = db.execute(query)
+      db.close
+    rescue Exception => e
+      puts "[*] Error readong from SQLite database at #{@db_path}: #{e.message}"
+      return
+    end
+    result.each_with_index {|r,i|
+      cert_blob =r[3]
+      cert   = OpenSSL::X509::Certificate.new(cert_blob)
+      puts "#{i.to_s.ljust(2)} - Subject: #{cert.subject}"
+      puts "     Details: #{cert.inspect}"
+    }
+
   end
 
   # performs uninstall based on sha1 hash provided in certfile
@@ -53,13 +72,10 @@ class SimulatorCertificateInstaller
 
 
     # create plist file
-    #TODO might want to use a plist library instead
+    #TODO might want to use the plist library instead
     tset   = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n<plist version=\"1.0\">\n<array/>\n</plist>\n"
     data   = cert[:cert].to_der
 
-    def blobify(bin)
-      "X'#{bin.hexify}'"
-    end
 
     say "[*] Inserting certificate into trust store..."
 
@@ -70,12 +86,19 @@ class SimulatorCertificateInstaller
       db.close
     rescue Exception => e
       puts "[*] Error writing to SQLite database at #{@db_path}: #{e.message}"
+      if e.message.include? "column sha1 is not unique"
+        puts "[**] The same certificate has likely been installed already. Consider using `cert reinstall`."
+      end
       return
     end
     puts "[*] Operation complete"
   end
 
   private
+
+  def blobify(bin)
+    "X'#{bin.hexify}'"
+  end
 
   def parse_certificate cert_file
     puts "[*] Reading and converting certificate..."

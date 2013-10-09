@@ -4,9 +4,9 @@ LIST = [
 ].sort
 
 
-CERT_CMDS = ['install', 'uninstall', 'reinstall']
-INSTALL_CMDS = ['dumpdecrypted', 'killswitch']
-APP_CMDS = ['list', 'download', 'decrypt', 'select', 'url_handlers', 'archive']
+CERT_CMDS = ['install', 'uninstall', 'reinstall', 'list']
+INSTALL_CMDS = ['dumpdecrypted', 'killswitch','open']
+APP_CMDS = ['list', 'download', 'decrypt', 'select', 'url_handlers', 'archive', 'get_plists', 'get_sqlite', 'get_cachedb','bundleid','name','info_plist', 'launch']
 
 comp = proc { |s|
   l = Readline.line_buffer

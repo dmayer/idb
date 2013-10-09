@@ -94,68 +94,30 @@ class SimulatorIDB < CommonIDB
     tokens = line.split(' ')
 
     if tokens.length < 2
-      puts "cert [install|uninstall|reinstall] certificate_file"
+      puts "cert <action> certificate_file"
+      puts "where <action> is one of:"
+      puts "install    -  Installs a certificate in the trust store."
+      puts "list       -  List all installed certificates in the trust store."
+      puts "uninstall  -  Removes an existing certificate from the trust store."
+      puts "reinstall  -  Removes and re-installs an existing certificate."
       return
     end
 
     case tokens[1]
       when "install", "reinstall", "uninstall"
         if tokens.length != 3
-          puts "Syntax error."
+          puts "Syntax error. certificate_file not specified."
           return
         end
 
         s = SimulatorCertificateInstaller.new @sim_dir
         s.send(tokens[1], tokens[2])
+      when 'list'
+        s = SimulatorCertificateInstaller.new @sim_dir
+        s.list
     end
   end
 
-
-  def handle_app line
-    tokens = line.split(' ')
-
-    if tokens.length < 2
-      puts "app [schemes|bundleid|name|select|info_plist]"
-      return
-    end
-
-    case tokens[1]
-      when "select"
-        handle_select_app
-
-      when "schemes"
-        ensure_app_is_selected
-        puts "Registered URL schemes for #{@app}:"
-        h = HighLine.new
-        puts h.list @plist.schemas
-
-      when "bundleid"
-        ensure_app_is_selected
-        puts "Bundle identifier for #{@app}:"
-        puts @plist.bundle_identifier
-
-      when "name"
-        ensure_app_is_selected
-        puts "Bianry name for #{@app}:"
-        puts @plist.binary_name
-
-      when "info_plist"
-        if tokens.length != 3
-          puts "app info_plist [dump|print|open]"
-          return
-        end
-
-        ensure_app_is_selected
-        case tokens[2]
-          when "dump"
-            puts File.open(@plist.plist_file).read
-          when "print"
-            pp @plist.plist_data
-          when "open"
-            Launchy.open @plist.plist_file
-        end
-    end
-  end
 
   def get_plist_file plist_file
     return plist_file
@@ -166,6 +128,13 @@ class SimulatorIDB < CommonIDB
   end
 
   private
+
+  def app_launch
+    ensure_app_is_selected
+    cmd = '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Applications/iPhone\ Simulator.app/Contents/MacOS/iPhone\ Simulator -SimulateApplication '
+    puts "[*] Launching app..."
+    @ops.launch_app cmd, path_to_app_binary
+  end
 
   def get_list_of_apps
     if not Dir.exists? @apps_dir

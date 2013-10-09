@@ -1,5 +1,6 @@
 require 'plist'
 require 'rbconfig'
+require 'nokogiri'
 
 class PlistUtil
 
@@ -18,6 +19,11 @@ class PlistUtil
     extract_url_handlers
   end
 
+  def self.dump plist_file
+    xml = File.open(plist_file).read
+    doc = Nokogiri::XML(xml,&:noblanks)
+    puts doc
+  end
 
   private
   def parse_plist_file
@@ -51,5 +57,6 @@ class PlistUtil
     @binary_name = @plist_data['CFBundleExecutable']
     @bundle_identifier =  @plist_data['CFBundleIdentifier']
   end
+
 
 end
