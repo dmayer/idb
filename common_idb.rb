@@ -112,7 +112,7 @@ class CommonIDB
     choose do |menu|
       menu.header = 'What would you like to do?'
       menu.choice("Download Info.plist") {
-
+        say("[*] File downloaded to #{local_path}.")
       }
       menu.choice("Display Info.plist") {
         say("[*] Listing  #{plist_file}.")
@@ -135,7 +135,7 @@ class CommonIDB
     loop do
       choose do |menu|
         menu.header = 'Select Cache.db file:'
-        menu.prompt = 'Choice:'
+        menu.prompt = "Choice (or 'quit'):"
 
         cachedb_files.each {|f|
           relative_file = f.sub(@app_dir,'')
@@ -155,7 +155,7 @@ class CommonIDB
             end
           }
         }
-        menu.choice(:Quit, "[Done]") { return }
+        menu.choice(:quit) { return }
       end
     end
   end
@@ -169,7 +169,7 @@ class CommonIDB
     loop do
       choose do |menu|
         menu.header = 'Select sqlite file:'
-        menu.prompt = 'Choice:'
+        menu.prompt = "Choice (or 'quit'):"
 
         plist_files.each {|f|
           relative_file = f.sub(@app_dir,'')
@@ -192,7 +192,7 @@ class CommonIDB
             end
           }
         }
-        menu.choice(:Quit, "[Done]") { return }
+        menu.choice(:quit) { return }
       end
     end
   end
@@ -207,7 +207,7 @@ class CommonIDB
     loop do
       choose do |menu|
         menu.header = 'Select plist file:'
-        menu.prompt = 'Choice:'
+        menu.prompt = "Choice (or 'quit'):"
 
         plist_files.each {|f|
           relative_file = f.sub(@app_dir,'')
@@ -229,7 +229,7 @@ class CommonIDB
             end
           }
         }
-        menu.choice(:Quit, "[Done]") { return }
+        menu.choice(:quit) { return }
       end
     end
   end
@@ -248,6 +248,9 @@ class CommonIDB
   def app_url_handlers
     ensure_app_is_selected
     puts "[*] Registered URL schemas based on Info.plist:"
+    if @plist.schemas.empty?
+      puts "No URL schemas found."
+    end
     puts @plist.schemas
   end
 

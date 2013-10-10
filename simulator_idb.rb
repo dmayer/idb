@@ -32,6 +32,7 @@ class SimulatorIDB < CommonIDB
     end
 
 
+
     dirs = Dir.glob("#{basedir}/**")
     case dirs.length
       when 0

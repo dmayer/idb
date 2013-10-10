@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require 'readline'
 require 'trollop'
 require_relative 'simulator_idb'
