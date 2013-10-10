@@ -53,7 +53,7 @@ class DeviceIDB < CommonIDB
     ask 'Launch the app on the device. [press enter to continue]'
 
 
-    ask 'Now place the app into the background. [press enter to continue]'
+    ask 'Now place the app into the background (hit the home button). [press enter to continue]'
 
     result = su.check
     if result.nil?
