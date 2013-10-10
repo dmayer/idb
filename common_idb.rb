@@ -30,6 +30,7 @@ class CommonIDB
 
           plist_file = get_plist_file(get_plist_file_name(d))
           @plist = PlistUtil.new plist_file
+          @plist.parse_info_plist
 
         }
       }
@@ -116,7 +117,7 @@ class CommonIDB
       }
       menu.choice("Display Info.plist") {
         say("[*] Listing  #{plist_file}.")
-        PlistUtil.dump local_path
+        PlistUtil.new(local_path).dump
       }
       menu.choice("Open Info.plist in external editor (if associated)") {
         Launchy.open local_path
@@ -219,8 +220,7 @@ class CommonIDB
                 menu.header = 'What would you like to do?'
                 menu.choice("Display") {
                   say("[*] Listing  #{relative_file}.")
-                  puts local_path
-                  plist = PlistUtil.dump local_path
+                  PlistUtil.new(local_path).dump
                 }
                 menu.choice("Open in external editor (if associated)") {
                   Launchy.open local_path
