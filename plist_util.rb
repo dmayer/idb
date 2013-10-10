@@ -14,10 +14,10 @@ class PlistUtil
       raise "plutil not found at #{@plutil}. aborting."
     end
 
+    parse_plist_file
   end
 
   def parse_info_plist
-    parse_plist_file
     extract_binary_name
     extract_url_handlers
   end
