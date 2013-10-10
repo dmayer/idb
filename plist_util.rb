@@ -14,13 +14,16 @@ class PlistUtil
       raise "plutil not found at #{@plutil}. aborting."
     end
 
+  end
+
+  def parse_info_plist
     parse_plist_file
     extract_binary_name
     extract_url_handlers
   end
 
-  def self.dump plist_file
-    doc = Nokogiri::XML(File.open(plist_file)) do |config|
+  def dump
+    doc = Nokogiri::XML(File.open(@plist_file)) do |config|
       config.nonet.noblanks
     end
       puts doc.to_xml(:indent => 2)
