@@ -2,6 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     addressable (2.3.4)
+    coderay (1.0.8)
     eventmachine (1.0.3)
     highline (1.6.18)
     launchy (2.3.0)
@@ -22,6 +23,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  coderay
   highline
   launchy
   net-sftp
