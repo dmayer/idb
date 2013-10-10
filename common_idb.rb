@@ -233,8 +233,10 @@ class CommonIDB
         menu.choice("[Download all] ") {
           plist_files.each { |f|
             next unless @ops.file? f
+
             relative_file = f.sub(@app_dir,'')
             puts "Downloading #{relative_file}"
+
             local_path = "tmp/#{@app}/#{relative_file}"
             FileUtils.mkdir_p(File.dirname(local_path))
             @ops.download f, local_path
