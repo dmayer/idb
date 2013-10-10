@@ -71,8 +71,11 @@ class SSHOperations
   end
 
   def file? path
-    @sftp.stat!(path).file?
-
+    begin
+      @sftp.stat!(path).file?
+    rescue
+      false
+    end
   end
 
   def mtime path
