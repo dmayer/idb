@@ -21,7 +21,7 @@ class PlistUtil
 
   def self.dump plist_file
     doc = Nokogiri::XML(File.open(plist_file)) do |config|
-      config.strict.nonet.noblanks
+      config.nonet.noblanks
     end
       puts doc.to_xml(:indent => 2)
   end
