@@ -1,6 +1,7 @@
 require 'plist'
 require 'rbconfig'
 require 'nokogiri'
+require 'coderay'
 
 class PlistUtil
 
@@ -26,7 +27,7 @@ class PlistUtil
     doc = Nokogiri::XML(File.open(@plist_file)) do |config|
       config.nonet.noblanks
     end
-      puts doc.to_xml(:indent => 2)
+      puts CodeRay.scan(doc.to_xml(:indent => 2), :xml).terminal
   end
 
   private
