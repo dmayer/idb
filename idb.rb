@@ -10,7 +10,7 @@ require_relative 'auto_complete_handlers'
 stty_save = `stty -g`.chomp
 
 options = Trollop::options do
-  version "v1.0 (c) 2013 Daniel A. Mayer, Matasano Security"
+  version "v1.0 (c) 2013 Daniel A. Mayer"
   banner <<-EOS
 Command line utility to perform common tasks on iDevices and the iOS simulator.
 
