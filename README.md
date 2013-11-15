@@ -18,8 +18,8 @@ idb is a tool to simplify some common tasks for iOS pentesting and research. It 
     * Search for, download, and view local caches  (`Cache.db`)
     * Create and download archive of entire app folder
 * Install utilities on iDevices
-    * Install [iOS SSL killswitch](//github.com/stefanesser/dumpdecrypted)
-    * Compile and install [dumpdecrypted](//github.com/iSECPartners/ios-ssl-kill-switch)
+    * Install [iOS SSL killswitch](//github.com/iSECPartners/ios-ssl-kill-switch)
+    * Compile and install [dumpdecrypted](//github.com/stefanesser/dumpdecrypted)
 * Manage certificates in the iOS Simulator trust store
     * Install (and delete) SSL certificates in the trust store in order to intercept TLS/HTTPS protected traffic
 
