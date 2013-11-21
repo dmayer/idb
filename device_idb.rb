@@ -242,7 +242,11 @@ class DeviceIDB < CommonIDB
   end
 
   def get_appname_from_id id
-    return File.basename @ops.dir_glob("#{@apps_dir}/#{id}/","*app").first
+    begin
+      return File.basename @ops.dir_glob("#{@apps_dir}/#{id}/","*app").first
+    rescue
+      return "Could not determine app name"
+      end
   end
 
 
