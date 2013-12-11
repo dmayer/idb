@@ -1,0 +1,13 @@
+--- 
+ssh_host: localhost
+ssh_port: "2222"
+ssh_username: root
+ssh_password: alpine
+local_forwards: 
+- remote_port: "123"
+  local_port: "13"
+  local_host: test
+remote_forwards: 
+- remote_port: "8080"
+  local_port: "8080"
+  local_host: localhost

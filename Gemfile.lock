@@ -2,11 +2,15 @@ GEM
   remote: https://rubygems.org/
   specs:
     addressable (2.3.4)
+    awesome_print (1.2.0)
     coderay (1.0.8)
     eventmachine (1.0.3)
+    ffi (1.9.0)
     highline (1.6.18)
+    htmlentities (4.3.1)
     launchy (2.3.0)
       addressable (~> 2.3)
+    log4r (1.1.10)
     mini_portile (0.5.0)
     net-sftp (2.1.2)
       net-ssh (>= 2.6.5)
@@ -24,9 +28,14 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  awesome_print
   coderay
+  eventmachine
+  ffi
   highline
+  htmlentities
   launchy
+  log4r
   net-sftp
   net-ssh
   nokogiri
