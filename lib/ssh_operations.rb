@@ -10,7 +10,8 @@ class SSHOperations
     @password = password
     @port = port
 
-    $log.info 'Establishing SSH Session...'
+    $log.info "Establishing SSH Session for #{username}@#{hostname}:#{port}"
+
     @ssh = Net::SSH.start hostname, username, :password => password, :port => port
 
     # initiali:wze sftp connection and wait until it is open

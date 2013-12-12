@@ -1,8 +1,10 @@
 require_relative 'abstract_device'
 require_relative 'ssh_port_forwarder'
 require_relative 'device_ca_interface'
+require_relative 'usb_muxd_wrapper'
 
 class Device < AbstractDevice
+  attr_accessor :usb_ssh_port, :mode
 
   def initialize username, password, hostname, port
     @apps_dir = '/private/var/mobile/Applications'
@@ -12,7 +14,27 @@ class Device < AbstractDevice
     @port = port
 
     @app = nil
-    @ops = SSHOperations.new username, password, hostname, port
+
+    if $settings['device_connection_mode'] == "ssh"
+      $log.debug "Connecting via SSH"
+      @mode = 'ssh'
+      @ops = SSHOperations.new username, password, hostname, port
+    else
+      $log.debug "Connecting via USB"
+      @mode = 'usb'
+      @usbmuxd = USBMuxdWrapper.new
+      proxy_port = @usbmuxd.find_available_port
+      $log.debug "Using port #{proxy_port} for SSH forwarding"
+
+      @usbmuxd.proxy proxy_port, $settings['ssh_port']
+      @ops = SSHOperations.new username, password, 'localhost', proxy_port
+
+      @usb_ssh_port = @usbmuxd.find_available_port
+      $log.debug "Opening port #{proxy_port} for manual SSH connection"
+      @usbmuxd.proxy @usb_ssh_port, $settings['ssh_port']
+
+    end
+
     start_port_forwarding
   end
 
@@ -107,7 +129,9 @@ class Device < AbstractDevice
 
   def close
     $log.info "Terminating port forwarding helper..."
-   Process.kill("INT", @port_forward_pid)
+    Process.kill("INT", @port_forward_pid)
+    $log.info "Stopping any SSH via USB forwarding"
+    @usbmuxd.stop_all
 
   end
 

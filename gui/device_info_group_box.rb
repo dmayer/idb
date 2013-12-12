@@ -20,7 +20,14 @@ class DeviceInfoGroupBox < Qt::GroupBox
   def update_device
     if $device.device?
       uname = $device.ops.execute("/bin/uname -a")
-      @device.setText "<b>USB device:</b> ssh://#{$settings.ssh_username}:[redacted]@#{$settings.ssh_host}:#{$settings.ssh_port}<br>#{uname}"
+      ssh_connection_info = ""
+      if $device.mode == "usb"
+        ssh_connection_info = " "
+        @device.setText "<b>USB device:</b> <b><font color='red'>Manually connect via SSH as #{$settings.ssh_username}@localhost:#{$device.usb_ssh_port}</font></b><br>#{uname}"
+      else
+        @device.setText "<b>USB device:</b> ssh://#{$settings.ssh_username}:[redacted]@#{$settings.ssh_host}:#{$settings.ssh_port}<br>#{uname}"
+      end
+
       @status = Qt::PushButton.new "Status"
       @status.connect(SIGNAL(:released)) {
         @device_status = DeviceStatusDialog.new

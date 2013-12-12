@@ -25,9 +25,10 @@ class Settings
       $log.warn "No configuration found, generating default."
       @data = Hash.new
       @data["ssh_host"] = "localhost"
-      @data["ssh_port"] = 2222
+      @data["ssh_port"] = 22
       @data["ssh_username"] = "root"
       @data["ssh_password"] = "alpine"
+      @data["device_connection_mode"] = "usb"
       $log.info "Storing new configuration at #{@file_name}"
       store
       load

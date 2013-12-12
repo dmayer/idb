@@ -26,7 +26,7 @@ class GIDB < Qt::MainWindow
 
 
       # initialize log
-      $log = Log4r::Logger.new ''
+      $log = Log4r::Logger.new 'gidb'
       outputter = Log4r::Outputter.stdout
       outputter.formatter =  Log4r::PatternFormatter.new(:pattern => "[%l] %d :: %m")
 
@@ -169,8 +169,6 @@ class GIDB < Qt::MainWindow
 
         end
         if not $device.nil?
-
-
           @app_details.enable_select_app
           @device_details.update_device
           @menu_item_cert.setEnabled(true)
@@ -226,5 +224,5 @@ gidb = GIDB.new
 
 app.exec
 $log.info "Performing cleanup before exiting."
-$device.close
+$device.close unless $device.nil?
 $log.info "Thanks for using gidb."
