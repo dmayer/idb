@@ -13,6 +13,8 @@ require_relative 'gui/settings_dialog'
 require_relative 'gui/device_info_group_box'
 require_relative 'gui/ca_manager_dialog'
 
+TAGET = "Hello"
+
 # logging
 require 'log4r'
 
@@ -38,8 +40,9 @@ class GIDB < Qt::MainWindow
       @thread_fix = QtThreadFix.new
       $settings = Settings.new 'config/settings.yml'
 
-      setWindowTitle "idb"
+      setWindowTitle "gidb"
       Qt::CoreApplication::setApplicationName("gidb")
+      setWindowIconText('gidb')
       init_ui
 #      size = Qt::Size.new($width, $height)
 #      size = size.expandedTo(self.minimumSizeHint())
@@ -220,6 +223,8 @@ end
 
 
 app = Qt::Application.new ARGV
+app.setWindowIcon(Qt::Icon.new 'gui/images/iphone.ico')
+app.setApplicationName("gidb")
 gidb = GIDB.new
 
 app.exec
