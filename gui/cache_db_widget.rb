@@ -9,6 +9,12 @@ class CacheDbWidget < Qt::Widget
     }
 
     @list = Qt::ListWidget.new self
+    @list.connect(SIGNAL('itemDoubleClicked(QListWidgetItem*)')) { |item|
+      x = ConsoleLauncher.new
+      #TODO: find sqlite binary
+      x.run "/usr/bin/sqlite3 #{Dir.getwd}/#{$selected_app.cache_file item.full_path}"
+
+    }
    # "Launch app"
 
     layout = Qt::VBoxLayout.new do |v|

@@ -1,3 +1,5 @@
+require_relative '../lib/console_launcher'
+
 class SqliteWidget  < Qt::Widget
 
   def initialize *args
@@ -10,7 +12,10 @@ class SqliteWidget  < Qt::Widget
 
     @list = Qt::ListWidget.new self
     @list.connect(SIGNAL('itemDoubleClicked(QListWidgetItem*)')) { |item|
-      $device.ops.open $selected_app.cache_file item.full_path
+      x = ConsoleLauncher.new
+      #TODO: find sqlite binary
+      x.run "/usr/bin/sqlite3 #{Dir.getwd}/#{$selected_app.cache_file item.full_path}"
+
     }
    # "Launch app"
 
