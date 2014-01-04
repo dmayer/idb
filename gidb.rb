@@ -123,6 +123,14 @@ class GIDB < Qt::MainWindow
       ##########################################
       # MENU
       ##########################################
+      # File
+      menu_item_settings = Qt::Action.new "&Settings", self
+      menu_item_settings.connect(SIGNAL :triggered) {
+        setting = SettingsDialog.new self
+        setting.exec
+      }
+      @menu_file = menuBar().addMenu "&File"
+      @menu_file.addAction menu_item_settings
 
       @menu_item_screenshot = Qt::Action.new "&Screenshot", self
       @menu_item_screenshot.setEnabled(false)
@@ -139,14 +147,6 @@ class GIDB < Qt::MainWindow
       @menu_tools.addAction @menu_item_screenshot
       @menu_tools.addAction @menu_item_cert
 
-      # File
-      menu_item_settings = Qt::Action.new "&Settings", self
-      menu_item_settings.connect(SIGNAL :triggered) {
-        setting = SettingsDialog.new self
-        setting.exec
-      }
-      @menu_file = menuBar().addMenu "&File"
-      @menu_file.addAction menu_item_settings
 
       #Devices
       @sim_group = Qt::ActionGroup.new @menu_devices

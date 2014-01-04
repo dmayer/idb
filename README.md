@@ -9,3 +9,9 @@ Comprehensive documentation can be found on the [wiki](//github.com/dmayer/idb/w
 
 * Screenshot itcon from http://icons8.com/
 
+
+sudo apt-get install libimobiledevice-utils
+syslog only works after passcode has been entered.
+
+libplist-utils
+

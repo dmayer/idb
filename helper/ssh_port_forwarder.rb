@@ -39,6 +39,10 @@ def run
     $ssh_forwards.add_remote_forward Integer(x['remote_port']), x['local_host'], Integer(x['local_port'])
   }
 
+  settings['local_forwards'].each { |x|
+    $ssh_forwards.add_local_forward Integer(x['local_port']), x['remote_host'], Integer(x['remote_port'])
+  }
+
   # start event loop
   $ssh_forwards.start
 end

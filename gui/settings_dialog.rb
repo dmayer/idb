@@ -23,6 +23,14 @@ class SettingsDialog < Qt::Dialog
         $settings["device_connection_mode"] = "ssh"
       end
       $settings.store
+
+      if not $device.nil? and  @forward_tabs.forwards_changed?
+        reply = Qt::MessageBox::question(self, "Reload Port Forwards", "Portforwarding has changed. Do you want to apply the new configuration?<br>(This may interrupt existing connections)", Qt::MessageBox::Yes, Qt::MessageBox::No);
+        if reply == Qt::MessageBox::Yes
+          $device.restart_port_forwarding
+        end
+      end
+
       accept()
     }
     @cancel_button = Qt::PushButton.new "Cancel"
@@ -41,11 +49,15 @@ class SettingsDialog < Qt::Dialog
     forward_config.setLayout forward_config_layout
     @layout.addWidget forward_config, 1, 0, 1,2
 
-    forward_tabs = SSHPortForwardTabWidget.new self
-    forward_config_layout.addWidget forward_tabs, 0, 0
+    @forward_tabs = SSHPortForwardTabWidget.new self
+    forward_config_layout.addWidget @forward_tabs, 0, 0
 
 
     setFixedHeight(sizeHint().height());
+  end
+
+  def forwarders_changed?
+    @forwarder_changed
   end
 
 

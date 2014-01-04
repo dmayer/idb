@@ -17,9 +17,8 @@ class Simulator < AbstractDevice
 
   def self.get_simulators
     basedir = ENV['HOME'] + '/Library/Application Support/iPhone Simulator'
-    unless Dir.exists? basedir
-      raise "No simulators found in #{basedir}."
-    end
+
+    return Array.new unless Dir.exists? basedir
 
     dirs = Dir.glob("#{basedir}/**")
     if dirs.length == 0

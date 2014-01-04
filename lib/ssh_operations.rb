@@ -1,5 +1,6 @@
 require 'net/ssh'
 require 'net/sftp'
+require 'launchy'
 
 class SSHOperations
   attr_accessor :ssh

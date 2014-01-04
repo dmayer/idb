@@ -38,6 +38,11 @@ class Device < AbstractDevice
     start_port_forwarding
   end
 
+  def ssh
+    @ops.ssh
+  end
+
+
   def disconnect
     @ops.disconnect
   end
@@ -48,6 +53,12 @@ class Device < AbstractDevice
 
   def start_port_forwarding
     @port_forward_pid = Process.spawn("#{RbConfig.ruby} helper/ssh_port_forwarder.rb"  )
+  end
+
+  def restart_port_forwarding
+    @log.info "Restarting SSH port forwarding"
+    Process.kill("INT", @port_forward_pid)
+    start_port_forwarding
   end
 
   def simulator?

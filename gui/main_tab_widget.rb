@@ -3,6 +3,7 @@ require_relative 'url_handler_widget'
 require_relative 'app_binary_tab_widget'
 require_relative 'log_widget'
 require_relative 'snoop_it_tab_widget'
+require_relative 'cycript_console_widget'
 require 'Qt'
 
 class MainTabWidget < Qt::TabWidget
@@ -45,12 +46,22 @@ class MainTabWidget < Qt::TabWidget
     @log.setEnabled(false)
     @tabs[:log] = addTab(@log, "Log View")
 
+
+    @cycript = CycriptConsoleWidget.new self
+    @cycript.setEnabled(true)
+    @tabs[:cycript] = addTab(@cycript, "Cycript")
+
     disable_all
   end
 
   def enableLog
     @log.setEnabled(true)
     setTabEnabled(@tabs[:log], true)
+  end
+
+  def enableCycript
+    @cycript.setEnabled(true)
+    setTabEnabled(@tabs[:cycript], true)
   end
 
   def enableLocalStorage

@@ -19,6 +19,7 @@ gem 'ffi'
 gem 'htmlentities'
 gem 'eventmachine'
 gem 'log4r'
+gem 'net-ssh-telnet'
 
 
 

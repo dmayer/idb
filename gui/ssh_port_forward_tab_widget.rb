@@ -3,6 +3,7 @@ class SSHPortForwardTabWidget < Qt::TabWidget
     super *args
     setup_remote_port_forward
     setup_local_port_forward
+    @forwarders_changed = false
   end
 
 
@@ -11,7 +12,7 @@ class SSHPortForwardTabWidget < Qt::TabWidget
   end
 
   def add_local_forward_to_list local_port, remote_port, remote_host
-    @local_forward_list.addItem Qt::ListWidgetItem.new "local:#{local_port} -> #{remote_port}:#{remote_host}"
+    @local_forward_list.addItem Qt::ListWidgetItem.new "local:#{local_port} -> #{remote_host}:#{remote_port}"
   end
 
 
@@ -43,13 +44,14 @@ class SSHPortForwardTabWidget < Qt::TabWidget
       remote_host = @local_remote_host_text.text
 
       if is_valid_port(remote_port) and is_valid_port(local_port)
+        @forwarders_changed = true
         add_local_forward_to_list local_port, remote_port, remote_host
 
         item = Hash.new
         item['local_port'] = @local_local_port_text.text
         item['remote_port'] = @local_remote_port_text.text
         item['remote_host'] = @local_remote_host_text.text
-        $settings['remote_forwards'] << item
+        $settings['local_forwards'] << item
         $settings.store
 
 
@@ -60,7 +62,8 @@ class SSHPortForwardTabWidget < Qt::TabWidget
     }
     remove_forward_button = Qt::PushButton.new "Remove"
     remove_forward_button.connect(SIGNAL(:released)) {
-      if not @local_forward_list.current_row.nil?
+      unless @local_forward_list.current_row.nil?
+        @forwarders_changed = true
         row = @local_forward_list.current_row
         @local_forward_list.takeItem  row
         $settings['local_forwards'].delete_at(row)
@@ -72,27 +75,27 @@ class SSHPortForwardTabWidget < Qt::TabWidget
     forward_config_layout.addWidget add_forward_button, 0, 3
     forward_config_layout.addWidget remove_forward_button, 1, 3
 
-    remote_port_label = Qt::Label.new "Local Port"
+    local_port_label = Qt::Label.new "Local Port"
     @local_local_port_text = Qt::LineEdit.new
 
 
-    local_host_label = Qt::Label.new "Remote Host"
-    @local_remote_port_text = Qt::LineEdit.new
-
-
-    local_port_label = Qt::Label.new "Remote Port"
+    remote_host_label = Qt::Label.new "Remote Host"
     @local_remote_host_text = Qt::LineEdit.new
 
-    forward_config_layout.addWidget remote_port_label, 2, 0
+
+    remote_port_label = Qt::Label.new "Remote Port"
+    @local_remote_port_text = Qt::LineEdit.new
+
+    forward_config_layout.addWidget local_port_label, 2, 0
     forward_config_layout.addWidget @local_local_port_text, 2, 1
 
 
-    forward_config_layout.addWidget local_host_label, 3, 0
-    forward_config_layout.addWidget @local_remote_port_text, 3, 1
+    forward_config_layout.addWidget remote_host_label, 3, 0
+    forward_config_layout.addWidget @local_remote_host_text, 3, 1
 
 
-    forward_config_layout.addWidget local_port_label, 4, 0
-    forward_config_layout.addWidget @local_remote_host_text, 4, 1
+    forward_config_layout.addWidget remote_port_label, 4, 0
+    forward_config_layout.addWidget @local_remote_port_text, 4, 1
 
   end
 
@@ -128,6 +131,7 @@ class SSHPortForwardTabWidget < Qt::TabWidget
 
       if is_valid_port(remote_port) and is_valid_port(local_port)
         add_remote_forward_to_list remote_port, local_port, local_host
+        @forwarders_changed = true
 
         item = Hash.new
         item['remote_port'] = @remote_remote_port_text.text
@@ -145,6 +149,7 @@ class SSHPortForwardTabWidget < Qt::TabWidget
     remove_forward_button = Qt::PushButton.new "Remove"
     remove_forward_button.connect(SIGNAL(:released)) {
       if not @remote_forward_list.current_row.nil?
+        @forwarders_changed = true
         row = @remote_forward_list.current_row
         @remote_forward_list.takeItem  row
         $settings['remote_forwards'].delete_at(row)
