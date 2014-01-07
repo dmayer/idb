@@ -72,7 +72,7 @@ class App
     icon_file = $device.ops.execute("ls #{app_dir}/*app/#{icon_name}").strip
 
     if not $device.ops.file_exists? icon_file
-      $log.warning "Icon not found."
+      $log.warn "Icon not found: #{icon_file}"
       return nil
     end
     $log.info "Icon found at #{icon_file}"
