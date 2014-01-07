@@ -1,0 +1,2 @@
+class URLSchemeFuzzer
+end

@@ -4,6 +4,7 @@ require_relative 'app_binary_tab_widget'
 require_relative 'log_widget'
 require_relative 'snoop_it_tab_widget'
 require_relative 'cycript_console_widget'
+require_relative 'pasteboard_monitor_widget'
 require 'Qt'
 
 class MainTabWidget < Qt::TabWidget
@@ -21,7 +22,7 @@ class MainTabWidget < Qt::TabWidget
     }
 
     @url_handler = URLHandlerWidget.new self
-    @url_handler.setEnabled(false)
+    @url_handler.setEnabled(true)
     @tabs[:url_handlers] = addTab(@url_handler, "URL Handlers")
     connect(SIGNAL('currentChanged(int)')) { |x|
 #      if isTabEnabled(@tabs[:url_handlers]) and
@@ -51,6 +52,10 @@ class MainTabWidget < Qt::TabWidget
     @cycript.setEnabled(true)
     @tabs[:cycript] = addTab(@cycript, "Cycript")
 
+    @pasteboard = PasteboardMonitorWidget.new self
+    @pasteboard.setEnabled(true)
+    @tabs[:pasteboard] = addTab(@pasteboard, "Pasteboard Monitor")
+
     disable_all
   end
 
@@ -78,7 +83,7 @@ class MainTabWidget < Qt::TabWidget
     setTabEnabled(@tabs[:local_storage], false)
     setTabEnabled(@tabs[:log], false)
     setTabEnabled(@tabs[:app_binary],false)
-    setTabEnabled(@tabs[:url_handlers],false)
+#    setTabEnabled(@tabs[:url_handlers],false)
   end
 
   def clear
@@ -101,7 +106,7 @@ class MainTabWidget < Qt::TabWidget
     clear
     enableLocalStorage
     enableURLHandlers
-    refresh_current_tab
+#    refresh_current_tab
     @app_binary.refresh
   end
 

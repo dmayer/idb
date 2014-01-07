@@ -1,4 +1,5 @@
 require_relative 'console_widget'
+require_relative 'cycript_thread'
 require 'open3'
 
 
@@ -10,78 +11,57 @@ class CycriptConsoleWidget < Qt::Widget
     @console = ConsoleWidget.new
     @console.connect(SIGNAL('command(QString)')) {|cmd|
       puts cmd.inspect
-      $channel.send_data cmd + "\n"
+      @cycript_thread.send_data cmd + "\n"
+#      @cycript_thread.send_data "testtest\n"
     }
 
     @start = Qt::PushButton.new "Start"
     @start.connect(SIGNAL :released) {
 #      @start.setEnabled(false)
 #      @stop.setEnabled(true)
-      launch_process
+      start
+
+      #@console.result data
+
+    }
+
+    @stop = Qt::PushButton.new "Stop"
+    @stop.connect(SIGNAL :released) {
+     Thread.list.each {|t| p t}
+      @cycript_thread.send_data "testtest\n"
+      Thread.pass
+
     }
 
     layout = Qt::VBoxLayout.new do |v|
       v.add_widget(@console)
       v.add_widget(@start)
+      v.add_widget(@stop)
     end
     setLayout(layout)
 
 
-  end
-
-
-  def launch_process
-
-
-    #@input, @output, @error = Open3::popen3 "bash"
-    #  @io = IO.popen "bash", "w"
-    Thread.new do
-      puts "launching"
-      @cycript = $device.ssh.open_channel
-      sleep 5
-      puts "hopefully open"
-      puts @cycript
-      #@cycript.request_pty
-
-#       channel.exec "passwd" do |ch, success|
-      @cycript.exec "ls" do |ch, success|
-#         channel.exec 'ls' do |ch, success|
-        if success
-          puts "setting up callbacks"
-          ch.on_data do |ch2, data|
-            puts "got data"
-            puts data
-            @console.result data
-          end
-
-          @cycript.on_data do |ch2, data|
-            puts "got data"
-            puts data
-            @console.result data
-          end
-
-          ch.on_extended_data do |ch, type, data|
-            puts "got stderr: #{data}"
-            @console.result data
-          end
-        else
-          puts "FAILED"
-        end
-
-      end
-#
-      loop do
-        #TODO mutex to protect device?
-        sleep 0.5
-        $device.ssh.process
-        #$device.ssh.process 0
-      end
-
-#      $device.ssh.loop
-      puts "done"
     end
-
+  def pure_string s
+    x =  loop{ s[/\033\[\d+m/] = "" }
+    rescue IndexError
+        return s
+    x
   end
+
+  def start
+      @cycript_thread = CycriptThread.new
+      @cycript_thread.connect(SIGNAL('new_entry(QString)')) {|line|
+        @console.result line
+      }
+    @cycript_thread.launch_process
+  end
+
+  def stop
+    @cycript_thread.stop
+  end
+
+
 
 
 end

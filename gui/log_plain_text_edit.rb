@@ -1,4 +1,4 @@
-class IDeviceLogPlainTextEdit < Qt::PlainTextEdit
+class LogPlainTextEdit < Qt::PlainTextEdit
 
   def initialize *args
     super *args
