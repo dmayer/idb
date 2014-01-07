@@ -38,8 +38,8 @@ class AppDetailsGroupBox < Qt::GroupBox
         pixmap = Qt::Pixmap.new(icon_file)
         @icon.setPixmap pixmap.scaledToWidth(50)  unless icon_file.nil?
 
-        rescue
-          $log.error "Icon CONVERSION failed."
+        rescue => e
+          $log.error "Icon CONVERSION failed.  #{e.message}"
           @icon.setPixmap Qt::Pixmap.new
           # lets ignore conversion errors for now..
         end
