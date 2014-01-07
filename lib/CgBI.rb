@@ -85,14 +85,24 @@ class CGBI
 
 				# Re-order pixels to RGBA
 				chunk[:data] = ""
-				(1..@height).each do |y|
+				while (decompressed) do
+				#(1..@height).each do |y|
 					# Copy over the filter type byte on each line
 					# TODO: Might not be necessary for all filter types
 					chunk[:data] << decompressed.slice!(0,1)
 					(1..@width).each do |x|
 						# BGRA => RGBA
-						b,g,r,a = decompressed.slice!(0,4).split(//)
-						chunk[:data] += r + g + b + a
+						b,g,r,a = decompressed.unpack("CCCC")
+						decompressed.slice!(0,4).split(//)
+
+						begin
+							chunk[:data] += [r,g,b,a].pack("CCCC")
+							decompressed = nil if decompressed.length == 0
+						rescue => e
+							puts "Left: #{decompressed.inspect}"
+				          require 'pry'
+				          binding.pry
+				      	end
 					end
 				end
 
