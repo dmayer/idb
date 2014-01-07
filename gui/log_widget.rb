@@ -1,4 +1,4 @@
-require_relative 'i_device_log_plain_text_edit'
+require_relative 'log_plain_text_edit'
 require_relative 'i_device_syslog_thread'
 require 'htmlentities'
 
@@ -22,7 +22,7 @@ class LogWidget < Qt::Widget
       stop_log
     }
 
-    @log_window = IDeviceLogPlainTextEdit.new
+    @log_window = LogPlainTextEdit.new
     @log_window.setReadOnly(true)
 
     layout = Qt::VBoxLayout.new do |v|
