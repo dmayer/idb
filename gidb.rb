@@ -30,7 +30,7 @@ class GIDB < Qt::MainWindow
       # initialize log
       $log = Log4r::Logger.new 'gidb'
       outputter = Log4r::Outputter.stdout
-      outputter.formatter =  Log4r::PatternFormatter.new(:pattern => "[%l] %d :: %m")
+      outputter.formatter =  Log4r::PatternFormatter.new(:pattern => "[%l] %d :: %c ::  %m")
 
       $log.outputters = [ outputter ]
 

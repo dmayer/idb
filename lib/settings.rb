@@ -28,6 +28,7 @@ class Settings
       @data["ssh_port"] = 22
       @data["ssh_username"] = "root"
       @data["ssh_password"] = "alpine"
+      @data["manual_ssh_port"] = "2222"
       @data["device_connection_mode"] = "usb"
       $log.info "Storing new configuration at #{@file_name}"
       store

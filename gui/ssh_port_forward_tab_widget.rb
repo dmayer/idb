@@ -1,4 +1,5 @@
 class SSHPortForwardTabWidget < Qt::TabWidget
+
   def initialize *args
     super *args
     setup_remote_port_forward
@@ -197,4 +198,9 @@ class SSHPortForwardTabWidget < Qt::TabWidget
       false
     end
   end
+
+  def forwarders_changed?
+    @forwarders_changed
+  end
 end
+

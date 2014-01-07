@@ -9,7 +9,7 @@ def run
   # initialize log
   $log = Log4r::Logger.new 'port_forward'
   outputter = Log4r::Outputter.stdout
-  outputter.formatter =  Log4r::PatternFormatter.new(:pattern => "[%l] %d :: %m")
+  outputter.formatter =  Log4r::PatternFormatter.new(:pattern => "[%l] %d :: %c ::  %m")
   $log.outputters = [ outputter ]
 
   # load settings

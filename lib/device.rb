@@ -29,7 +29,7 @@ class Device < AbstractDevice
       @usbmuxd.proxy proxy_port, $settings['ssh_port']
       @ops = SSHOperations.new username, password, 'localhost', proxy_port
 
-      @usb_ssh_port = @usbmuxd.find_available_port
+      @usb_ssh_port = $settings['manual_ssh_port']
       $log.debug "Opening port #{proxy_port} for manual SSH connection"
       @usbmuxd.proxy @usb_ssh_port, $settings['ssh_port']
 
@@ -56,7 +56,7 @@ class Device < AbstractDevice
   end
 
   def restart_port_forwarding
-    @log.info "Restarting SSH port forwarding"
+    $log.info "Restarting SSH port forwarding"
     Process.kill("INT", @port_forward_pid)
     start_port_forwarding
   end
@@ -99,7 +99,9 @@ class Device < AbstractDevice
   end
 
   def openurl_path
-    if @ops.file_exists? "/usr/bin/openurl"
+    if @ops.file_exists? "/usr/bin/uiopen"
+      return "/usr/bin/uiopen"
+    elsif @ops.file_exists? "/usr/bin/openurl"
       return "/usr/bin/openurl"
     elsif  @ops.file_exists? "/usr/bin/openURL"
       return "/usr/bin/openURL"
@@ -107,11 +109,11 @@ class Device < AbstractDevice
   end
 
   def openurl_installed?
-    puts "[*] Checking if openurl is installed..."
+    $log.info "[*] Checking if openurl is installed..."
     if @ops.file_exists? "/usr/bin/openurl" or  @ops.file_exists? "/usr/bin/openURL"
       return true
     else
-      puts "[*] open not found. Installing..."
+      $log.warning "[*] open not found. Installing..."
       false
     end
   end
@@ -144,6 +146,11 @@ class Device < AbstractDevice
     $log.info "Stopping any SSH via USB forwarding"
     @usbmuxd.stop_all
 
+  end
+
+  def open_url url
+    $log.info "Executing: #{openurl_path} #{url}"
+    @ops.execute "#{openurl_path} #{url}"
   end
 
 
