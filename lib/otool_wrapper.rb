@@ -14,14 +14,14 @@ class OtoolWrapper
 
   private
   def parse_shared_libraries
-    @raw_shared_libraries_output = `#{@otool_path} -L #{@binary}`
+    @raw_shared_libraries_output = `#{@otool_path} -L '#{@binary}'`
     lines = @raw_shared_libraries_output.split("\n")
     @shared_libraries = lines[1,lines.size].map{ |x| x.strip} unless lines.nil?
   end
 
   def parse_header
     pie_flag = 0x00200000
-    @raw_load_output = `#{@otool_path} -h #{@binary}`
+    @raw_load_output = `#{@otool_path} -h '#{@binary}'`
 
     # fourth row contains values. then split them up.
     vals = @raw_load_output.split("\n")[3].split(" ")
@@ -39,7 +39,7 @@ class OtoolWrapper
   end
 
   def parse_load_commands
-    @raw_load_output = `#{@otool_path} -l #{@binary}`
+    @raw_load_output = `#{@otool_path} -l '#{@binary}'`
     delim = "Load command"
     regex_cmd = /Load command (\d+)/
     regex_parse_key_vals = /\s*(cmd|cryptid)\s(.+)/
