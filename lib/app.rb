@@ -1,5 +1,6 @@
 require_relative 'plist_util'
 require_relative 'app_binary'
+require_relative 'CgBI'
 
 class App
   attr_accessor :uuid, :app_dir, :binary
@@ -15,7 +16,46 @@ class App
   def analyze
     local_binary_path = cache_file binary_path
     @binary = AppBinary.new local_binary_path
+    if @binary.is_encrypted?
+      $log.info "Binary is encrypted. Decrypting for further analysis."
+      decrypt_binary!
+    end
   end
+
+
+  def decrypt_binary!
+    unless $device.dumpdecrypted_installed?
+      $log.error "dumpdecrypted not installed."
+      return false
+    end
+
+    $log.info "Running '#{binary_path}'"
+    full_remote_path = binary_path
+
+    $device.ops.execute "cd /var/root/"
+    $device.ops.execute "DYLD_INSERT_LIBRARIES=dumpdecrypted.dylib \"#{full_remote_path}\""
+
+    decrypted_path = "/var/root/#{File.basename full_remote_path}.decrypted"
+    $log.info "Checking if decrypted file #{decrypted_path} was created..."
+    if not $device.ops.file_exists? decrypted_path
+      $log.error "Decryption failed. File may not be encrypted."
+      return
+    end
+
+    $log.info "Decrypted file found. Downloading..."
+
+    local_decrypted_binary = "#{cache_dir}/#{File.basename full_remote_path}.decrypted"
+    @binary.setDecryptedPath local_decrypted_binary
+
+    local_path = $device.ops.download decrypted_path, local_decrypted_binary
+
+    $log.info "Decrypted binary downloaded to #{local_decrypted_binary}"
+    local_decrypted_binary
+
+  end
+
+
+
 
   def get_raw_plist_value val
     begin
@@ -32,11 +72,23 @@ class App
     icon_file = $device.ops.execute("ls #{app_dir}/*app/#{icon_name}").strip
 
     if not $device.ops.file_exists? icon_file
-      puts "[*] Icon not found."
+      $log.warning "Icon not found."
       return nil
     end
-    puts "[*] Icon found at #{icon_file}"
+    $log.info "Icon found at #{icon_file}"
     return icon_file
+  end
+
+  def get_icon_file
+    path = icon_path
+    unless path.nil?
+      local_path = cache_file path
+      new_local_path = "#{local_path}.png"
+      CGBI.from_file(local_path).to_png_file(new_local_path)
+      new_local_path
+    else
+      nil
+    end
   end
 
   def bundle_name
@@ -68,7 +120,7 @@ class App
   end
 
   def binary_path
-    puts "[*] Locating application binary..."
+    $log.info "Locating application binary..."
     dirs = $device.ops.dir_glob("#{@app_dir}/","**")
     dirs.select! { |f|
       $device.ops.file_exists? "#{f}/#{binary_name}"
@@ -104,6 +156,10 @@ class App
     @info_plist.schemas
   end
 
+  def cache_dir
+   "tmp/#{@uuid}/"
+  end
+
 
   def cache_file f
     relative_file = f.sub(@app_dir,'')
@@ -126,7 +182,7 @@ class App
       @info_plist = PlistUtil.new plist_file
       @info_plist.parse_info_plist
     rescue
-      puts "Error getting plist file #{info_plist_path}"
+      $log.error "Error getting plist file #{info_plist_path}"
     end
   end
 
@@ -140,10 +196,10 @@ class App
     #plist_file = (@if.ops.dir_glob "#{@app_dir}/","*app/Info.plist").first
 
     if not $device.ops.file_exists? plist_file
-      puts "[*] Info.plist not found."
+      $log.error "Info.plist not found."
       return nil
     end
-    puts "[*] Info.plist found at #{plist_file}"
+    $log.info "Info.plist found at #{plist_file}"
     return plist_file
   end
 end

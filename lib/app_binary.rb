@@ -11,14 +11,23 @@ class AppBinary
     @otool.shared_libraries
   end
 
+  def setDecryptedPath path
+    @decrypted_path = path
+  end
+
+  def is_pie?
+    @otool.pie
+  end
+
 
   def is_encrypted?
+    encrypted = false
     @otool.load_commands.each {|key, val|
-      if val['cmd'] == 'LC_ENCRYPTION_INFO' and val['cryptid'] == 1.to_s
-        return true
+      if val['cmd'].strip == 'LC_ENCRYPTION_INFO' and val['cryptid'].strip == 1.to_s
+        encrypted =  true
       end
     }
-    return false
+    return encrypted
   end
 
   def get_cryptid

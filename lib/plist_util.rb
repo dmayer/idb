@@ -32,7 +32,7 @@ class PlistUtil
 
   private
   def parse_plist_file
-    puts '[*] Parsing plist file..'
+    $log.info 'Parsing plist file..'
 
     # Make sure plist file is in xml and not binary
     if RbConfig::CONFIG['host_os'] =~ /linux/

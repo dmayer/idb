@@ -1,13 +1,14 @@
 require 'awesome_print'
 
 class OtoolWrapper
-  attr_accessor :load_commands, :shared_libraries
+  attr_accessor :load_commands, :shared_libraries, :pie
 
   def initialize binary
     @otool_path = "/usr/bin/otool"
     @binary = binary
     parse_load_commands
     parse_shared_libraries
+    parse_header
   end
 
 
@@ -16,6 +17,25 @@ class OtoolWrapper
     @raw_shared_libraries_output = `#{@otool_path} -L #{@binary}`
     lines = @raw_shared_libraries_output.split("\n")
     @shared_libraries = lines[1,lines.size].map{ |x| x.strip} unless lines.nil?
+  end
+
+  def parse_header
+    pie_flag = 0x00200000
+    @raw_load_output = `#{@otool_path} -h #{@binary}`
+
+    # fourth row contains values. then split them up.
+    vals = @raw_load_output.split("\n")[3].split(" ")
+
+    #7th field contains the flags
+    flags = vals[7].to_i(16)
+
+    if flags & pie_flag == pie_flag
+      @pie = true
+    else
+      @pie = false
+    end
+
+
   end
 
   def parse_load_commands

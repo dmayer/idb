@@ -33,8 +33,17 @@ class AppDetailsGroupBox < Qt::GroupBox
         @vals['minimum_os_version'].setText($selected_app.minimum_os_version)
         @launch_app.setEnabled(true)
 
-        #icon_file = $selected_app.cache_file($selected_app.icon_path) unless $selected_app.icon_path.nil?
-        #@icon.setPixmap Qt::Pixmap.new(":/#{icon_file}") unless icon_file.nil?
+        begin
+        icon_file = $selected_app.get_icon_file
+        pixmap = Qt::Pixmap.new(icon_file)
+        @icon.setPixmap pixmap.scaledToWidth(50)  unless icon_file.nil?
+
+        rescue
+          $log.error "Icon CONVERSION failed."
+          @icon.setPixmap Qt::Pixmap.new
+          # lets ignore conversion errors for now..
+        end
+
 
         emit app_changed()
       }
@@ -46,6 +55,9 @@ class AppDetailsGroupBox < Qt::GroupBox
     @icon_button_widget = Qt::Widget.new self
     @icon_button_widget.setLayout @icon_button_layout
 
+    @icon = Qt::Label.new
+
+    @icon_button_layout.addWidget @icon, 0, 0, 1, 1
     @icon_button_layout.addWidget @select_app_button, 0, 1, 1, 3
     @layout.addWidget @icon_button_widget, 0, 0, 1, 2
 
@@ -120,6 +132,7 @@ class AppBinaryGroupBox < Qt::GroupBox
       $selected_app.analyze
       @vals['encryption_enabled'].setText($selected_app.binary.is_encrypted?.to_s)
       @vals['cryptid'].setText($selected_app.binary.get_cryptid.to_s)
+      @vals['pie'].setText($selected_app.binary.is_pie?.to_s)
       emit binary_analyzed()
     }
     @layout.addWidget @analyze_binary_button, 0, 0, 1, 2
@@ -130,6 +143,7 @@ class AppBinaryGroupBox < Qt::GroupBox
 
     addDetail 'encryption_enabled', 'Encryption?'
     addDetail 'cryptid', 'Cryptid'
+    addDetail 'pie', 'PIE'
 
   end
 
@@ -150,6 +164,7 @@ class AppBinaryGroupBox < Qt::GroupBox
   def clear
     @vals['encryption_enabled'].setText("")
     @vals['cryptid'].setText("")
+    @vals['pie'].setText("")
   end
 
 
