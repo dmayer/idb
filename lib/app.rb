@@ -69,6 +69,13 @@ class App
   def icon_path
     icon_name = get_raw_plist_value('CFBundleIconFiles').first
     app_dir = Shellwords.escape(@app_dir)
+
+    unless (icon_name[-4,4] == ".png")
+      $log.debug "Appending extension to #{icon_name}"
+      icon_name += ".png"
+      $log.debug "Now: #{icon_name}"
+    end
+
     icon_file = $device.ops.execute("ls #{app_dir}/*app/#{icon_name}").strip
 
     if not $device.ops.file_exists? icon_file
