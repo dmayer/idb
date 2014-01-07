@@ -3,18 +3,8 @@ require_relative 'common_idb'
 require_relative 'ssh_operations'
 
 class DeviceIDB < CommonIDB
+  attr_accessor :ops, :apps_dir
 
-  def initialize(username, password, hostname, port)
-    @username = username
-    @password = password
-    @hostname = hostname
-    @port = port
-
-    @apps_dir = '/private/var/mobile/Applications'
-
-    @app = nil
-    @ops = SSHOperations.new username, password, hostname, port
-  end
 
 
   def method_missing(name, *args, &block)
@@ -70,14 +60,12 @@ class DeviceIDB < CommonIDB
     end
   end
 
-  private
 
-  def app_launch
-    ensure_app_is_selected
+  def app_launch app
     if ensure_open_is_installed
       cmd = 'open'
       puts "[*] Launching app..."
-      @ops.launch_app cmd, @plist.bundle_identifier
+      @ops.launch_app cmd, app.bundle_id
     end
   end
 
@@ -207,8 +195,8 @@ class DeviceIDB < CommonIDB
   end
 
 
-  def get_plist_file plist_file
-    local_path = "tmp/#{@app}/"
+  def get_file file
+    local_path = "tmp/#{@app}/#{File.basename file}"
     local_filename = "#{local_path}/Info.plist"
     FileUtils.mkdir_p local_path
 
@@ -220,26 +208,6 @@ class DeviceIDB < CommonIDB
     return local_filename
   end
 
-  def get_list_of_apps
-    if not @ops.file_exists? @apps_dir
-      puts "Application directory #{@apps_dir} not found."
-      return false
-    end
-
-    puts '[*] Retrieving list of applications...'
-
-    dirs =  @ops.list_dir "#{@apps_dir}"
-    dirs.select! { |x| x != "." and x != ".." }
-    dirs.map! {|x| "#{@apps_dir}/#{x}"}
-
-#    dirs = @ops.dir_glob("#{@apps_dir}/","**")
-#    puts dirs
-    if dirs.length == 0
-      puts "No applications found in #{@apps_dir}."
-      return nil
-    end
-    return dirs
-  end
 
   def get_appname_from_id id
     begin
@@ -248,56 +216,6 @@ class DeviceIDB < CommonIDB
       return "Could not determine app name"
       end
   end
-
-
-  def
-
-  end
-
-  ensure_dumpdecrypted_is_installed
-    puts "[*] Checking if dumpdecrypted is installed..."
-    if not @ops.file_exists? "/var/root/dumpdecrypted.dylib"
-      puts "[*] dumpdecrypted not found. Installing..."
-      install_dumpdecrypted
-    else
-      puts "[*] dumpdecrypted found."
-    end
-  end
-
-  def install_open
-    if apt_get_installed?
-      puts "[*] Installing open..."
-      @ops.execute("/usr/bin/apt-get update")
-      @ops.execute("/usr/bin/apt-get install com.conradkramer.open")
-      return true
-    else
-      puts "[*] Apt-get not available. Aborting."
-      return false
-    end
-  end
-
-  def ensure_open_is_installed
-    puts "[*] Checking if open is installed..."
-    if not @ops.file_exists? "/usr/bin/open"
-      puts "[*] open not found. Installing..."
-      return install_open
-    else
-      puts "[*] open found."
-      return true
-    end
-  end
-
-  def apt_get_installed?
-    puts "[*] Checking if apt-get is installed..."
-    if not @ops.file_exists? "/usr/bin/apt-get"
-      puts "[*] apt-get not found. Aboorting..."
-      return false
-    else
-      puts "[*] apt-get found."
-      return true
-    end
-  end
-
 
 
 end

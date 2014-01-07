@@ -1,7 +1,9 @@
 require 'net/ssh'
 require 'net/sftp'
+require 'launchy'
 
 class SSHOperations
+  attr_accessor :ssh
 
   def initialize username, password, hostname, port
     @hostname = hostname
@@ -9,14 +11,20 @@ class SSHOperations
     @password = password
     @port = port
 
-    puts '[*] Establishing SSH Session...'
+    $log.info "Establishing SSH Session for #{username}@#{hostname}:#{port}"
+
     @ssh = Net::SSH.start hostname, username, :password => password, :port => port
 
     # initiali:wze sftp connection and wait until it is open
-    puts '[*] Establishing SFTP Session...'
+    $log.info 'Establishing SFTP Session...'
     @sftp = Net::SFTP::Session.new @ssh
     @sftp.loop { @sftp.opening? }
 
+  end
+
+  def disconnect
+    puts "[*] Closing SSH Session"
+    @ssh.close
   end
 
 
@@ -87,6 +95,7 @@ class SSHOperations
   end
 
   def launch_app command, app
+    puts "#{command} \"#{app}\""
     self.execute("#{command} \"#{app}\"")
   end
 

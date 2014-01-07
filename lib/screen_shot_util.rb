@@ -13,7 +13,7 @@ class ScreenShotUtil
     if @sim
       #create snapshot dir!
       if not Dir.exist? @snapshot_path
-        Dir.mkdir @snapshot_path
+        Dir.mkdir_p @snapshot_path
       end
     end
     mark_time

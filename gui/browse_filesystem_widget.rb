@@ -1,0 +1,2 @@
+class BrowseFilesystemWidget
+end

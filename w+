@@ -1,0 +1,100 @@
+IpAddress.all.each {|x| x.ports.each {|y| puts y.port } }
+IpAddress.all.each {|x| x.ports.each {|y| puts y.number } }
+IpAddress.all.each {|x| x.ports.each {|y| y.number == 80 ? puts x  } }
+IpAddress.all.each {|x| x.ports.each {|y| y.number == 80 ? puts x :   } }
+IpAddress.all.each {|x| x.ports.each {|y| y.number == 80 ? puts x : nil  } }
+IpAddress.all.each {|x| x.ports.each {|y| y.number == 80 ? puts x;  } }
+IpAddress.all.each {|x| x.ports.each {|y| y.number == 80 ? puts x: puts ""  } }
+IpAddress.all.each {|x| x.ports.each {|y| (y.number == 80) ? puts x  } }
+IpAddress.all.each {|x| x.ports.each {|y| if y.number == 80 then puts x end }
+IpAddress.all.each {|x| x.ports.each {|y| if y.number == 80;  puts x end }
+;
+}
+IpAddress.all.each {|x| x.ports.each {|y| if y.number == 80;  puts x end } }
+IpAddress.all.each {|x| x.ports.each {|y| if y.number == 80;  ips << x end } }
+IpAddress.all.each {|x| x.ports.each {|y| if y.number == 80;  ips << x.to_s end } }
+ips
+ips = Array.new
+IpAddress.all.each {|x| x.ports.each {|y| if y.number == 443;  ips << x.to_s end } }
+ips.each {|x| puts x}
+opts
+full_options
+IpAddress.all.each {|x| x.queue_scan!(full_options) }
+IpAddress.all
+full_opts = [ '-Pn', '-oX', '-', '-p-', '--max-rtt-timeout=500ms',
+      '--max-retries=2', '--host-timeout=30m', '-v', '-sV', '--version-light']
+full_opts
+IpAddress.queue_full_scans!
+IpAddress.find(2074)
+x =IpAddress.find(2074)
+x.scans
+x.scans.first
+x.scans.second
+x.scans.second.results
+load '.go.rb'
+load .go.rb
+require .go.rb
+require '.go.rb'
+require_relative '.go.rb'
+require_relative './.go.rb'
+load "./.go.rb"
+load "go.rb"
+load ".go.rb"
+require 'ActionView'
+require 'actionview'
+require 'action_view'
+ActionView.helper
+ActionView.helpers
+ActionView
+ActionView::Helpers.sanitize
+h = ActionView::Helpers
+h.sanitize
+h = ActionView::Helpers::SanitizeHelper.sanitize
+h = ActionView::Helpers::SanitizeHelper
+ActionView::Helpers::SanitizeHelper.inspect
+ActionView::Helpers::SanitizeHelper::sanitize
+require 'action_view/helpers/sanitize_helper'
+ActionView::Helpers::SanitizeHelper
+ActionView::Helpers::SanitizeHelper.sanitize
+x = (ActionView::Helpers::SanitizeHelper).new
+SanitizeHelper
+x = ActionView::Helpers::SanitizeHelper
+x = ActionView::Helpers::SanitizeHelper.new
+x = ActionView::Helpers::SanitizeHelper()
+x = ActionView::Helpers::SanitizeHelper.new()
+x = ActionView::Helpers::SanitizeHelper::sanitize
+x = ActionView::Base.sanitized_allowed_attributes
+x = ActionView::Base.sanitized_allowed_tags
+class String
+  def sanitize(options={})
+    ActionController::Base.helpers.sanitize(self, options)
+  end
+end
+require 'action_controller'
+'string'.sanitize
+'str<b>ing'.sanitize
+'str<script>ing'.sanitize
+'str<<sript>script>ing'.sanitize
+'str<<sript<script>>script>ing'.sanitize
+'str<<<script>sript>script>ing'.sanitize
+'str<<<<script>.script>sript>script>ing'.sanitize
+'str<<script>s<ript>script>ing'.sanitize
+'str<<script>s<ri6lt;pt>script>ing'.sanitize
+'str<<script>s<ri6\<pt>script>ing'.sanitize
+'str<<script>s<ri<6<pt>script>ing'.sanitize
+'<IMG SRC="javascript&#x3a;alert('XSS');"'.sanitize
+x = '<IMG SRC="javascript&#x3a;alert(\'XSS\');">'
+x
+x.sanitize
+quit
+x = Hash.new
+x << "test"
+x < "test"
+x[0] = adsd
+x[0] = "dsd"
+require 'shellwords'
+Shellwords.escape("/Users/daniel/Library/Application Support/iPhone Simulator/6.0/Applications/631B463A-526C-442E-A639-C6095906DFB0/*app/Info.plist")
+require_relative 'lib/otool_wrapper'
+require './lib/otool_wrapper'
+OtoolWrapper.new './tmp/./8CCCADD6-7399-47D3-A0AE-1A7AF2293A5B/private/var/mobile/Applications/8CCCADD6-7399-47D3-A0AE-1A7AF2293A5B/eBay.app/eBay
+'

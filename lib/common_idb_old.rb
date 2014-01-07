@@ -3,12 +3,24 @@ require "highline/system_extensions"
 require 'launchy'
 require 'pp'
 
-require_relative 'simulator_certificate_installer'
+require_relative 'simulator_ca_interface'
 require_relative 'screen_shot_util'
 require_relative 'plist_util'
+require_relative 'app'
 
 
 class CommonIDB
+
+  def get_installed_apps
+    apps_with_full_path = get_list_of_apps
+
+    # create app objects for each app
+    apps_with_full_path.map { |x| App.new(self, File.basename(x)) }
+  end
+
+
+
+
 
   def handle_select_app
     dirs = get_list_of_apps
@@ -101,6 +113,17 @@ class CommonIDB
     end
   end
 
+
+  def get_formatted_app_list
+    dirs = get_list_of_apps
+    apps = dirs.map { |x|
+      id = File.basename x
+      app_name = get_appname_from_id id
+      "#{id} (#{app_name})"
+    }
+  end
+
+
   private
 
   def app_info_plist
@@ -127,7 +150,7 @@ class CommonIDB
 
 
 
-
+#TODO rmeove
   def app_get_cachedb
     ensure_app_is_selected
 
@@ -161,6 +184,7 @@ class CommonIDB
     end
   end
 
+  #TODO remove
   def app_get_sqlite
     ensure_app_is_selected
 
@@ -198,7 +222,7 @@ class CommonIDB
     end
   end
 
-
+#TODO: delete
   def app_get_plists
     ensure_app_is_selected
 
@@ -267,15 +291,6 @@ class CommonIDB
     puts @plist.schemas
   end
 
-  def path_to_app_binary
-    puts "[*] Locating application binary..."
-    dirs = @ops.dir_glob("#{@app_dir}/","**")
-    dirs.select! { |f|
-      @ops.file_exists? "#{f}/#{@plist.binary_name}"
-    }
-
-    "#{dirs.first}/#{@plist.binary_name}"
-  end
 
 
   def app_download
@@ -291,29 +306,12 @@ class CommonIDB
 
 
   def app_list
-    dirs = get_list_of_apps
-    apps = dirs.map { |x|
-      id = File.basename x
-      app_name = get_appname_from_id id
-      "#{id} (#{app_name})"
-    }
 
     h = HighLine.new
-    puts h.list apps
+    puts h.list get_formatted_app_list
 
   end
 
-  # returns the name of the plist file for the current app
-  def get_plist_file_name d
-    plist_file = (@ops.dir_glob "#{d}/","*app/Info.plist").first
-
-    if not @ops.file_exists? plist_file
-      puts "[*] Info.plist not found."
-      return nil
-    end
-    puts "[*] Info.plist found at #{plist_file}"
-    return plist_file
-  end
 
 
 
