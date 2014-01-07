@@ -109,11 +109,11 @@ class Device < AbstractDevice
   end
 
   def openurl_installed?
-    $log.info "[*] Checking if openurl is installed..."
+    $log.info "Checking if openurl is installed..."
     if @ops.file_exists? "/usr/bin/openurl" or  @ops.file_exists? "/usr/bin/openURL"
       return true
     else
-      $log.warning "[*] open not found. Installing..."
+      $log.warn "open not found. Installing..."
       false
     end
   end
@@ -153,9 +153,12 @@ class Device < AbstractDevice
     @ops.execute "#{openurl_path} #{url}"
   end
 
-
   def ca_interface
     DeviceCAInterface.new self
+  end
+
+  def kill_by_name process_name
+    @ops.execute "killall -9 #{process_name}"
   end
 end
 
