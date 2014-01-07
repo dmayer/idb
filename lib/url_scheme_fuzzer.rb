@@ -56,8 +56,26 @@ class URLSchemeFuzzer
   def execute url
     $log.info "Fuzzing: #{url}"
     $device.open_url url
+    sleep 2
 
+    $log.info "Killing processes names #{$selected_app.binary_name}"
+    $device.kill_by_name $selected_app.binary_name
+
+    crashed?
   end
+
+  def crashed?
+    crash_report_folder = "/var/mobile/Library/Logs/CrashReporter"
+    crashes = $device.ops.dir_glob crash_report_folder, "*"
+    crashed = false
+    crashes.each { |x|
+      if x.include? $selected_app.binary_name
+        crashed = true
+      end
+    }
+    crashed
+  end
+
 
 
 end
