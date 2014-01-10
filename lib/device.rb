@@ -70,10 +70,40 @@ class Device < AbstractDevice
   end
 
 
+  def pbwatcher_path
+    if @ops.file_exists? "/var/root/pbwatcher"
+      "/var/root/pbwatcher"
+    else
+      nil
+    end
+  end
+
+  def pbwatcher_installed?
+    $log.info "checking if pbwatcher is installed..."
+    if pbwatcher_path.nil?
+      $log.warn "pbwatcher not found."
+      false
+    else
+      $log.info "pbwatcher found."
+      true
+    end
+  end
+
+
+
+
+  def dumpdecrypted_path
+    if @ops.file_exists? "/var/root/dumpdecrypted.dylib"
+      "/var/root/dumpdecrypted.dylib"
+    else
+      nil
+    end
+  end
+
   def dumpdecrypted_installed?
-    $log.info "Checking if dumpdecrypted is installed..."
-    if not @ops.file_exists? "/var/root/dumpdecrypted.dylib"
-      $log.info "dumpdecrypted not found. Installing..."
+    $log.info "checking if dumpdecrypted is installed..."
+    if dumpdecrypted_path.nil?
+      $log.warn "dumpdecrypted not found."
       false
     else
       $log.info "dumpdecrypted found."
@@ -81,13 +111,15 @@ class Device < AbstractDevice
     end
   end
 
+
+
   def open_installed?
-    puts "[*] Checking if open is installed..."
-    if not @ops.file_exists? "/usr/bin/open"
-      puts "[*] open not found."
+    $log.info "Checking if open is installed..."
+    if open_path.nil?
+      $log.warn "open not found."
       false
     else
-      puts "[*] open found."
+      $log.info "open found."
       true
     end
   end
@@ -95,8 +127,11 @@ class Device < AbstractDevice
   def open_path
     if @ops.file_exists? "/usr/bin/open"
       return "/usr/bin/open"
+    else
+      nil
     end
   end
+
 
   def openurl_path
     if @ops.file_exists? "/usr/bin/uiopen"
@@ -105,35 +140,96 @@ class Device < AbstractDevice
       return "/usr/bin/openurl"
     elsif  @ops.file_exists? "/usr/bin/openURL"
       return "/usr/bin/openURL"
+    else
+      nil
     end
   end
 
   def openurl_installed?
     $log.info "Checking if openurl is installed..."
-    if @ops.file_exists? "/usr/bin/openurl" or  @ops.file_exists? "/usr/bin/openURL"
-      return true
+    unless openurl_path.nil?
+      true
     else
-      $log.warn "open not found. Installing..."
+      $log.warn "openurl not found"
       false
     end
   end
 
+  def apt_get_path
+    if @ops.file_exists? "/usr/bin/apt-get"
+      return "/usr/bin/apt-get"
+    elsif @ops.file_exists? "/usr/bin/aptitude"
+      return "/usr/bin/aptitude"
+    else
+      nil
+    end
+
+  end
+
   def apt_get_installed?
-    puts "[*] Checking if apt-get is installed..."
-    if not @ops.file_exists? "/usr/bin/apt-get"
-      puts "[*] apt-get not found. Aboorting..."
+    $log.info "Checking if apt-get or aptitude is installed..."
+    if apt_get_path.nil?
+      $log.warn "apt-get or aptitude not found."
       false
     else
-      puts "[*] apt-get found."
+      $log.info "apt-get or aptitude found."
       true
+    end
+  end
+
+  def install_dumpdecrypted
+    unless File.exist? "utils/dumpdecrypted/dumpdecrypted.dylib"
+      puts "[**] Warning: dumpdecrypted not compiled."
+      puts "[**] Due to licensing issue we cannot ship the compiled library with this tool."
+      puts "[**] Attempting compilation (requires a valid iOS SDK installation)..."
+      compile_dumpdecrypted
+
+      if File.exist? "utils/dumpdecrypted/dumpdecrypted.dylib"
+        puts "[**] Compilation successful."
+        upload_dumpdecryted
+      else
+        puts "[**] Error: Compilation failed."
+        puts "[**] Change into the utils/dumpdecrypted directory, adjust the makefile, and compile."
+      end
+    else
+      upload_dumpdecryted
+    end
+  end
+
+  def upload_dumpdecryted
+    $log.info "Uploading dumpdecrypted library..."
+    @ops.upload("utils/dumpdecrypted/dumpdecrypted.dylib","/var/root/dumpdecrypted.dylib")
+    $log.info "'dumpdecrypted' installed successfully."
+  end
+
+
+  def install_pbwatcher
+    if File.exist? "utils/pbwatcher/pbwatcher"
+      upload_pbwatcher
+    else
+      $log.error "pbwatcher not found at 'utils/pbwatcher/pbwatcher'."
+      false
+    end
+  end
+
+
+  def upload_pbwatcher
+    begin
+      $log.info "Uploading pbwatcher..."
+      @ops.upload "utils/pbwatcher/pbwatcher", "/var/root/pbwatcher"
+      $log.info "'pbwatcher' installed successfully."
+      true
+    rescue
+      $log.error "Exception encountered when uploading pbwatcher"
+      false
     end
   end
 
   def install_open
     if apt_get_installed?
-      puts "[*] Installing open..."
-      @ops.execute("/usr/bin/apt-get update")
-      @ops.execute("/usr/bin/apt-get install com.conradkramer.open")
+      $log.info "Installing open..."
+      @ops.execute("#{apt_get_path} -y update")
+      @ops.execute("#{apt_get_path} -y install com.conradkramer.open")
       return true
     else
       return false
@@ -145,7 +241,6 @@ class Device < AbstractDevice
     Process.kill("INT", @port_forward_pid)
     $log.info "Stopping any SSH via USB forwarding"
     @usbmuxd.stop_all
-
   end
 
   def open_url url
@@ -159,6 +254,21 @@ class Device < AbstractDevice
 
   def kill_by_name process_name
     @ops.execute "killall -9 #{process_name}"
+  end
+
+  def device_id
+    $log.error "Not implemented"
+    nil
+  end
+
+  def configured?
+    if $settings['devices'].nil?
+      false
+    elsif $settings['devices'][device_id].nil?
+      false
+    else
+      true
+    end
   end
 end
 
