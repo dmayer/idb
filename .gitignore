@@ -1,3 +1,4 @@
 tmp/
 .idea
+.bundle
 config/settings.yml
