@@ -1,6 +1,11 @@
 class ConsoleLauncher
 
   def initialize
+    # if os x
+    #'/Applications/iTerm.app'
+#   '/Applications/Utilities/Terminal.app/ '
+    #if linux
+    # terminator, gnome-terminal, Konsole(?), xterm
     @term = "terminator"
   end
 
@@ -11,6 +16,7 @@ class ConsoleLauncher
     Process.spawn command
 
   end
+
 
 
 end

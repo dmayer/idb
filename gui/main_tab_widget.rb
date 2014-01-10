@@ -22,7 +22,7 @@ class MainTabWidget < Qt::TabWidget
     }
 
     @url_handler = URLHandlerWidget.new self
-    @url_handler.setEnabled(true)
+    @url_handler.setEnabled(false)
     @tabs[:url_handlers] = addTab(@url_handler, "URL Handlers")
     connect(SIGNAL('currentChanged(int)')) { |x|
 #      if isTabEnabled(@tabs[:url_handlers]) and
@@ -40,7 +40,7 @@ class MainTabWidget < Qt::TabWidget
     }
 
     @isnoop = SnoopItTabWidget.new self
-    @isnoop.setEnabled(true)
+    @isnoop.setEnabled(false)
     @tabs[:isnoop] = addTab(@isnoop, "Snoop-It")
 
     @log = LogWidget.new self
@@ -49,11 +49,11 @@ class MainTabWidget < Qt::TabWidget
 
 
     @cycript = CycriptConsoleWidget.new self
-    @cycript.setEnabled(true)
+    @cycript.setEnabled(false)
     @tabs[:cycript] = addTab(@cycript, "Cycript")
 
     @pasteboard = PasteboardMonitorWidget.new self
-    @pasteboard.setEnabled(true)
+    @pasteboard.setEnabled(false)
     @tabs[:pasteboard] = addTab(@pasteboard, "Pasteboard Monitor")
 
     disable_all
@@ -79,11 +79,25 @@ class MainTabWidget < Qt::TabWidget
     setTabEnabled(@tabs[:url_handlers], true)
   end
 
+  def enablePasteboard
+    @pasteboard.setEnabled(true)
+    setTabEnabled(@tabs[:pasteboard], true)
+  end
+
+  def enableDeviceFunctions
+    enableCycript
+    enableLog
+    enablePasteboard
+  end
+
   def disable_all
     setTabEnabled(@tabs[:local_storage], false)
     setTabEnabled(@tabs[:log], false)
     setTabEnabled(@tabs[:app_binary],false)
-#    setTabEnabled(@tabs[:url_handlers],false)
+    setTabEnabled(@tabs[:url_handlers],false)
+    setTabEnabled(@tabs[:pasteboard],false)
+    setTabEnabled(@tabs[:cycript],false)
+    setTabEnabled(@tabs[:isnoop],false)
   end
 
   def clear
