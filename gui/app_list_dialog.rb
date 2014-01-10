@@ -51,7 +51,7 @@ class AppListDialog < Qt::Dialog
       a = App.new uuid
 
       i = AppListWidgetItem.new @app_list, 0
-      i.setText (a.bundle_id + " => " + a.bundle_name)
+      i.setText (a.bundle_id.to_s + " => " + a.bundle_name.to_s)
       i.app = a
       @app_list.add_item i
       progress.setValue(progress.value+1);
