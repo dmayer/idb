@@ -67,7 +67,16 @@ class App
 
 
   def icon_path
-    icon_name = get_raw_plist_value('CFBundleIconFiles').first
+    icon_name = get_raw_plist_value('CFBundleIconFile')
+
+    unless icon_name 
+      # If there's no icon specified, grab the first one from the array.  
+      # If it's large, this could make the app nonresponsive.
+      icon_name = get_raw_plist_value('CFBundleIconFiles').first
+      # NOTE: This still fails to find the icon for some apps that store it in odd places, 
+      # Like Netflix' plist_data['CFBundleIcons~ipad']['CFBundlePrimaryIcon']['CFBundleIconFiles']
+    end
+
     app_dir = Shellwords.escape(@app_dir)
 
     unless (icon_name[-4,4] == ".png")
@@ -88,6 +97,7 @@ class App
 
   def get_icon_file
     path = icon_path
+
     unless path.nil?
       local_path = cache_file path
       new_local_path = "#{local_path}.png"
