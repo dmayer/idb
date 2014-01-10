@@ -13,7 +13,7 @@ class URLSchemeWidget < Qt::Widget
     }
 
     @list = Qt::ListWidget.new self
-    @list.connect(SIGNAL('itemDoubleClicked(QListWidgetItem*)')) { |item|
+    @list.connect(SIGNAL('itemClicked(QListWidgetItem*)')) { |item|
       @url_open_string.text = item.text + "://"
     }
 

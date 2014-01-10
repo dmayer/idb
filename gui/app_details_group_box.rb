@@ -83,8 +83,8 @@ class AppDetailsGroupBox < Qt::GroupBox
         $selected_app.launch
       else
         error = Qt::MessageBox.new self
-        error.setInformativeText("<p>Need to install additional software in order to launch app...</p>")
-        error.setIcon(Qt::MessageBox::Information)
+        error.setInformativeText("'open' not found on the device. Please visit the status dialog and install it.")
+        error.setIcon(Qt::MessageBox::Critical)
         error.setMinimumWidth(500)
         error.exec
         emit show_device_status()

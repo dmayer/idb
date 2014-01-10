@@ -27,4 +27,9 @@ class AppBinaryTabWidget < Qt::TabWidget
   def refresh
     @shared_libs.refresh
   end
+
+  def enableTabs
+    @shared_libs.setEnabled(true)
+    setTabEnabled(@tabs[:@shared_libs],true)
+  end
 end

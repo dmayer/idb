@@ -24,10 +24,17 @@ class PasteboardMonitorWidget < Qt::Widget
 
     @start = Qt::PushButton.new "Start"
     @start.connect(SIGNAL :released) {
-      @pb_config.setEnabled(false)
-      @start.setEnabled(false)
-      @stop.setEnabled(true)
-      launch_process
+      unless $device.pbwatcher_installed?
+        error = Qt::MessageBox.new
+        error.setInformativeText("pbwatcher not found on the device. Please visit the status dialog and install it.")
+        error.setIcon(Qt::MessageBox::Critical)
+        error.exec
+      else
+        @pb_config.setEnabled(false)
+        @start.setEnabled(false)
+        @stop.setEnabled(true)
+        launch_process
+      end
     }
 
 

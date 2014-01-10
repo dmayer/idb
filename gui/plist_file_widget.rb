@@ -15,13 +15,13 @@ class PlistFileWidget < Qt::Widget
     @list.connect(SIGNAL('itemDoubleClicked(QListWidgetItem*)')) { |item|
       $device.ops.open $selected_app.cache_file item.full_path
     }
-    @list.setContextMenuPolicy(Qt::CustomContextMenu);
-    @list.connect(SIGNAL('customContextMenuRequested(QPoint)')) { |item|
-      menu = Qt::Menu.new("Context menu", self)
-      menu.addAction(Qt::Action.new("Hello", self));
-      menu.exec(mapToGlobal(pos));
-
-    }
+#    @list.setContextMenuPolicy(Qt::CustomContextMenu);
+#    @list.connect(SIGNAL('customContextMenuRequested(QPoint)')) { |item|
+#      menu = Qt::Menu.new("Context menu", self)
+#      menu.addAction(Qt::Action.new("Hello", self));
+#      menu.exec(mapToGlobal(pos));
+#
+#    }
 
 
     # "Launch app"

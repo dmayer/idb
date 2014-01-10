@@ -155,17 +155,17 @@ class App
   end
 
   def find_plist_files
-    puts "[*] Looking for plist files..."
+    $log.info "Looking for plist files..."
     $device.ops.dir_glob(@app_dir, "**/*plist")
   end
 
   def find_sqlite_dbs
-    puts "[*] Looking for sqlite files..."
+    $log.info "Looking for sqlite files..."
     $device.ops.dir_glob(@app_dir, "**/*sqlite")
   end
 
   def find_cache_dbs
-    puts "[*] Looking for Cache.db files..."
+    $log.info "Looking for Cache.db files..."
     $device.ops.dir_glob(@app_dir, "**/Cache.db")
   end
 

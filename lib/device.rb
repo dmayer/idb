@@ -217,11 +217,12 @@ class Device < AbstractDevice
     begin
       $log.info "Uploading pbwatcher..."
       @ops.upload "utils/pbwatcher/pbwatcher", "/var/root/pbwatcher"
+      @ops.chmod "/var/root/pbwatcher", 0744
       $log.info "'pbwatcher' installed successfully."
-      true
-    rescue
+#      true
+#    rescue
       $log.error "Exception encountered when uploading pbwatcher"
-      false
+#      false
     end
   end
 

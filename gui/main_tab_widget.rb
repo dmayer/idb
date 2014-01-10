@@ -18,7 +18,7 @@ class MainTabWidget < Qt::TabWidget
     @local_storage.setEnabled(false)
     @tabs[:local_storage] = addTab(@local_storage, "Local Storage")
     @local_storage.connect(SIGNAL('currentChanged(int)')) { |x|
-     @local_storage.currentWidget.refresh
+     #@local_storage.currentWidget.refresh
     }
 
     @url_handler = URLHandlerWidget.new self
@@ -62,6 +62,12 @@ class MainTabWidget < Qt::TabWidget
   def enableLog
     @log.setEnabled(true)
     setTabEnabled(@tabs[:log], true)
+  end
+
+  def enableAppBinary
+    @app_binary.setEnabled(true)
+    setTabEnabled(@tabs[:app_binary], true)
+    @app_binary.enableTabs
   end
 
   def enableCycript
@@ -112,8 +118,7 @@ class MainTabWidget < Qt::TabWidget
   end
 
   def refresh_app_binary
-    @app_binary.refresh_current_tab
-    @app_binary.setEnabled(true)
+    enableAppBinary
   end
 
   def app_changed
