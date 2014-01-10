@@ -32,6 +32,10 @@ class SSHOperations
     @ssh.exec! command
   end
 
+  def chmod file, permissions
+    @sftp.setstat(file, :permissions => permissions)
+  end
+
   def download(remote_path, local_path = nil)
     begin
       if local_path.nil?
