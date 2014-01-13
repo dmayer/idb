@@ -154,6 +154,10 @@ class App
     end
   end
 
+  def sync_app_dir
+    `#{rsync} avc -e ssh TKTK #{} `
+  end
+
   def find_plist_files
     $log.info "Looking for plist files..."
     $device.ops.dir_glob(@app_dir, "**/*plist")
@@ -161,7 +165,7 @@ class App
 
   def find_sqlite_dbs
     $log.info "Looking for sqlite files..."
-    $device.ops.dir_glob(@app_dir, "**/*sqlite")
+    $device.ops.dir_glob(@app_dir, "**/*sql**")
   end
 
   def find_cache_dbs

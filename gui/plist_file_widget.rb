@@ -42,7 +42,8 @@ class PlistFileWidget < Qt::Widget
     plist_files = $selected_app.find_plist_files
     plist_files.each { |full_path|
       item = PathListWidgetItem.new
-      item.setText full_path.sub($selected_app.app_dir,'')
+      pc = $device.protection_class full_path
+      item.setText full_path.sub($selected_app.app_dir,'') + " => " + pc.strip
       item.full_path = full_path
       @list.addItem item
     }

@@ -61,6 +61,10 @@ class Device < AbstractDevice
     start_port_forwarding
   end
 
+  def protection_class file
+    @ops.execute "#{pcviewer_path} #{file}"
+  end
+
   def simulator?
     false
   end
@@ -69,6 +73,25 @@ class Device < AbstractDevice
     @ops.launch_app(open_path, app.bundle_id)
   end
 
+
+  def pcviewer_path
+    if @ops.file_exists? "/var/root/protectionclassviewer"
+      "/var/root/protectionclassviewer"
+    else
+      nil
+    end
+  end
+
+  def pcviewer_installed?
+    $log.info "checking if protectionclassviewer is installed..."
+    if pcviewer_path.nil?
+      $log.warn "protectionclassviewer not found."
+      false
+    else
+      $log.info "protectionclassviewer found."
+      true
+    end
+  end
 
   def pbwatcher_path
     if @ops.file_exists? "/var/root/pbwatcher"
@@ -202,6 +225,14 @@ class Device < AbstractDevice
     $log.info "'dumpdecrypted' installed successfully."
   end
 
+  def install_pcviewer
+    if File.exist? "utils/pcviewer/protectionclassviewer"
+      upload_pcviewer
+    else
+      $log.error "protectionclassviewer not found at 'utils/pcviewer/protectionclassviewer'."
+      false
+    end
+  end
 
   def install_pbwatcher
     if File.exist? "utils/pbwatcher/pbwatcher"
@@ -212,6 +243,18 @@ class Device < AbstractDevice
     end
   end
 
+  def upload_pcviewer
+    begin
+      $log.info "Uploading pcviewer..."
+      @ops.upload "utils/pcviewer/protectionclassviewer", "/var/root/protectionclassviewer"
+      @ops.chmod "/var/root/protectionclassviewer", 0744
+      $log.info "'pcviewer' installed successfully."
+#      true
+#    rescue
+      $log.error "Exception encountered when uploading pcviewer"
+#      false
+    end
+  end
 
   def upload_pbwatcher
     begin

@@ -9,8 +9,13 @@ class DeviceStatusDialog < Qt::Dialog
   end
 
 
+  def mark_pcviewer_installed
+    @pcviewer_label.text = @pcviewer_label.text + "<br>found: #{$device.pcviewer_path}"
+    @layout.addWidget installed_check_mark, 5, 1
+  end
+
   def mark_pbwatcher_installed
-    @pbwatcher_label.text = @pbwatcher_label.text + "<br>Found: #{$device.pbwatcher_path}"
+    @pbwatcher_label.text = @pbwatcher_label.text + "<br>found: #{$device.pbwatcher_path}"
     @layout.addWidget installed_check_mark, 4, 1
   end
 
@@ -46,7 +51,7 @@ class DeviceStatusDialog < Qt::Dialog
       reject()
     }
     #TODO: prevent closing
-    @layout.addWidget @close_button, 5, 2
+    @layout.addWidget @close_button, 6, 2
 
 
     #######################
@@ -155,6 +160,34 @@ class DeviceStatusDialog < Qt::Dialog
 
       @layout.addWidget @install_pbwatcher, 4, 1
     end
+
+
+    #######################
+    ### PCVIEWER
+    #######################
+
+
+    @pcviewer_label = Qt::Label.new "<b>pcviewer</b><br>(idb file protection class helper)"
+    @layout.addWidget @pcviewer_label, 5, 0
+
+    if $device.pcviewer_installed?
+      mark_pcviewer_installed
+    else
+      @install_pcviewer = Qt::PushButton.new "Install"
+      @install_pcviewer.connect(SIGNAL(:released)) {
+        $device.install_pcviewer
+        if $device.pcviewer_installed?
+          @install_pcviewer.hide
+          mark_pcviewer_installed
+        end
+      }
+
+
+      @layout.addWidget @install_pcviewer, 5, 1
+    end
+
+
+
 
 
     setFixedHeight(sizeHint().height());

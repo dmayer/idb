@@ -34,7 +34,8 @@ class CacheDbWidget < Qt::Widget
     cache_dbs = $selected_app.find_cache_dbs
     cache_dbs.each { |full_path|
       item = PathListWidgetItem.new
-      item.setText full_path.sub($selected_app.app_dir,'')
+      pc = $device.protection_class full_path
+      item.setText full_path.sub($selected_app.app_dir,'') + " => " + pc.strip
       item.full_path = full_path
       @list.addItem item
     }
