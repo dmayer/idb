@@ -56,9 +56,13 @@ class SSHOperations
   end
 
   def list_dir dir
-
     @sftp.dir.entries(dir).map {|x| x.name}
   end
+
+  def list_dir_full dir
+    @sftp.dir.entries(dir)
+  end
+
 
   def file_exists? path
     begin
@@ -79,7 +83,11 @@ class SSHOperations
   end
 
   def directory? path
-    @sftp.stat!(path).directory?
+    begin
+      @sftp.stat!(path).directory?
+    rescue
+      nil
+    end
   end
 
   def file? path

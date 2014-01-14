@@ -62,7 +62,7 @@ class Device < AbstractDevice
   end
 
   def protection_class file
-    @ops.execute "#{pcviewer_path} #{file}"
+    @ops.execute "#{pcviewer_path} '#{file}'"
   end
 
   def simulator?

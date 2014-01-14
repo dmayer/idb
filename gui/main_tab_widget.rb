@@ -5,6 +5,7 @@ require_relative 'log_widget'
 require_relative 'snoop_it_tab_widget'
 require_relative 'cycript_console_widget'
 require_relative 'pasteboard_monitor_widget'
+require_relative 'fs_viewer_tab_widget'
 require 'Qt'
 
 class MainTabWidget < Qt::TabWidget
@@ -38,6 +39,10 @@ class MainTabWidget < Qt::TabWidget
     @app_binary.connect(SIGNAL('currentChanged(int)')) { |x|
       @app_binary.currentWidget.refresh
     }
+
+    @fs_viewer = FsViewerTabWidget.new self
+    @fs_viewer.setEnabled(false)
+    @tabs[:fs_viewer] = addTab(@fs_viewer, "FS Viewer")
 
     @isnoop = SnoopItTabWidget.new self
     @isnoop.setEnabled(false)
@@ -90,6 +95,12 @@ class MainTabWidget < Qt::TabWidget
     setTabEnabled(@tabs[:pasteboard], true)
   end
 
+  def enableFSViewer
+    @fs_viewer.setEnabled(true)
+    setTabEnabled(@tabs[:fs_viewer], true)
+  end
+
+
   def enableDeviceFunctions
     enableCycript
     enableLog
@@ -104,6 +115,7 @@ class MainTabWidget < Qt::TabWidget
     setTabEnabled(@tabs[:pasteboard],false)
     setTabEnabled(@tabs[:cycript],false)
     setTabEnabled(@tabs[:isnoop],false)
+    setTabEnabled(@tabs[:fs_viewer],false)
   end
 
   def clear
@@ -127,6 +139,9 @@ class MainTabWidget < Qt::TabWidget
     enableURLHandlers
 #    refresh_current_tab
     @app_binary.refresh
+    enableFSViewer
+    @fs_viewer.set_start  $selected_app.app_dir
+
   end
 
 
