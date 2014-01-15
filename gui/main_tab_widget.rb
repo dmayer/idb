@@ -6,6 +6,7 @@ require_relative 'snoop_it_tab_widget'
 require_relative 'cycript_console_widget'
 require_relative 'pasteboard_monitor_widget'
 require_relative 'fs_viewer_tab_widget'
+require_relative 'key_chain_widget'
 require 'Qt'
 
 class MainTabWidget < Qt::TabWidget
@@ -17,7 +18,7 @@ class MainTabWidget < Qt::TabWidget
 
     @local_storage = LocalStorageTabWidget.new self
     @local_storage.setEnabled(false)
-    @tabs[:local_storage] = addTab(@local_storage, "Local Storage")
+    @tabs[:local_storage] = addTab(@local_storage, "Storage")
     @local_storage.connect(SIGNAL('currentChanged(int)')) { |x|
      #@local_storage.currentWidget.refresh
     }
@@ -35,14 +36,14 @@ class MainTabWidget < Qt::TabWidget
 
     @app_binary = AppBinaryTabWidget.new self
     @app_binary.setEnabled(false)
-    @tabs[:app_binary] = addTab(@app_binary, "App Binary")
+    @tabs[:app_binary] = addTab(@app_binary, "Binary")
     @app_binary.connect(SIGNAL('currentChanged(int)')) { |x|
       @app_binary.currentWidget.refresh
     }
 
     @fs_viewer = FsViewerTabWidget.new self
     @fs_viewer.setEnabled(false)
-    @tabs[:fs_viewer] = addTab(@fs_viewer, "FS Viewer")
+    @tabs[:fs_viewer] = addTab(@fs_viewer, "Filesystem")
 
     @isnoop = SnoopItTabWidget.new self
     @isnoop.setEnabled(false)
@@ -50,8 +51,11 @@ class MainTabWidget < Qt::TabWidget
 
     @log = LogWidget.new self
     @log.setEnabled(false)
-    @tabs[:log] = addTab(@log, "Log View")
+    @tabs[:log] = addTab(@log, "Log")
 
+    @keychain = KeyChainWidget.new self
+    @keychain.setEnabled(false)
+    @tabs[:keychain] = addTab(@keychain, "Keychain")
 
     @cycript = CycriptConsoleWidget.new self
     @cycript.setEnabled(false)
@@ -59,7 +63,7 @@ class MainTabWidget < Qt::TabWidget
 
     @pasteboard = PasteboardMonitorWidget.new self
     @pasteboard.setEnabled(false)
-    @tabs[:pasteboard] = addTab(@pasteboard, "Pasteboard Monitor")
+    @tabs[:pasteboard] = addTab(@pasteboard, "Pasteboard")
 
     disable_all
   end
@@ -100,11 +104,17 @@ class MainTabWidget < Qt::TabWidget
     setTabEnabled(@tabs[:fs_viewer], true)
   end
 
+  def enableKeychain
+    @keychain.setEnabled(true)
+    setTabEnabled(@tabs[:keychain], true)
+  end
+
 
   def enableDeviceFunctions
     enableCycript
     enableLog
     enablePasteboard
+    enableKeychain
   end
 
   def disable_all
@@ -116,6 +126,7 @@ class MainTabWidget < Qt::TabWidget
     setTabEnabled(@tabs[:cycript],false)
     setTabEnabled(@tabs[:isnoop],false)
     setTabEnabled(@tabs[:fs_viewer],false)
+    setTabEnabled(@tabs[:keychain],false)
   end
 
   def clear

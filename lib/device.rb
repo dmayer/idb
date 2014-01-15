@@ -74,6 +74,36 @@ class Device < AbstractDevice
   end
 
 
+  def dump_keychain
+    device_store_path = "/var/root/genp.plist"
+    local_path = "tmp/device/genp.plist"
+
+    $log.info "Dumping keychain..."
+    @ops.execute "#{keychain_dump_path}"
+    $log.info "Downloading dumped keychain..."
+    @ops.download device_store_path, local_path
+  end
+
+
+  def keychain_dump_path
+    if @ops.file_exists? "/var/root/keychain_dump"
+      "/var/root/keychain_dump"
+    else
+      nil
+    end
+  end
+
+  def keychain_dump_installed?
+    $log.info "checking if keychain_dump is installed..."
+    if pcviewer_path.nil?
+      $log.warn "keychain_dump not found."
+      false
+    else
+      $log.info "keychain_dump found."
+      true
+    end
+  end
+
   def pcviewer_path
     if @ops.file_exists? "/var/root/protectionclassviewer"
       "/var/root/protectionclassviewer"
@@ -225,6 +255,14 @@ class Device < AbstractDevice
     $log.info "'dumpdecrypted' installed successfully."
   end
 
+  def install_keychain_dump
+    if File.exist? "utils/keychain_dump/keychain_dump"
+      upload_keychain_dump
+    else
+      $log.error "keychain_dump not found at 'utils/keychain_dump/keychain_dump'."
+      false
+    end
+  end
   def install_pcviewer
     if File.exist? "utils/pcviewer/protectionclassviewer"
       upload_pcviewer
@@ -256,6 +294,18 @@ class Device < AbstractDevice
     end
   end
 
+  def upload_keychain_dump
+    begin
+      $log.info "Uploading keychain_dump..."
+      @ops.upload "utils/keychain_dump/keychain_dump", "/var/root/keychain_dump"
+      @ops.chmod "/var/root/keychain_dump", 0744
+      $log.info "'keychain_dump' installed successfully."
+#      true
+#    rescue
+      $log.error "Exception encountered when uploading keychain_dump"
+#      false
+    end
+  end
   def upload_pbwatcher
     begin
       $log.info "Uploading pbwatcher..."
