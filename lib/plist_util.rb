@@ -32,7 +32,7 @@ class PlistUtil
 
   private
   def parse_plist_file
-    puts '[*] Parsing plist file..'
+    $log.info 'Parsing plist file..'
 
     # Make sure plist file is in xml and not binary
     if RbConfig::CONFIG['host_os'] =~ /linux/
@@ -62,6 +62,8 @@ class PlistUtil
     @binary_name = @plist_data['CFBundleExecutable']
     @bundle_identifier =  @plist_data['CFBundleIdentifier']
   end
+
+
 
 
 end

@@ -13,7 +13,7 @@ class ScreenShotUtil
     if @sim
       #create snapshot dir!
       if not Dir.exist? @snapshot_path
-        Dir.mkdir @snapshot_path
+        Dir.mkdir_p @snapshot_path
       end
     end
     mark_time
@@ -32,11 +32,12 @@ class ScreenShotUtil
       if @ops.directory? full_snap_dir
 
         # walk through all files in snaphot dir
-        content = @ops.list_dir(full_snap_dir)
+        content = @ops.dir_glob(full_snap_dir,"**/*")
 
         # see if any is younger than mark.
         content.each { |f|
-          full_path = "#{full_snap_dir}/#{f}"
+#          full_path = "#{full_snap_dir}/#{f}"
+          full_path = f
           if @ops.file? full_path and @ops.mtime(full_path) > @time
             return full_path
           end

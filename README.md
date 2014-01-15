@@ -25,3 +25,14 @@ idb is a tool to simplify some common tasks for iOS pentesting and research. It 
 
 ## Documentation
 Comprehensive documentation can be found on the [wiki](//github.com/dmayer/idb/wiki).
+
+## Icon Attribution
+
+* Screenshot itcon from http://icons8.com/
+
+
+sudo apt-get install libimobiledevice-utils
+syslog only works after passcode has been entered.
+
+libplist-utils
+
