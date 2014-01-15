@@ -1,7 +1,7 @@
 require 'awesome_print'
 
 class OtoolWrapper
-  attr_accessor :load_commands, :shared_libraries, :pie
+  attr_accessor :load_commands, :shared_libraries, :pie, :arc, :canaries
 
   def initialize binary
     @otool_path = "/usr/bin/otool"
@@ -9,6 +9,7 @@ class OtoolWrapper
     parse_load_commands
     parse_shared_libraries
     parse_header
+    process_symbol_table
   end
 
 
@@ -18,6 +19,24 @@ class OtoolWrapper
     lines = @raw_shared_libraries_output.split("\n")
     @shared_libraries = lines[1,lines.size].map{ |x| x.strip} unless lines.nil?
   end
+
+  def process_symbol_table
+    symbols = `#{@otool_path} -I -v '#{@binary}'`
+    if symbols.include? "stack_chk_fail" or symbols.include? "stack_chk_guard"
+      @canaries = true
+    else
+      @canaries = false
+    end
+
+    if symbols.include? "_objc_release"
+      @arc = true
+    else
+      @arc = false
+    end
+  end
+
+
+
 
   def parse_header
     pie_flag = 0x00200000

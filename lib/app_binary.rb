@@ -19,6 +19,13 @@ class AppBinary
     @otool.pie
   end
 
+  def is_stack_protected?
+    @otool.canaries
+  end
+
+  def uses_arc?
+    @otool.arc
+  end
 
   def is_encrypted?
     encrypted = false

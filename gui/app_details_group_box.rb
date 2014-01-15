@@ -133,6 +133,8 @@ class AppBinaryGroupBox < Qt::GroupBox
       @vals['encryption_enabled'].setText($selected_app.binary.is_encrypted?.to_s)
       @vals['cryptid'].setText($selected_app.binary.get_cryptid.to_s)
       @vals['pie'].setText($selected_app.binary.is_pie?.to_s)
+      @vals['canaries'].setText($selected_app.binary.is_stack_protected?.to_s)
+      @vals['arc'].setText($selected_app.binary.uses_arc?.to_s)
       emit binary_analyzed()
     }
     @layout.addWidget @analyze_binary_button, 0, 0, 1, 2
@@ -144,6 +146,8 @@ class AppBinaryGroupBox < Qt::GroupBox
     addDetail 'encryption_enabled', 'Encryption?'
     addDetail 'cryptid', 'Cryptid'
     addDetail 'pie', 'PIE'
+    addDetail 'canaries', 'Stack Canaries'
+    addDetail 'arc', 'ARC'
 
   end
 
@@ -165,6 +169,8 @@ class AppBinaryGroupBox < Qt::GroupBox
     @vals['encryption_enabled'].setText("")
     @vals['cryptid'].setText("")
     @vals['pie'].setText("")
+    @vals['canaries'].setText("")
+    @vals['arc'].setText("")
   end
 
 
