@@ -3,7 +3,8 @@ require_relative 'app_binary'
 require_relative 'CgBI'
 
 class App
-  attr_accessor :uuid, :app_dir, :binary
+  attr_accessor :uuid, :app_dir, :binary, :cache_dir
+
 
   def initialize uuid
     @uuid = uuid
@@ -20,6 +21,10 @@ class App
       $log.info "Binary is encrypted. Decrypting for further analysis."
       decrypt_binary!
     end
+  end
+
+  def strings
+    data = `strings '#{@local_decrypted_binary}'`
   end
 
 
@@ -44,13 +49,13 @@ class App
 
     $log.info "Decrypted file found. Downloading..."
 
-    local_decrypted_binary = "#{cache_dir}/#{File.basename full_remote_path}.decrypted"
-    @binary.setDecryptedPath local_decrypted_binary
+    @local_decrypted_binary = "#{cache_dir}/#{File.basename full_remote_path}.decrypted"
+    @binary.setDecryptedPath @local_decrypted_binary
 
-    local_path = $device.ops.download decrypted_path, local_decrypted_binary
+    local_path = $device.ops.download decrypted_path, @local_decrypted_binary
 
-    $log.info "Decrypted binary downloaded to #{local_decrypted_binary}"
-    local_decrypted_binary
+    $log.info "Decrypted binary downloaded to #{@local_decrypted_binary}"
+    @local_decrypted_binary
 
   end
 

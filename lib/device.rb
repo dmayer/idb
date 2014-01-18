@@ -4,7 +4,7 @@ require_relative 'device_ca_interface'
 require_relative 'usb_muxd_wrapper'
 
 class Device < AbstractDevice
-  attr_accessor :usb_ssh_port, :mode
+  attr_accessor :usb_ssh_port, :mode, :tool_port
 
   def initialize username, password, hostname, port
     @apps_dir = '/private/var/mobile/Applications'
@@ -30,8 +30,12 @@ class Device < AbstractDevice
       @ops = SSHOperations.new username, password, 'localhost', proxy_port
 
       @usb_ssh_port = $settings['manual_ssh_port']
-      $log.debug "Opening port #{proxy_port} for manual SSH connection"
+      $log.debug "opening port #{proxy_port} for manual ssh connection"
       @usbmuxd.proxy @usb_ssh_port, $settings['ssh_port']
+
+      @tool_port = @usbmuxd.find_available_port
+      $log.debug "opening tool port #{@tool_port} for internal ssh connection"
+      @usbmuxd.proxy @tool_port, $settings['ssh_port']
 
     end
 
@@ -95,7 +99,7 @@ class Device < AbstractDevice
 
   def keychain_dump_installed?
     $log.info "checking if keychain_dump is installed..."
-    if pcviewer_path.nil?
+    if keychain_dump_path.nil?
       $log.warn "keychain_dump not found."
       false
     else

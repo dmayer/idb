@@ -19,6 +19,7 @@ class AppBinary
     @otool.pie
   end
 
+
   def is_stack_protected?
     @otool.canaries
   end

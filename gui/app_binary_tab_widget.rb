@@ -1,5 +1,5 @@
 require_relative 'shared_libraries_widget'
-
+require_relative 'binary_strings_widget'
 
 class AppBinaryTabWidget < Qt::TabWidget
 
@@ -11,6 +11,10 @@ class AppBinaryTabWidget < Qt::TabWidget
 
     @shared_libs = SharedLibrariesWidget.new self
     @tabs[:@shared_libs] = addTab(@shared_libs, "Shared Libraries")
+
+    @strings = BinaryStringsWidget.new self
+    @tabs[:strings] = addTab(@strings, "Strings")
+
   end
 
   def clear
@@ -21,11 +25,9 @@ class AppBinaryTabWidget < Qt::TabWidget
 
   def refresh_current_tab
     puts "Refreshing current tab in App binary tab"
-    currentWidget.refresh
   end
 
   def refresh
-    @shared_libs.refresh
   end
 
   def enableTabs
