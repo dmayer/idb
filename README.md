@@ -2,7 +2,8 @@
 
 gidb is a tool to simplify some common tasks for iOS pentesting and research. It is still a work in progress but already provides a bunch of (hopefully) useful commands. The goal was to provide all (or most) functionality for both, iDevices and the iOS simulator.  For this, a lot is abstracted internally to make it work transparently for both environments. Although recently the focus has been more on suporting devices.
 
-Below is a a link to the [getting started guide](//github.com/dmayer/idb/wiki/Getting-started). Bug reports, feature requests, and contributions are more than welcome!
+## Getting Started 
+Visit the [getting started guide](//github.com/dmayer/idb/wiki/Getting-started) on the wiki. Bug reports, feature requests, and contributions are more than welcome!
 
 ## Features
 
