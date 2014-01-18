@@ -8,36 +8,47 @@ class DeviceStatusDialog < Qt::Dialog
     installed_check_mark
   end
 
+  def mark_keychain_dump_installed
+    @keychain_dump_label.text = @keychain_dump_label.text + "<br>found: #{$device.keychain_dump_path}"
+    @layout.addWidget installed_check_mark, 6, 1
+    setFixedHeight(sizeHint().height());
+  end
 
   def mark_pcviewer_installed
     @pcviewer_label.text = @pcviewer_label.text + "<br>found: #{$device.pcviewer_path}"
     @layout.addWidget installed_check_mark, 5, 1
+    setFixedHeight(sizeHint().height());
   end
 
   def mark_pbwatcher_installed
     @pbwatcher_label.text = @pbwatcher_label.text + "<br>found: #{$device.pbwatcher_path}"
     @layout.addWidget installed_check_mark, 4, 1
+    setFixedHeight(sizeHint().height());
   end
 
   def mark_dumpdecrypted_installed
     @dumpdecrypted_label.text = @dumpdecrypted_label.text + "<br>Found: #{$device.dumpdecrypted_path}"
     @layout.addWidget installed_check_mark, 3, 1
+    setFixedHeight(sizeHint().height());
   end
 
 
   def mark_apt_get_installed
     @aptget_label.text = @aptget_label.text + "<br>Found: #{$device.apt_get_path}"
     @layout.addWidget installed_check_mark, 0, 1
+    setFixedHeight(sizeHint().height());
   end
 
   def mark_open_installed
     @open_label.text = @open_label.text + "<br>Found: #{$device.open_path}"
     @layout.addWidget installed_check_mark, 1, 1
+    setFixedHeight(sizeHint().height());
   end
 
   def mark_openurl_installed
     @openurl_label.text = @openurl_label.text +  "<br>Found: #{$device.openurl_path}"
     @layout.addWidget installed_check_mark, 2, 1
+    setFixedHeight(sizeHint().height());
   end
 
   def initialize *args
@@ -51,7 +62,7 @@ class DeviceStatusDialog < Qt::Dialog
       reject()
     }
     #TODO: prevent closing
-    @layout.addWidget @close_button, 6, 2
+    @layout.addWidget @close_button, 7, 2
 
 
     #######################
@@ -126,7 +137,7 @@ class DeviceStatusDialog < Qt::Dialog
     ### DUMPDECRYPTED
     #######################
 
-    @dumpdecrypted_label = Qt::Label.new "<b>dumpdecrypted</b><br>(Decrypt app binaries on the device)"
+    @dumpdecrypted_label = Qt::Label.new "<b>dumpdecrypted</b><br>(Decrypt app binaries on the device).<br> https://github.com/stefanesser/dumpdecrypted"
     @layout.addWidget @dumpdecrypted_label, 3, 0
 
     if $device.dumpdecrypted_installed?
@@ -185,6 +196,31 @@ class DeviceStatusDialog < Qt::Dialog
 
       @layout.addWidget @install_pcviewer, 5, 1
     end
+
+      #######################
+      ### KEYCHAIN_DUMPER
+      #######################
+
+
+      @keychain_dump_label = Qt::Label.new "<b>keychain_dump</b><br>(dumps the keychain into a plist file.<br>https://code.google.com/p/iphone-dataprotection/)"
+      @layout.addWidget @keychain_dump_label, 6, 0
+
+      if $device.keychain_dump_installed?
+        mark_keychain_dump_installed
+      else
+        @install_keychain_dump = Qt::PushButton.new "Install"
+        @install_keychain_dump.connect(SIGNAL(:released)) {
+          $device.install_keychain_dump
+          if $device.keychain_dump_installed?
+            @install_keychain_dump.hide
+            mark_keychain_dump_installed
+          end
+        }
+
+
+        @layout.addWidget @install_keychain_dump, 6, 1
+
+      end
 
 
 
