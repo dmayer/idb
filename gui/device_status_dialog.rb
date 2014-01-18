@@ -144,6 +144,19 @@ class DeviceStatusDialog < Qt::Dialog
       mark_dumpdecrypted_installed
     else
       @install_dumpdecrypted = Qt::PushButton.new "Install"
+      @install_dumpdecrypted.connect(SIGNAL(:released)) {
+        $device.install_dumpdecrypted
+        if $device.dumpdecrypted_installed?
+          @install_dumpdecrypted.hide
+          mark_dumpdecrypted_installed
+        else
+          error = Qt::MessageBox.new
+          error.setInformativeText("No compiled version of dumpdecrypted was found in utils/dumpdecrypted. It cannot be shipped with idb due to licensing issues. Compilation failed likely due to XCode 5 not shipping the right version of gcc anymore. Try manually copying dumpdecrypted.dylib into /var/root on the device.")
+          error.setIcon(Qt::MessageBox::Critical)
+          error.exec
+        end
+
+      }
       @layout.addWidget @install_dumpdecrypted, 3, 1
     end
 
