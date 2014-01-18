@@ -32,6 +32,7 @@ class AppDetailsGroupBox < Qt::GroupBox
         @vals['sdk_version'].setText($selected_app.sdk_version)
         @vals['minimum_os_version'].setText($selected_app.minimum_os_version)
         @launch_app.setEnabled(true)
+        @open_folder.setEnabled(true)
 
         begin
         icon_file = $selected_app.get_icon_file
@@ -93,6 +94,16 @@ class AppDetailsGroupBox < Qt::GroupBox
 
     @layout.addWidget @launch_app, @cur_row, 0, 1, 2
 
+    @cur_row+=1
+
+    @open_folder = Qt::PushButton.new "Open Local Temp Folder"
+    @open_folder.setEnabled(false)
+    @layout.addWidget @open_folder, @cur_row, 0, 1, 2
+
+    @open_folder.connect(SIGNAL :released) {
+      Launchy.open $selected_app.cache_dir
+
+    }
 
   end
 

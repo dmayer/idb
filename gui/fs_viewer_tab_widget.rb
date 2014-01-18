@@ -1,4 +1,7 @@
+require_relative '../lib/rsync_git_manager'
+
 class FsViewerTabWidget < Qt::TabWidget
+
   attr_accessor :start
 
   def initialize *args
@@ -9,7 +12,29 @@ class FsViewerTabWidget < Qt::TabWidget
     @layout = Qt::GridLayout.new
     setLayout @layout
 
-    @layout.addWidget @connect, 1,0
+    @rsync = Qt::PushButton.new "Rsync + Git"
+    @layout.addWidget @rsync, 0,0
+    @rsync.connect(SIGNAL :released) {
+      @manager.sync_new_revision
+
+    }
+
+    @open_folder = Qt::PushButton.new "Open Folder"
+    @layout.addWidget @open_folder, 0,1
+
+    @open_folder.connect(SIGNAL :released) {
+      Launchy.open @local_path
+
+    }
+
+    @open_gitk = Qt::PushButton.new "Open gitk"
+    @layout.addWidget @open_gitk, 0,2
+
+    @open_gitk.connect(SIGNAL :released) {
+      Process.spawn "(cd #{@local_path} && gitk)"
+    }
+
+
 
     @treeview = Qt::TreeWidget.new
     @treeview.connect(SIGNAL('itemExpanded(QTreeWidgetItem*)')) { |dir|
@@ -49,13 +74,9 @@ class FsViewerTabWidget < Qt::TabWidget
     @file_details_layout.addWidget @file_details_protection_label, 4, 0
     @file_details_layout.addWidget @file_details_protection, 4, 1
     @file_details_layout.addItem Qt::SpacerItem.new(0,1, Qt::SizePolicy::Expanding, Qt::SizePolicy::Fixed ), 0, 2
-    @layout.addWidget @treeview, 0, 0
-    @layout.addWidget @file_details, 1, 0, 1, 2
+    @layout.addWidget @file_details, 2, 0, 1, 3
+    @file_details.setSizePolicy(Qt::SizePolicy::Minimum, Qt::SizePolicy::Minimum)
 
-    @root_node = Qt::TreeWidgetItem.new
-    @root_node.setText(0, "app root")
-    @root_node.setChildIndicatorPolicy(Qt::TreeWidgetItem::ShowIndicator)
-    @treeview.addTopLevelItem @root_node
 
 
     @model = Qt::StandardItemModel.new
@@ -68,7 +89,15 @@ class FsViewerTabWidget < Qt::TabWidget
     @file_list.setSelectionModel(@selection_model)
     @file_list.setSelectionBehavior(Qt::AbstractItemView::SelectRows)
     @file_list.setEditTriggers(Qt::AbstractItemView::NoEditTriggers	)
-    @layout.addWidget @file_list, 0, 1
+    @file_list.setSizePolicy(Qt::SizePolicy::Expanding,Qt::SizePolicy::Expanding);
+
+    @splitter = Qt::Splitter.new
+    @splitter.addWidget @treeview
+    @splitter.addWidget @file_list
+    @splitter.setStretchFactor 1, 1.5
+    @splitter.setSizePolicy(Qt::SizePolicy::Expanding, Qt::SizePolicy::Expanding)
+    @layout.addWidget @splitter, 1, 0, 1, 3
+
 
 
     @file_list.connect(SIGNAL('doubleClicked(QModelIndex)')) {|x|
@@ -156,9 +185,16 @@ class FsViewerTabWidget < Qt::TabWidget
   end
 
   def set_start start
+    @treeview.clear
+    @root_node = Qt::TreeWidgetItem.new
+    @root_node.setText(0, "app root")
+    @root_node.setChildIndicatorPolicy(Qt::TreeWidgetItem::ShowIndicator)
+    @treeview.addTopLevelItem @root_node
     @start = start
     @selected_dir = start
     @root_node.setText(1, @start)
+    @local_path = "#{$selected_app.cache_dir}/idb_mirror.git"
+    @manager = RsyncGitManager.new start, @local_path
   end
 
 end

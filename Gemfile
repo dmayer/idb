@@ -15,11 +15,11 @@ gem 'sqlite3'
 gem 'coderay'
 gem 'qtbindings'
 gem 'awesome_print'
-gem 'ffi'
+gem 'ffi' # not really used atm.
 gem 'htmlentities'
 gem 'eventmachine'
 gem 'log4r'
-gem 'net-ssh-telnet'
+gem 'git'
 
 
 
