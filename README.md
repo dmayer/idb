@@ -5,7 +5,10 @@ gidb is a tool to simplify some common tasks for iOS pentesting and research. It
 ## Getting Started 
 Visit the [getting started guide](//github.com/dmayer/idb/wiki/Getting-started) on the wiki. Bug reports, feature requests, and contributions are more than welcome!
 
-## Features
+## Command-Line Version
+idb started out as a command line tool which is still accesible through the `cli` branch. Find the [getting started](//github.com/dmayer/idb/wiki/CLI-Version:-Getting-Started) guid and some more documentation in the wiki.
+
+## gidb Features
 
 * Simplified pentesting setup
     * Setup port forwarding 
