@@ -21,7 +21,7 @@ idb started out as a command line tool which is still accesible through the `cli
         * Download
         * List imported libraries
         * Check for encrypttion, ASLR, stack canaries
-        * Decrypt and download an app binary (requires [dumpdecrypted](//github.com/iSECPartners/ios-ssl-kill-switch))
+        * Decrypt and download an app binary (requires [dumpdecrypted](//github.com/stefanesser/dumpdecrypted))
      * Launch an app
      * View app details such as name, bundleid, and `Info.plist` file.
 * Inter-Process Communication
