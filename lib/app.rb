@@ -205,11 +205,23 @@ class App
   def parse_info_plist
     begin
       plist_file = cache_file(info_plist_path)
+    rescue Exception => ex
+      $log.error "Error getting plist file #{info_plist_path}."
+      $log.debug "Exception Details: #{ex.message}."
+      $log.debug "Backtrace: #{ex.backtrace.join("\n")}."
+      return
+    end
+
+    begin
       @info_plist = PlistUtil.new plist_file
       @info_plist.parse_info_plist
-    rescue
-      $log.error "Error getting plist file #{info_plist_path}"
+    rescue Exception => ex
+      $log.error "Error parsing plist file #{plist_file}."
+      $log.debug "Exception Details: #{ex.message}."
+      $log.debug "Backtrace: #{ex.backtrace.join("\n")}."
+      return
     end
+
   end
 
 
