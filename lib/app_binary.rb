@@ -30,6 +30,9 @@ class AppBinary
 
   def is_encrypted?
     encrypted = false
+    if @otool.load_commands.nil?
+      return "Error"
+    end
     @otool.load_commands.each {|key, val|
       if val['cmd'].strip == 'LC_ENCRYPTION_INFO' and val['cryptid'].strip == 1.to_s
         encrypted =  true
@@ -39,6 +42,9 @@ class AppBinary
   end
 
   def get_cryptid
+    if @otool.load_commands.nil?
+      return "Error"
+    end
     @otool.load_commands.each {|key, val|
       if val['cmd'] == 'LC_ENCRYPTION_INFO'
         return val['cryptid']

@@ -21,11 +21,15 @@ class SharedLibrariesWidget < Qt::Widget
     end
 
     def refresh
-      puts "Refreshing"
       @list.clear
       if not $selected_app.binary.nil?
-        puts "ENABLED"
         shared_lib = $selected_app.binary.get_shared_libraries
+        if shared_lib.nil?
+          item = Qt::ListWidgetItem.new
+          item.setText "Error: otool required"
+          @list.addItem item
+          return
+        end
         shared_lib.each { |lib|
           item = Qt::ListWidgetItem.new
           item.setText lib
@@ -33,7 +37,6 @@ class SharedLibrariesWidget < Qt::Widget
         }
         setEnabled(true)
       else
-        puts "DISABLED"
         setEnabled(false)
       end
 
