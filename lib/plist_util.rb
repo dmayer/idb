@@ -1,4 +1,4 @@
-require 'plist'
+require 'plist4r'
 require 'rbconfig'
 require 'nokogiri'
 require 'coderay'
@@ -41,7 +41,8 @@ class PlistUtil
       `#{@plutil.realpath} -convert xml1 "#{@plist_file}"`
     end
 
-    @plist_data = Plist::parse_xml(@plist_file)
+#    @plist_data = Plist::parse_xml(@plist_file)
+    @plist_data = Plist4r.open @plist_file
   end
 
   def extract_url_handlers

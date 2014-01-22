@@ -7,10 +7,15 @@ GEM
     eventmachine (1.0.3)
     ffi (1.9.0)
     git (1.2.6)
+    haml (4.0.5)
+      tilt
     highline (1.6.18)
     htmlentities (4.3.1)
     launchy (2.3.0)
       addressable (~> 2.3)
+    libxml-ruby (2.7.0)
+    libxml4r (0.2.6)
+      libxml-ruby (>= 1.1.3)
     log4r (1.1.10)
     mini_portile (0.5.0)
     net-sftp (2.1.2)
@@ -18,11 +23,15 @@ GEM
     net-ssh (2.6.7)
     nokogiri (1.6.0)
       mini_portile (~> 0.5.0)
-    plist (3.1.0)
+    plist4r (1.2.2)
+      haml
+      libxml-ruby
+      libxml4r
     qtbindings (4.8.3.0)
     rbkb (0.6.12)
       eventmachine (>= 0.12.8)
     sqlite3 (1.3.8)
+    tilt (2.0.0)
     trollop (2.0)
 
 PLATFORMS
@@ -41,7 +50,7 @@ DEPENDENCIES
   net-sftp
   net-ssh
   nokogiri
-  plist
+  plist4r
   qtbindings
   rbkb
   sqlite3
