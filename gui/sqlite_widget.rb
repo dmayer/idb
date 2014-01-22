@@ -12,13 +12,18 @@ class SqliteWidget  < Qt::Widget
 
     @list = Qt::ListWidget.new self
     @list.connect(SIGNAL('itemDoubleClicked(QListWidgetItem*)')) { |item|
+      if RbConfig::CONFIG['host_os'] =~ /linux/
+        Process.spawn "'#{$settings['sqlite_editor']}' '#{Dir.getwd}/#{$selected_app.cache_file item.full_path}'"
+      else
+        Process.spawn "open -a '#{$settings['sqlite_editor']}' '#{Dir.getwd}/#{$selected_app.cache_file item.full_path}'"
+      end
+
       x = ConsoleLauncher.new
       #TODO: find sqlite binary
       #http://www.ruby-doc.org/stdlib-2.0.0/libdoc/mkmf/rdoc/MakeMakefile.html#method-i-find_executable
       #x.run "/usr/bin/sqlite3 #{Dir.getwd}/#{$selected_app.cache_file item.full_path}"
 
 
-      Process.spawn "open -a '#{$settings['sqlite_editor']}' '#{Dir.getwd}/#{$selected_app.cache_file item.full_path}'"
 
     }
    # "Launch app"
