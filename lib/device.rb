@@ -15,6 +15,16 @@ class Device < AbstractDevice
 
     @app = nil
 
+    @device_app_paths = Hash.new
+    @device_app_paths[:rsync] = [ "/usr/bin/rsync" ]
+    @device_app_paths[:open] = ["/usr/bin/open"]
+    @device_app_paths[:openurl] = ["/usr/bin/uiopen", "/usr/bin/openurl",  "/usr/bin/openURL"]
+    @device_app_paths[:aptget] = ["/usr/bin/apt-get",  "/usr/bin/aptitude"]
+    @device_app_paths[:keychaindump] = [ "/var/root/keychain_dump"]
+    @device_app_paths[:pcviewer] = ["/var/root/protectionclassviewer"]
+    @device_app_paths[:pbwatcher] = ["/var/root/pbwatcher"]
+    @device_app_paths[:dumpdecrypted] = ["/var/root/dumpdecrypted.dylib"]
+
     if $settings['device_connection_mode'] == "ssh"
       $log.debug "Connecting via SSH"
       @mode = 'ssh'
@@ -89,150 +99,29 @@ class Device < AbstractDevice
   end
 
 
-  def keychain_dump_path
-    if @ops.file_exists? "/var/root/keychain_dump"
-      "/var/root/keychain_dump"
-    else
-      nil
-    end
-  end
 
-  def keychain_dump_installed?
-    $log.info "checking if keychain_dump is installed..."
-    if keychain_dump_path.nil?
-      $log.warn "keychain_dump not found."
+
+  def is_installed? tool
+    $log.info "Checking if #{tool} is installed..."
+    if path_for(tool).nil?
+      $log.warn "#{tool} not found."
       false
     else
-      $log.info "keychain_dump found."
+      $log.info "#{tool} found at #{path_for(tool)}."
       true
     end
   end
 
-  def pcviewer_path
-    if @ops.file_exists? "/var/root/protectionclassviewer"
-      "/var/root/protectionclassviewer"
-    else
-      nil
-    end
-  end
-
-  def pcviewer_installed?
-    $log.info "checking if protectionclassviewer is installed..."
-    if pcviewer_path.nil?
-      $log.warn "protectionclassviewer not found."
-      false
-    else
-      $log.info "protectionclassviewer found."
-      true
-    end
-  end
-
-  def pbwatcher_path
-    if @ops.file_exists? "/var/root/pbwatcher"
-      "/var/root/pbwatcher"
-    else
-      nil
-    end
-  end
-
-  def pbwatcher_installed?
-    $log.info "checking if pbwatcher is installed..."
-    if pbwatcher_path.nil?
-      $log.warn "pbwatcher not found."
-      false
-    else
-      $log.info "pbwatcher found."
-      true
-    end
+  def path_for tool
+    @device_app_paths[tool].each { |x|
+      if @ops.file_exists? x
+        return x
+      end
+    }
+    return nil
   end
 
 
-
-
-  def dumpdecrypted_path
-    if @ops.file_exists? "/var/root/dumpdecrypted.dylib"
-      "/var/root/dumpdecrypted.dylib"
-    else
-      nil
-    end
-  end
-
-  def dumpdecrypted_installed?
-    $log.info "checking if dumpdecrypted is installed..."
-    if dumpdecrypted_path.nil?
-      $log.warn "dumpdecrypted not found."
-      false
-    else
-      $log.info "dumpdecrypted found."
-      true
-    end
-  end
-
-
-
-  def open_installed?
-    $log.info "Checking if open is installed..."
-    if open_path.nil?
-      $log.warn "open not found."
-      false
-    else
-      $log.info "open found."
-      true
-    end
-  end
-
-  def open_path
-    if @ops.file_exists? "/usr/bin/open"
-      return "/usr/bin/open"
-    else
-      nil
-    end
-  end
-
-
-  def openurl_path
-    if @ops.file_exists? "/usr/bin/uiopen"
-      return "/usr/bin/uiopen"
-    elsif @ops.file_exists? "/usr/bin/openurl"
-      return "/usr/bin/openurl"
-    elsif  @ops.file_exists? "/usr/bin/openURL"
-      return "/usr/bin/openURL"
-    else
-      nil
-    end
-  end
-
-  def openurl_installed?
-    $log.info "Checking if openurl is installed..."
-    unless openurl_path.nil?
-      true
-    else
-      $log.warn "openurl not found"
-      false
-    end
-  end
-
-  def apt_get_path
-    if @ops.file_exists? "/usr/bin/apt-get"
-      return "/usr/bin/apt-get"
-    elsif @ops.file_exists? "/usr/bin/aptitude"
-      return "/usr/bin/aptitude"
-    else
-      nil
-    end
-
-  end
-
-  def apt_get_installed?
-    $log.info "Checking if apt-get or aptitude is installed..."
-    if apt_get_path.nil?
-      $log.warn "apt-get or aptitude not found."
-      false
-    else
-      $log.info "apt-get or aptitude found."
-      true
-    end
-  end
 
   def install_dumpdecrypted
     unless File.exist? "utils/dumpdecrypted/dumpdecrypted.dylib"
@@ -365,16 +254,26 @@ class Device < AbstractDevice
     end
   end
 
-  def install_open
+  def install_from_cydia package
     if apt_get_installed?
-      $log.info "Installing open..."
+      $log.info "Installing #{package}..."
       @ops.execute("#{apt_get_path} -y update")
-      @ops.execute("#{apt_get_path} -y install com.conradkramer.open")
+      @ops.execute("#{apt_get_path} -y install #{package}")
       return true
     else
+      $log.error "apt-get or aptitude not found on the device"
       return false
     end
   end
+
+  def install_open
+    install_from_cydia "com.conradkramer.open"
+  end
+
+  def install_rsync
+    install_from_cydia "rsync"
+  end
+
 
   def close
     $log.info "Terminating port forwarding helper..."
@@ -410,5 +309,79 @@ class Device < AbstractDevice
       true
     end
   end
+
+
+
+
+  def keychain_dump_installed?
+    is_installed? :keychaindump
+  end
+
+  def pcviewer_installed?
+    is_installed? :pcviewer
+  end
+
+  def pbwatcher_installed?
+    is_installed? :pbwatcher
+  end
+
+  def dumpdecrypted_installed?
+    is_installed? :dumpdecrypted
+  end
+
+  def rsync_installed?
+    is_installed? :rsync
+  end
+
+  def open_installed?
+    is_installed? :open
+  end
+
+  def openurl_installed?
+    is_installed? :openurl
+  end
+
+  def apt_get_installed?
+    is_installed? :aptget
+  end
+
+  def keychain_dump_path
+    path_for :keychaindump
+  end
+
+
+  def pcviewer_path
+    path_for  :pcviewer
+  end
+
+
+  def pbwatcher_path
+    path_for :pbwatcher
+  end
+
+
+  def dumpdecrypted_path
+    path_for :dumpdecrypted
+  end
+
+  def rsync_path
+    path_for :rsync
+  end
+
+
+  def open_path
+    path_for :open
+  end
+
+
+  def openurl_path
+    path_for :openurl
+  end
+
+
+  def apt_get_path
+    path_for :aptget
+  end
+
 end
 

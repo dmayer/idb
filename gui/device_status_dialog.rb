@@ -8,6 +8,12 @@ class DeviceStatusDialog < Qt::Dialog
     installed_check_mark
   end
 
+  def mark_rsync_installed
+    @rsync_label.text = @rsync_label.text + "<br>found: #{$device.rsync_path}"
+    @layout.addWidget installed_check_mark, 7, 1
+    setFixedHeight(sizeHint().height());
+  end
+
   def mark_keychain_dump_installed
     @keychain_dump_label.text = @keychain_dump_label.text + "<br>found: #{$device.keychain_dump_path}"
     @layout.addWidget installed_check_mark, 6, 1
@@ -62,7 +68,7 @@ class DeviceStatusDialog < Qt::Dialog
       reject()
     }
     #TODO: prevent closing
-    @layout.addWidget @close_button, 7, 2
+    @layout.addWidget @close_button, 8, 2
 
 
     #######################
@@ -236,6 +242,30 @@ class DeviceStatusDialog < Qt::Dialog
       end
 
 
+    #######################
+    ### rsync
+    #######################
+
+
+    @rsync_label = Qt::Label.new "<b>rsync</b><br>(folder synchronization)"
+    @layout.addWidget @rsync_label, 7, 0
+
+    if $device.rsync_installed?
+      mark_rsync_installed
+    else
+      @install_rsync = Qt::PushButton.new "Install"
+      @install_rsync.connect(SIGNAL(:released)) {
+        $device.install_rsync
+        if $device.rsync_installed?
+          @install_rsync.hide
+          mark_rsync_installed
+        end
+      }
+
+
+      @layout.addWidget @install_rsync, 7, 1
+
+    end
 
 
 
