@@ -1,5 +1,5 @@
 require 'nokogiri'
-require 'plist'
+require 'plist4r'
 require 'awesome_print'
 
 class KeychainPlistParser
@@ -7,7 +7,7 @@ class KeychainPlistParser
 
   def initialize plist_path
     $log.info 'Parsing keychain plist file..'
-    @entries = Plist::parse_xml(plist_path)
+    @entries = Plist4r.open(plist_path)["Array"]
   end
 
 
