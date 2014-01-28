@@ -28,6 +28,9 @@ class LocalOperations
     Dir.entries path
   end
 
+  def list_dir_full path
+    Dir.entries path
+  end
 
   def dir_glob path, pattern
     full_path = "#{path}/#{pattern}"
@@ -47,6 +50,7 @@ class LocalOperations
   end
 
   def launch_app command, app
+    $log.info "Executing #{command} #{app}"
     self.execute_fork("#{command} \"#{app}\"")
   end
 

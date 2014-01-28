@@ -13,6 +13,15 @@ class Simulator < AbstractDevice
 
   end
 
+  def open_installed?
+    true
+  end
+
+  def app_launch app
+    cmd = '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Applications/iPhone\ Simulator.app/Contents/MacOS/iPhone\ Simulator -SimulateApplication '
+    $log.info "Launching app..."
+    @ops.launch_app cmd, app.binary_path
+  end
 
 
   def self.get_simulators
