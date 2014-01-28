@@ -90,7 +90,9 @@ class Device < AbstractDevice
 
   def dump_keychain
     device_store_path = "/var/root/genp.plist"
-    local_path = "tmp/device/genp.plist"
+    local_dir = "tmp/device/"
+    local_path = "#{local_dir}/genp.plist"
+    FileUtils.mkdir_p local_dir unless Dir.exist? local_dir
 
     $log.info "Dumping keychain..."
     @ops.execute "#{keychain_dump_path}"
