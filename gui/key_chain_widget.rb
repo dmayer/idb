@@ -20,7 +20,7 @@ class KeyChainWidget < Qt::TableWidget
 
         text << "\n\nV_DATA\n"
         text << "=======================\n"
-        text << @keychain.entries[row]["v_Data"].string unless @keychain.entries[row]["v_Data"].nil?
+        text << @keychain.entries[row]["v_Data"].to_s
         @details.clear
         @details.appendPlainText text
 
