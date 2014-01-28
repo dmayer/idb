@@ -48,6 +48,7 @@ class MainTabWidget < Qt::TabWidget
     @isnoop = SnoopItTabWidget.new self
     @isnoop.setEnabled(false)
     @tabs[:isnoop] = addTab(@isnoop, "Snoop-It")
+    setTabToolTip(@tabs[:isnoop],"The performance of the snoop-it integration is not good enough to enable the tab yet.  If people would find it useful, let me know and I'll put time into it.")
 
     @log = LogWidget.new self
     @log.setEnabled(false)
@@ -60,6 +61,7 @@ class MainTabWidget < Qt::TabWidget
     @cycript = CycriptConsoleWidget.new self
     @cycript.setEnabled(false)
     @tabs[:cycript] = addTab(@cycript, "Cycript")
+    setTabToolTip(@tabs[:cycript],"Cycript needs proper terminal emulation. At the moment this tab is not very useful and disabled.")
 
     @pasteboard = PasteboardMonitorWidget.new self
     @pasteboard.setEnabled(false)
@@ -80,8 +82,8 @@ class MainTabWidget < Qt::TabWidget
   end
 
   def enableCycript
-    @cycript.setEnabled(true)
-    setTabEnabled(@tabs[:cycript], true)
+#    @cycript.setEnabled(true)
+#    setTabEnabled(@tabs[:cycript], true)
   end
 
   def enableLocalStorage
