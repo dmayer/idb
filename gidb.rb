@@ -34,6 +34,13 @@ class GIDB < Qt::MainWindow
 
       $log.outputters = [ outputter ]
 
+      if RUBY_VERSION.start_with? "2.0"
+        error = Qt::MessageBox.new
+        error.setInformativeText("You are using ruby 2.0 which does not work well with QT bindings: custom signals don't work. It is very likely that idb will not function as intended. Consider using ruby 1.9 or 2.1 instead.")
+        error.setIcon(Qt::MessageBox::Critical)
+        error.exec
+      end
+
 
 
       # enable threading. See https://github.com/ryanmelt/qtbindings/issues/63
