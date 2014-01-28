@@ -45,7 +45,7 @@ class PlistFileWidget < Qt::Widget
       if $device.simulator?
         item.setText full_path.sub($selected_app.app_dir,'')
       else
-        pc = $device.protection_class full_path unless
+        pc = $device.protection_class full_path
         item.setText full_path.sub($selected_app.app_dir,'') + " => " + pc.strip
       end
       item.full_path = full_path
