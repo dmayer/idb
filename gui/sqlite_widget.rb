@@ -45,8 +45,13 @@ class SqliteWidget  < Qt::Widget
     sqlite_dbs = $selected_app.find_sqlite_dbs
     sqlite_dbs.each { |full_path|
       item = PathListWidgetItem.new
-      pc = $device.protection_class full_path
-      item.setText full_path.sub($selected_app.app_dir,'') + " => " + pc.strip
+      if $device.simulator?
+        item.setText full_path.sub($selected_app.app_dir,'')
+      else
+        pc = $device.protection_class full_path
+        item.setText full_path.sub($selected_app.app_dir,'') + " => " + pc.strip
+      end
+
       item.full_path = full_path
       @list.addItem item
     }
