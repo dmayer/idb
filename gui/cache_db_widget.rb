@@ -13,7 +13,18 @@ class CacheDbWidget < Qt::Widget
 #      x = ConsoleLauncher.new
       #TODO: find sqlite binary
       #x.run "/usr/bin/sqlite3 #{Dir.getwd}/#{$selected_app.cache_file item.full_path}"
-        Process.spawn "open -a '#{$settings['sqlite_editor']}' '#{Dir.getwd}/#{$selected_app.cache_file item.full_path}'"
+
+      cache_name = $selected_app.cache_file item.full_path
+      if cache_name.nil?
+        $log.error "File #{item.full_path} could not be downloaded. Either the file does not exist (e.g., dead symlink) or there is a permission problem."
+      else
+        if RbConfig::CONFIG['host_os'] =~ /linux/
+          Process.spawn "'#{$settings['sqlite_editor']}' '#{Dir.getwd}/#{cache_name}'"
+        else
+          Process.spawn "open -a '#{$settings['sqlite_editor']}' '#{Dir.getwd}/#{cache_name}'"
+        end
+      end
+
     }
    # "Launch app"
 

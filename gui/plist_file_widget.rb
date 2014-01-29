@@ -13,7 +13,12 @@ class PlistFileWidget < Qt::Widget
 
     @list = Qt::ListWidget.new self
     @list.connect(SIGNAL('itemDoubleClicked(QListWidgetItem*)')) { |item|
-      $device.ops.open $selected_app.cache_file item.full_path
+      cache_name =  $selected_app.cache_file item.full_path
+      if cache_name.nil?
+        $log.error "File #{item.full_path} could not be downloaded. Either the file does not exist (e.g., dead symlink) or there is a permission problem."
+      else
+        $device.ops.open cache_name
+      end
     }
 #    @list.setContextMenuPolicy(Qt::CustomContextMenu);
 #    @list.connect(SIGNAL('customContextMenuRequested(QPoint)')) { |item|

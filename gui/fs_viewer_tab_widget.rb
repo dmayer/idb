@@ -101,7 +101,12 @@ class FsViewerTabWidget < Qt::TabWidget
 
 
     @file_list.connect(SIGNAL('doubleClicked(QModelIndex)')) {|x|
-      $device.ops.open $selected_app.cache_file  "#{@selected_dir}/#{@model.item(x.row,0).text}"
+      cache_name =  $selected_app.cache_file  "#{@selected_dir}/#{@model.item(x.row,0).text}"
+      if cache_name.nil?
+        $log.error "File #{@selected_dir}/#{@model.item(x.row,0).text} could not be downloaded. Either the file does not exist (e.g., dead symlink) or there is a permission problem."
+      else
+        $device.ops.open cache_name
+      end
     }
 
     @selection_model.connect(SIGNAL('selectionChanged(QItemSelection,QItemSelection)')) {|x,y|
