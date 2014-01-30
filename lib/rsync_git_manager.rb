@@ -33,7 +33,16 @@ class RsyncGitManager
     rescue
       $log.error "Reset of repo failed. If this is the first time you run rsync+git for this app this may be okay."
     end
-    cmd = "rsync -avz -e 'ssh -oStrictHostKeyChecking=no  -p #{$device.tool_port}'  root@localhost:#{Shellwords.escape(@remote_path)}/ #{Shellwords.escape(@local_path)}/"
+
+
+
+    if $settings['device_connection_mode'] == "ssh"
+      cmd = "rsync -avz -e 'ssh -oStrictHostKeyChecking=no  -p #{$settings.ssh_port}'  #{$settings.ssh_username}@#{$settings.ssh_host}:#{Shellwords.escape(@remote_path)}/ #{Shellwords.escape(@local_path)}/"
+    else
+      cmd = "rsync -avz -e 'ssh -oStrictHostKeyChecking=no  -p #{$device.tool_port}'  root@localhost:#{Shellwords.escape(@remote_path)}/ #{Shellwords.escape(@local_path)}/"
+    end
+
+
     $log.info "Executing rsync command #{cmd}"
     begin
       PTY.spawn(cmd) { |rsync_out, rsync_in, pid |
