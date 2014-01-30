@@ -7,39 +7,64 @@ class RsyncGitManager
     @remote_path = remote_path
     @local_path = local_path
     FileUtils.mkdir_p @local_path unless Dir.exist? @local_path
+
     begin
       @g = Git.open(local_path, :log => $log)
     rescue
+      $log.debug "Repository could not be opened. This is likely the first clone. Creating empty repo."
       Git.init(local_path)
       @g = Git.open(local_path, :log => $log)
+      FileUtils.touch "#{local_path}/idb_dummy.placeholder"
+      @g.add(:all=>true)
+      $log.debug "Committing placeholder to initialize the repo."
+      begin
+        @g.commit_all("Initial commit. Initializing the repo.")
+      rescue
+        $log.error "Initial commit failed."
+      end
+
     end
   end
 
   def sync_new_revision
     $log.info "Hard resetting work dir #{@local_path}..."
-    @g.reset_hard
+    begin
+      @g.reset_hard
+    rescue
+      $log.error "Reset of repo failed. If this is the first time you run rsync+git for this app this may be okay."
+    end
     cmd = "rsync -avz -e 'ssh -oStrictHostKeyChecking=no  -p #{$device.tool_port}'  root@localhost:#{Shellwords.escape(@remote_path)}/ #{Shellwords.escape(@local_path)}/"
     $log.info "Executing rsync command #{cmd}"
-    PTY.spawn(cmd) { |rsync_out, rsync_in, pid |
-      rsync_out.expect(/assword: /) { |x|
-        begin
-          $log.info "Supplying password for rsync if required..."
-          rsync_in.printf("#{$settings.ssh_password}\n")
-        rescue
-          $log.info "No password required for rsync...."
-        end
-      }
-    }
-
-    @g.add(:all=>true)
     begin
-      @g.commit_all("Snapshot from #{Time.now.to_s}")
+      PTY.spawn(cmd) { |rsync_out, rsync_in, pid |
+        STDOUT.flush
+        rsync_out.sync = true
+        rsync_in.sync = true
+        $expect_verbose = true
+
+        rsync_out.expect(/assword: /) { |x|
+          begin
+            $log.info "Supplying password for rsync if required..."
+            rsync_in.printf("#{$settings.ssh_password}\n")
+          rescue
+            $log.info "No password required for rsync...."
+          end
+        }
+
+        rsync_out.each { |x|
+          $log.info x
+        }
+        PTY.check
+      }
     rescue
+      $log.info "Rsync Done. committing to git."
+      @g.add(:all=>true)
+      begin
+        @g.commit_all("Snapshot from #{Time.now.to_s}")
+      rescue
+      end
     end
 
-
   end
-
-
 
 end
