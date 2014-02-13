@@ -14,6 +14,12 @@ class DeviceStatusDialog < Qt::Dialog
     setFixedHeight(sizeHint().height());
   end
 
+  def mark_clutch_installed
+    @clutch_label.text = @clutch_label.text + "<br>found: #{$device.clutch_path}"
+    @layout.addWidget installed_check_mark, 8, 1
+    setFixedHeight(sizeHint().height());
+  end
+
   def mark_keychain_dump_installed
     @keychain_dump_label.text = @keychain_dump_label.text + "<br>found: #{$device.keychain_dump_path}"
     @layout.addWidget installed_check_mark, 6, 1
@@ -68,7 +74,7 @@ class DeviceStatusDialog < Qt::Dialog
       reject()
     }
     #TODO: prevent closing
-    @layout.addWidget @close_button, 8, 2
+    @layout.addWidget @close_button, 9, 2
 
 
     #######################
@@ -143,7 +149,7 @@ class DeviceStatusDialog < Qt::Dialog
     ### DUMPDECRYPTED
     #######################
 
-    @dumpdecrypted_label = Qt::Label.new "<b>dumpdecrypted</b><br>(Decrypt app binaries on the device).<br> https://github.com/stefanesser/dumpdecrypted"
+    @dumpdecrypted_label = Qt::Label.new "<b>dumpdecrypted</b><br>(Decrypt app binaries on the device).<br>Developed and maintained by Stefan Esser https://github.com/stefanesser/dumpdecrypted"
     @layout.addWidget @dumpdecrypted_label, 3, 0
 
     if $device.dumpdecrypted_installed?
@@ -268,6 +274,31 @@ class DeviceStatusDialog < Qt::Dialog
     end
 
 
+    #######################
+    ### clutch
+    #######################
+
+
+#    @clutch_label = Qt::Label.new "<b>Clutch (not used by idb)</b><br>(App cracking tool that also performs decryption. Installation from cydia.iphonecake.com.)"
+#    @layout.addWidget @clutch_label, 8, 0
+#
+#    if $device.clutch_installed?
+#      mark_clutch_installed
+#    else
+#      @install_clutch = Qt::PushButton.new "Install"
+#      @install_clutch.connect(SIGNAL(:released)) {
+#        $device.setup_clutch_source
+#        $device.install_clutch
+#        if $device.clutch_installed?
+#          @install_clutch.hide
+#          mark_clutch_installed
+#        end
+#      }
+#
+#
+#      @layout.addWidget @install_clutch, 8, 1
+#
+#    end
 
     setFixedHeight(sizeHint().height());
   end

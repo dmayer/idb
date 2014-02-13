@@ -27,23 +27,61 @@ class App
     data = `strings '#{@local_decrypted_binary}'`
   end
 
-
   def decrypt_binary!
     unless $device.dumpdecrypted_installed?
       $log.error "dumpdecrypted not installed."
       return false
     end
 
+    dylib = "dumpdecrypted_#{$device.arch}.dylib"
+
     $log.info "Running '#{binary_path}'"
     full_remote_path = binary_path
+    decrypted_path = "/var/root/#{File.basename full_remote_path}.decrypted"
 
     $device.ops.execute "cd /var/root/"
-    $device.ops.execute "DYLD_INSERT_LIBRARIES=dumpdecrypted.dylib \"#{full_remote_path}\""
-
-    decrypted_path = "/var/root/#{File.basename full_remote_path}.decrypted"
+    $device.ops.execute "DYLD_INSERT_LIBRARIES=dumpdecrypted_armv7.dylib \"#{full_remote_path}\""
     $log.info "Checking if decrypted file #{decrypted_path} was created..."
     if not $device.ops.file_exists? decrypted_path
+      $log.error "Decryption failed. Trying armv6 build for iOS 6 and earlier..."
+      $device.ops.execute "DYLD_INSERT_LIBRARIES=dumpdecrypted_armv6.dylib \"#{full_remote_path}\""
+      $log.info "Checking if decrypted file #{decrypted_path} was created..."
+    end
+
+    if not $device.ops.file_exists? decrypted_path
       $log.error "Decryption failed. File may not be encrypted."
+      return
+    end
+
+    $log.info "Decrypted file found. Downloading..."
+
+    @local_decrypted_binary = "#{cache_dir}/#{File.basename full_remote_path}.decrypted"
+    @binary.setDecryptedPath @local_decrypted_binary
+
+    local_path = $device.ops.download decrypted_path, @local_decrypted_binary
+
+    $log.info "Decrypted binary downloaded to #{@local_decrypted_binary}"
+    @local_decrypted_binary
+
+  end
+
+  def decrypt_binary_clutch!
+    # not in use since Stefan Esser updated dumpdecrypted
+    unless $device.clutch_installed?
+      $log.error "clutch not installed."
+      return false
+    end
+
+    $log.info "Binary name is: '#{binary_name}'"
+
+    $device.ops.execute "cd /var/root/"
+    output = $device.ops.execute "#{$device.clutch_path} #{binary_name}"
+    puts output
+
+    decrypted_path = "/var/root/Documents/Cracked/#{binary_name}*.ipa"
+    $log.info "Checking if decrypted file #{decrypted_path} was created..."
+    if not $device.ops.file_exists? decrypted_path
+      $log.error "Decryption / Cracking failed."
       return
     end
 

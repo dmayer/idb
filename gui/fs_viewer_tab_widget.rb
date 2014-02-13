@@ -42,10 +42,20 @@ class FsViewerTabWidget < Qt::TabWidget
     }
 
 
-    @treeview.connect(SIGNAL('itemPressed(QTreeWidgetItem*, int)')) { |dir|
-      @selected_dir = dir.text(1)
-      populate_files dir.text(1)
+#    @treeview.connect(SIGNAL('itemPressed(QTreeWidgetItem*, int)')) { |dir|
+#      @selected_dir = dir.text(1)
+#      populate_files dir.text(1)
+#    }
+
+    selection = @treeview.selectionModel()
+    selection.connect(SIGNAL('selectionChanged(QItemSelection,QItemSelection)')) {|x,y|
+      unless @treeview.selectedItems.length == 0
+        item = @treeview.selectedItems[0]
+        @selected_dir = item.text(1)
+        populate_files item.text(1)
+      end
     }
+
 
     @file_details = Qt::GroupBox.new self
     @file_details.setTitle "Details"

@@ -23,7 +23,9 @@ class Device < AbstractDevice
     @device_app_paths[:keychaindump] = [ "/var/root/keychain_dump"]
     @device_app_paths[:pcviewer] = ["/var/root/protectionclassviewer"]
     @device_app_paths[:pbwatcher] = ["/var/root/pbwatcher"]
-    @device_app_paths[:dumpdecrypted] = ["/var/root/dumpdecrypted.dylib"]
+    @device_app_paths[:dumpdecrypted_armv7] = ["/var/root/dumpdecrypted_armv7.dylib"]
+    @device_app_paths[:dumpdecrypted_armv6] = ["/var/root/dumpdecrypted_armv6.dylib"]
+    @device_app_paths[:clutch] = ["/usr/bin/Clutch"]
 
     if $settings['device_connection_mode'] == "ssh"
       $log.debug "Connecting via SSH"
@@ -63,6 +65,10 @@ class Device < AbstractDevice
 
   def device?
     true
+  end
+
+  def arch
+    "armv7"
   end
 
   def start_port_forwarding
@@ -124,8 +130,11 @@ class Device < AbstractDevice
   end
 
 
-
   def install_dumpdecrypted
+    upload_dumpdecrypted
+  end
+
+  def install_dumpdecrypted_old
     unless File.exist? "utils/dumpdecrypted/dumpdecrypted.dylib"
       puts "[**] Warning: dumpdecrypted not compiled."
       puts "[**] Due to licensing issue we cannot ship the compiled library with this tool."
@@ -186,9 +195,10 @@ class Device < AbstractDevice
   end
 
 
-  def upload_dumpdecryted
+  def upload_dumpdecrypted
     $log.info "Uploading dumpdecrypted library..."
-    @ops.upload("utils/dumpdecrypted/dumpdecrypted.dylib","/var/root/dumpdecrypted.dylib")
+    @ops.upload("utils/dumpdecrypted/dumpdecrypted_armv6.dylib","/var/root/dumpdecrypted_armv6.dylib")
+    @ops.upload("utils/dumpdecrypted/dumpdecrypted_armv7.dylib","/var/root/dumpdecrypted_armv7.dylib")
     $log.info "'dumpdecrypted' installed successfully."
   end
 
@@ -256,6 +266,10 @@ class Device < AbstractDevice
     end
   end
 
+  def setup_clutch_sources
+    @ops.execute("echo “deb http://cydia.iphonecake.com ./“ > /etc/apt/sources.list.d/idb_clutch.list")
+  end
+
   def install_from_cydia package
     if apt_get_installed?
       $log.info "Installing #{package}..."
@@ -270,6 +284,10 @@ class Device < AbstractDevice
 
   def install_open
     install_from_cydia "com.conradkramer.open"
+  end
+
+  def install_clutch
+    install_from_cydia "com.iphonecake.clutch"
   end
 
   def install_rsync
@@ -328,8 +346,9 @@ class Device < AbstractDevice
   end
 
   def dumpdecrypted_installed?
-    is_installed? :dumpdecrypted
+    is_installed? :dumpdecrypted_armv6 and is_installed? :dumpdecrypted_armv7
   end
+
 
   def rsync_installed?
     is_installed? :rsync
@@ -347,9 +366,14 @@ class Device < AbstractDevice
     is_installed? :aptget
   end
 
+  def clutch_installed?
+    is_installed? :clutch
+  end
+
   def keychain_dump_path
     path_for :keychaindump
   end
+
 
 
   def pcviewer_path
@@ -363,7 +387,7 @@ class Device < AbstractDevice
 
 
   def dumpdecrypted_path
-    path_for :dumpdecrypted
+    path_for :dumpdecrypted_armv7
   end
 
   def rsync_path
@@ -383,6 +407,10 @@ class Device < AbstractDevice
 
   def apt_get_path
     path_for :aptget
+  end
+
+  def clutch_path
+    path_for :clutch
   end
 
 end
