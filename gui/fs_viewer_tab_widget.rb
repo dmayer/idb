@@ -168,16 +168,37 @@ class FsViewerTabWidget < Qt::TabWidget
 
 
   def add_dirs parent, cur_dir
+    if parent.text(2) == "true"
+      # we added chilcren for this already
+      return
+    end
+    parent.setText(2, "true")
     dirs = $device.ops.list_dir_full cur_dir
     dirs.each { |d|
       if d.name != "." and d.name != ".."
         full_path = "#{cur_dir}/#{d.name}"
         if d.directory?
-          node = addChild parent, d.name, full_path, true
+          dirs = $device.ops.list_dir_full full_path
+          expandable = has_subdirs? full_path
+          node = addChild parent, d.name, full_path, expandable
         end
       end
     }
+  end
 
+  def has_subdirs? dir
+    files = $device.ops.list_dir_full dir
+    if files.length == 2
+      # only "." and ".."
+      return false
+    else
+      files.each { |f|
+        if f.name != "." and f.name != ".." and f.directory?
+          return true
+        end
+      }
+    end
+    return false
   end
 
   def refresh
@@ -195,6 +216,8 @@ class FsViewerTabWidget < Qt::TabWidget
     parent.addChild tree_item
     if expandable
       tree_item.setChildIndicatorPolicy(Qt::TreeWidgetItem::ShowIndicator)
+    else
+      tree_item.setChildIndicatorPolicy(Qt::TreeWidgetItem::DontShowIndicator)
     end
     tree_item
   end
