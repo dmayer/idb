@@ -1,3 +1,0 @@
-[submodule "utils/dumpdecrypted"]
-	path = utils/dumpdecrypted
-	url = https://github.com/stefanesser/dumpdecrypted.git
