@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require_relative 'abstract_device'
 require_relative 'ssh_port_forwarder'
 require_relative 'device_ca_interface'
