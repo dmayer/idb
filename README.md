@@ -2,7 +2,7 @@
 
 gidb is a tool to simplify some common tasks for iOS pentesting and research. It is still a work in progress but already provides a bunch of (hopefully) useful commands. The goal was to provide all (or most) functionality for both, iDevices and the iOS simulator.  For this, a lot is abstracted internally to make it work transparently for both environments. Although recently the focus has been more on suporting devices.
 
-idb was released as part of a talk at [ShmooCon](http://shmoocon.org) 2014. The [slides of the talk](https://speakerdeck.com/dmayer/introducing-idb-simplified-blackbox-ios-app-pentesting) are up on [Speakerdeck](https://speakerdeck.com/dmayer/introducing-idb-simplified-blackbox-ios-app-pentesting). There is also a [blog post](http://cysec.org/blog/2014/01/23/idb-ios-research-slash-pentesting-tool/) on my [personal website](http://cysec.org) that I will update with the video of the talk once it is available.
+idb was released as part of a talk at [ShmooCon](http://shmoocon.org) 2014. The [slides of the talk](https://speakerdeck.com/dmayer/introducing-idb-simplified-blackbox-ios-app-pentesting) are up on [Speakerdeck](https://speakerdeck.com/dmayer/introducing-idb-simplified-blackbox-ios-app-pentesting). [Video](https://archive.org/details/ShmooCon2014_Introducing_idb_Simplified_Blackbox_iOS_App_Pentesting) is available on [archive.org](http://www.archive.org) There is also a [blog post](http://cysec.org/blog/2014/01/23/idb-ios-research-slash-pentesting-tool/) on my [personal website](http://cysec.org).
 
 ## Getting Started 
 Visit the [getting started guide](//github.com/dmayer/idb/wiki/Getting-started) on the wiki. Bug reports, feature requests, and contributions are more than welcome!
