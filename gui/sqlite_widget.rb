@@ -12,21 +12,28 @@ class SqliteWidget  < Qt::Widget
 
     @list = Qt::ListWidget.new self
     @list.connect(SIGNAL('itemDoubleClicked(QListWidgetItem*)')) { |item|
-      cache_name = $selected_app.cache_file item.full_path
-      if cache_name.nil?
-        $log.error "File #{item.full_path} could not be downloaded. Either the file does not exist (e.g., dead symlink) or there is a permission problem."
+      if $settings['sqlite_editor'].nil? or $settings['sqlite_editor'] == ""
+        error = Qt::MessageBox.new
+        error.setInformativeText("Please configure a SQLite editor in the idb preferences.")
+        error.setIcon(Qt::MessageBox::Critical)
+        error.exec
       else
-        if RbConfig::CONFIG['host_os'] =~ /linux/
-          Process.spawn "'#{$settings['sqlite_editor']}' '#{Dir.getwd}/#{cache_name}'"
+        cache_name = $selected_app.cache_file item.full_path
+        if cache_name.nil?
+          $log.error "File #{item.full_path} could not be downloaded. Either the file does not exist (e.g., dead symlink) or there is a permission problem."
         else
-          Process.spawn "open -a '#{$settings['sqlite_editor']}' '#{Dir.getwd}/#{cache_name}'"
+          if RbConfig::CONFIG['host_os'] =~ /linux/
+            Process.spawn "'#{$settings['sqlite_editor']}' '#{Dir.getwd}/#{cache_name}'"
+          else
+            Process.spawn "open -a '#{$settings['sqlite_editor']}' '#{Dir.getwd}/#{cache_name}'"
+          end
         end
-      end
 
-      x = ConsoleLauncher.new
-      #TODO: find sqlite binary
-      #http://www.ruby-doc.org/stdlib-2.0.0/libdoc/mkmf/rdoc/MakeMakefile.html#method-i-find_executable
-      #x.run "/usr/bin/sqlite3 #{Dir.getwd}/#{$selected_app.cache_file item.full_path}"
+        x = ConsoleLauncher.new
+        #TODO: find sqlite binary
+        #http://www.ruby-doc.org/stdlib-2.0.0/libdoc/mkmf/rdoc/MakeMakefile.html#method-i-find_executable
+        #x.run "/usr/bin/sqlite3 #{Dir.getwd}/#{$selected_app.cache_file item.full_path}"
+      end
 
 
 
