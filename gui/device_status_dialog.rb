@@ -116,6 +116,11 @@ class DeviceStatusDialog < Qt::Dialog
         if $device.open_installed?
           @install_open.hide
           mark_open_installed
+        else
+          error = Qt::MessageBox.new
+          error.setInformativeText("open could not be installed. Please make sure Cydia has finished all tasks and is closed on the device.")
+          error.setIcon(Qt::MessageBox::Critical)
+          error.exec
         end
       }
       @layout.addWidget @install_open, 1, 1
@@ -265,6 +270,11 @@ class DeviceStatusDialog < Qt::Dialog
         if $device.rsync_installed?
           @install_rsync.hide
           mark_rsync_installed
+        else
+          error = Qt::MessageBox.new
+          error.setInformativeText("rsync could not be installed. Please make sure Cydia has finished all tasks and is closed on the device.")
+          error.setIcon(Qt::MessageBox::Critical)
+          error.exec
         end
       }
 
