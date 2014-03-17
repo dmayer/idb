@@ -21,7 +21,14 @@ class LocalOperations
   end
 
   def open path
-    Launchy.open path
+    begin
+      Launchy.open path
+      return true
+    rescue Exception => e
+      $log.error "Could not open file #{path}: #{e.message}"
+      $log.error e.backtrace
+      return false
+    end
   end
 
   def list_dir path
