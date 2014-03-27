@@ -20,6 +20,9 @@ class App
     if @binary.is_encrypted?
       $log.info "Binary is encrypted. Decrypting for further analysis."
       decrypt_binary!
+    else
+      $log.info "Binary is not encrypted."
+      @local_decrypted_binary = local_binary_path
     end
   end
 
