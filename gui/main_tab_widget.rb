@@ -45,10 +45,10 @@ class MainTabWidget < Qt::TabWidget
     @fs_viewer.setEnabled(false)
     @tabs[:fs_viewer] = addTab(@fs_viewer, "Filesystem")
 
-    @isnoop = SnoopItTabWidget.new self
-    @isnoop.setEnabled(false)
-    @tabs[:isnoop] = addTab(@isnoop, "Snoop-It")
-    setTabToolTip(@tabs[:isnoop],"The performance of the snoop-it integration is not good enough to enable the tab yet.  If people would find it useful, let me know and I'll put time into it.")
+#    @isnoop = SnoopItTabWidget.new self
+#    @isnoop.setEnabled(false)
+#    @tabs[:isnoop] = addTab(@isnoop, "Snoop-It")
+#    setTabToolTip(@tabs[:isnoop],"The performance of the snoop-it integration is not good enough to enable the tab yet.  If people would find it useful, let me know and I'll put time into it.")
 
     @log = LogWidget.new self
     @log.setEnabled(false)
@@ -58,10 +58,10 @@ class MainTabWidget < Qt::TabWidget
     @keychain.setEnabled(false)
     @tabs[:keychain] = addTab(@keychain, "Keychain")
 
-    @cycript = CycriptConsoleWidget.new self
-    @cycript.setEnabled(false)
-    @tabs[:cycript] = addTab(@cycript, "Cycript")
-    setTabToolTip(@tabs[:cycript],"Cycript needs proper terminal emulation. At the moment this tab is not very useful and disabled.")
+#    @cycript = CycriptConsoleWidget.new self
+#    @cycript.setEnabled(false)
+#    @tabs[:cycript] = addTab(@cycript, "Cycript")
+#    setTabToolTip(@tabs[:cycript],"Cycript needs proper terminal emulation. At the moment this tab is not very useful and disabled.")
 
     @pasteboard = PasteboardMonitorWidget.new self
     @pasteboard.setEnabled(false)
@@ -125,8 +125,8 @@ class MainTabWidget < Qt::TabWidget
     setTabEnabled(@tabs[:app_binary],false)
     setTabEnabled(@tabs[:url_handlers],false)
     setTabEnabled(@tabs[:pasteboard],false)
-    setTabEnabled(@tabs[:cycript],false)
-    setTabEnabled(@tabs[:isnoop],false)
+#    setTabEnabled(@tabs[:cycript],false)
+#    setTabEnabled(@tabs[:isnoop],false)
     setTabEnabled(@tabs[:fs_viewer],false)
     setTabEnabled(@tabs[:keychain],false)
   end
