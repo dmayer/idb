@@ -45,7 +45,6 @@ class AppDetailsGroupBox < Qt::GroupBox
           # lets ignore conversion errors for now..
         end
 
-
         emit app_changed()
       }
 
@@ -107,6 +106,21 @@ class AppDetailsGroupBox < Qt::GroupBox
 
   end
 
+  def clear
+    $selected_app =  nil
+    @vals['uuid'].setText("")
+    @vals['bundle_id'].setText("")
+    @vals['bundle_name'].setText("")
+    @vals['url_handlers'].setText("")
+    @vals['platform_version'].setText("")
+    @vals['sdk_version'].setText("")
+    @vals['minimum_os_version'].setText("")
+    @launch_app.setEnabled(false)
+    @open_folder.setEnabled(false)
+
+  end
+
+
 
   def addDetail id, label
     @labels[id] = Qt::Label.new  "<b>#{label}</b>", self, 0
@@ -119,6 +133,10 @@ class AppDetailsGroupBox < Qt::GroupBox
 
   def enable_select_app
     @select_app_button.setEnabled(true)
+  end
+
+  def disable_select_app
+    @select_app_button.setEnabled(false)
   end
 
 end
@@ -182,6 +200,10 @@ class AppBinaryGroupBox < Qt::GroupBox
     @vals['pie'].setText("")
     @vals['canaries'].setText("")
     @vals['arc'].setText("")
+  end
+
+  def disable_analyze_binary
+    @analyze_binary_button.setEnabled(false)
   end
 
 

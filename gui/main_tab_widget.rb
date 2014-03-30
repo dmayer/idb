@@ -7,6 +7,7 @@ require_relative 'cycript_console_widget'
 require_relative 'pasteboard_monitor_widget'
 require_relative 'fs_viewer_tab_widget'
 require_relative 'key_chain_widget'
+require_relative 'tool_widget'
 require 'Qt'
 
 class MainTabWidget < Qt::TabWidget
@@ -44,6 +45,10 @@ class MainTabWidget < Qt::TabWidget
     @fs_viewer = FsViewerTabWidget.new self
     @fs_viewer.setEnabled(false)
     @tabs[:fs_viewer] = addTab(@fs_viewer, "Filesystem")
+
+    @tools = ToolWidget.new self
+    @tools.setEnabled(false)
+    @tabs[:tools] = addTab(@tools, "Tools")
 
 #    @isnoop = SnoopItTabWidget.new self
 #    @isnoop.setEnabled(false)
@@ -106,6 +111,12 @@ class MainTabWidget < Qt::TabWidget
     setTabEnabled(@tabs[:fs_viewer], true)
   end
 
+  def enableTools
+    @tools.setEnabled(true)
+    setTabEnabled(@tabs[:tools], true)
+  end
+
+
   def enableKeychain
     @keychain.setEnabled(true)
     setTabEnabled(@tabs[:keychain], true)
@@ -129,6 +140,7 @@ class MainTabWidget < Qt::TabWidget
 #    setTabEnabled(@tabs[:isnoop],false)
     setTabEnabled(@tabs[:fs_viewer],false)
     setTabEnabled(@tabs[:keychain],false)
+    setTabEnabled(@tabs[:tools],false)
   end
 
   def clear
@@ -154,6 +166,9 @@ class MainTabWidget < Qt::TabWidget
     @app_binary.refresh
     enableFSViewer
     @fs_viewer.set_start  $selected_app.app_dir
+    enableTools
+    @tools.enable_screenshot
+
 
   end
 

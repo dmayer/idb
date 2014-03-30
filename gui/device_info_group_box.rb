@@ -1,7 +1,7 @@
 require_relative 'device_status_dialog'
 
 class DeviceInfoGroupBox < Qt::GroupBox
-
+  signals "disconnect()"
 
   def initialize *args
     super *args
@@ -12,9 +12,7 @@ class DeviceInfoGroupBox < Qt::GroupBox
     setTitle "Selected Device"
 
     @device = Qt::Label.new  "<b><font color='red'>Please select a device from the 'Devices' menu.</font></b>", self, 0
-    @layout.addWidget @device, 0, 0
-
-
+    @layout.addWidget @device, 0, 0, 2, 1
   end
 
   def update_device
@@ -34,6 +32,17 @@ class DeviceInfoGroupBox < Qt::GroupBox
         @device_status.exec
       }
       @layout.addWidget @status, 0, 1
+
+      @disconnect = Qt::PushButton.new "Disconnect"
+      @disconnect.connect(SIGNAL(:released)) {
+        $device.close unless $device.nil?
+        $device = nil
+        emit disconnect()
+        @disconnect.setEnabled(false)
+        @status.setEnabled(false)
+        @device.setText("<b><font color='red'>Please select a device from the 'Devices' menu.</font></b>")
+      }
+      @layout.addWidget @disconnect, 1, 1
 
     else
       @device.setText "<b>Simulator:</b> #{$device.sim_dir}"

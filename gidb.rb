@@ -106,7 +106,6 @@ class GIDB < Qt::MainWindow
       @app_binary = AppBinaryGroupBox.new @central_widget
       @grid.addWidget @app_binary, 1,0
       @app_binary.connect(SIGNAL('binary_analyzed()')) {
-        puts "[*] Binary refresh triggered"
         @main_tabs.refresh_app_binary
       }
 
@@ -119,6 +118,14 @@ class GIDB < Qt::MainWindow
 
       # device Details
       @device_details = DeviceInfoGroupBox.new @central_widget
+      @device_details.connect(SIGNAL :disconnect) {
+        @main_tabs.disable_all
+        @app_binary.clear
+        @app_binary.disable_analyze_binary
+        @app_details.clear
+        @app_details.disable_select_app
+        @usb_device.setChecked(false)
+      }
       @grid.addWidget @device_details, 3,0,2,2
 
       menu
@@ -160,9 +167,9 @@ class GIDB < Qt::MainWindow
       @sim_group = Qt::ActionGroup.new @menu_devices
 
       @menu_devices = menuBar().addMenu "&Devices"
-      item = Qt::Action.new "USB Device", self
-      item.setCheckable(true)
-      item.connect(SIGNAL(:triggered)) { |x|
+      @usb_device = Qt::Action.new "USB Device", self
+      @usb_device.setCheckable(true)
+      @usb_device.connect(SIGNAL(:triggered)) { |x|
         $device.disconnect unless $device.nil?
 
         progress = Qt::ProgressDialog.new "Connecting to device. Please wait...", nil, 0, 2, @central_widget
@@ -203,8 +210,8 @@ class GIDB < Qt::MainWindow
 
         progress.reset
       }
-      menu_item = @menu_devices.addAction item
-      @sim_group.addAction item
+      menu_item = @menu_devices.addAction @usb_device
+      @sim_group.addAction @usb_device
 
 
       x = @menu_devices.addSeparator
