@@ -63,6 +63,13 @@ class DeviceStatusDialog < Qt::Dialog
     setFixedHeight(sizeHint().height());
   end
 
+  def mark_cycript_installed
+    @cycript_label.text = @cycript_label.text +  "<br>Found: #{$device.cycript_path}"
+    @layout.addWidget installed_check_mark, 8, 1
+    setFixedHeight(sizeHint().height());
+  end
+
+
   def initialize *args
     super *args
     @layout = Qt::GridLayout.new
@@ -99,7 +106,6 @@ class DeviceStatusDialog < Qt::Dialog
       }
       @layout.addWidget @install_aptget, 0, 1
     end
-
     #######################
     ### OPEN
     #######################
@@ -283,6 +289,32 @@ class DeviceStatusDialog < Qt::Dialog
 
     end
 
+
+    #######################
+    ### CYCRIPT
+    #######################
+
+    @cycript_label = Qt::Label.new "<b>cycript</b><br>(explore and modify running applications using a hybrid of Objective-C++ and JavaScript. http://www.cycript.org/ )"
+    @layout.addWidget @cycript_label, 8, 0
+
+    if $device.cycript_installed?
+      mark_cycript_installed
+    else
+      @install_cycript = Qt::PushButton.new "Install"
+      @install_cycript.connect(SIGNAL(:released)) {
+        $device.install_cycript
+        if $device.cycript_installed?
+          @install_cycript.hide
+          mark_cycript_installed
+        else
+          error = Qt::MessageBox.new
+          error.setInformativeText("cycript could not be installed. Please make sure Cydia has finished all tasks and is closed on the device.")
+          error.setIcon(Qt::MessageBox::Critical)
+          error.exec
+        end
+      }
+      @layout.addWidget @install_cycript, 8, 1
+    end
 
     #######################
     ### clutch

@@ -1,5 +1,6 @@
 require_relative 'shared_libraries_widget'
 require_relative 'binary_strings_widget'
+require_relative 'weak_class_dump_widget'
 
 class AppBinaryTabWidget < Qt::TabWidget
 
@@ -14,6 +15,10 @@ class AppBinaryTabWidget < Qt::TabWidget
 
     @strings = BinaryStringsWidget.new self
     @tabs[:strings] = addTab(@strings, "Strings")
+
+    @weak_class_dump = WeakClassDumpWidget.new self
+    @tabs[:weak_class_dump] = addTab(@weak_class_dump, "Weak Class Dump")
+
 
   end
 

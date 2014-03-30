@@ -18,6 +18,7 @@ class Device < AbstractDevice
     @app = nil
 
     @device_app_paths = Hash.new
+    @device_app_paths[:cycript] = [ "/usr/bin/cycript" ]
     @device_app_paths[:rsync] = [ "/usr/bin/rsync" ]
     @device_app_paths[:open] = ["/usr/bin/open"]
     @device_app_paths[:openurl] = ["/usr/bin/uiopen", "/usr/bin/openurl",  "/usr/bin/openURL"]
@@ -221,6 +222,7 @@ class Device < AbstractDevice
     end
   end
 
+
   def install_pbwatcher
     if File.exist? "utils/pbwatcher/pbwatcher"
       upload_pbwatcher
@@ -274,8 +276,9 @@ class Device < AbstractDevice
 
   def install_from_cydia package
     if apt_get_installed?
-      $log.info "Installing #{package}..."
+      $log.info "Updating package repo..."
       @ops.execute("#{apt_get_path} -y update")
+      $log.info "Installing #{package}..."
       @ops.execute("#{apt_get_path} -y install #{package}")
       return true
     else
@@ -296,6 +299,9 @@ class Device < AbstractDevice
     install_from_cydia "rsync"
   end
 
+  def install_cycript
+    install_from_cydia "cycript"
+  end
 
   def close
     $log.info "Terminating port forwarding helper..."
@@ -334,6 +340,9 @@ class Device < AbstractDevice
 
 
 
+  def cycript_installed?
+    is_installed? :cycript
+  end
 
   def keychain_dump_installed?
     is_installed? :keychaindump
@@ -413,6 +422,10 @@ class Device < AbstractDevice
 
   def clutch_path
     path_for :clutch
+  end
+
+  def cycript_path
+    path_for :cycript
   end
 
 end

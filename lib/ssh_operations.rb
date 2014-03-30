@@ -36,6 +36,15 @@ class SSHOperations
     @sftp.setstat(file, :permissions => permissions)
   end
 
+  def download_recursive(remote_path, local_path)
+    begin
+      @sftp.download! remote_path, local_path, :recursive => true
+    rescue
+      $log.error "Failed to download #{remote_path}."
+      return false
+    end
+  end
+
   def download(remote_path, local_path = nil)
     begin
       if local_path.nil?
@@ -80,6 +89,10 @@ class SSHOperations
 
   def dir_glob path, pattern
     @sftp.dir.glob(path,pattern).map {|x| "#{path}/#{x.name}"}
+  end
+
+  def mkdir path
+    @sftp.mkdir path
   end
 
   def directory? path
