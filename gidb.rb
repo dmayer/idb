@@ -142,6 +142,13 @@ class GIDB < Qt::MainWindow
       menu_item_settings = Qt::Action.new "&Settings", self
       menu_item_settings.connect(SIGNAL :triggered) {
         setting = SettingsDialog.new self
+        setting.connect(SIGNAL :accepted) {
+          if $settings['device_connection_mode'] == "ssh"
+            @usb_device.setText("SSH Device")
+          else
+            @usb_device.setText("USB Device")
+          end
+        }
         setting.exec
       }
       @menu_file = menuBar().addMenu "&File"
@@ -168,6 +175,12 @@ class GIDB < Qt::MainWindow
 
       @menu_devices = menuBar().addMenu "&Devices"
       @usb_device = Qt::Action.new "USB Device", self
+      if $settings['device_connection_mode'] == "ssh"
+        @usb_device.setText("SSH Device")
+      else
+        @usb_device.setText("USB Device")
+      end
+
       @usb_device.setCheckable(true)
       @usb_device.connect(SIGNAL(:triggered)) { |x|
         $device.disconnect unless $device.nil?
