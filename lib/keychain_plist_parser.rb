@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'nokogiri'
 require 'plist4r'
 require 'awesome_print'
