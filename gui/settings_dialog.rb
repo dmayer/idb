@@ -30,6 +30,7 @@ class SettingsDialog < Qt::Dialog
       end
 
       $settings["manual_ssh_port"] = @tabs.manual_ssh_port.text
+      $settings["idb_utility_port"] = @tabs.idb_utility_port.text
       $settings["sqlite_editor"] = @tabs.sqlite_editor.text
 
       $settings.store

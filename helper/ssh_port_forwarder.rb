@@ -35,6 +35,10 @@ def run
 
   $log.info 'Setting up port forwarding...'
 
+  # Special idb internal port
+  $ssh_forwards.add_remote_forward Integer(settings['idb_utility_port']), 'localhost', Integer(settings['idb_utility_port'])
+
+
   settings['remote_forwards'].each { |x|
     $ssh_forwards.add_remote_forward Integer(x['remote_port']), x['local_host'], Integer(x['local_port'])
   }

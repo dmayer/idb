@@ -1,6 +1,8 @@
 require 'openssl'
 require 'digest/sha1'
 require 'sqlite3'
+require "webrick"
+
 
 
 class CAInterface
@@ -19,6 +21,28 @@ class CAInterface
       return
     end
     puts "[*] Operation complete"
+  end
+
+  def server_cert cert_file
+    FileUtils.mkpath "tmp/CAs"
+    cert_file_cache = "tmp/CAs/CA.pem"
+
+    FileUtils.copy cert_file, cert_file_cache
+    #copy cert file to tmp
+    @server_thread = Thread.new {
+      @server = WEBrick::HTTPServer.new(:Port => $settings['idb_utility_port'])
+      @server.mount "/", WEBrick::HTTPServlet::FileHandler, 'tmp/CAs/'
+      @server.start
+    }
+
+    sleep 0.5
+    $device.open_url "http://localhost:#{$settings['idb_utility_port']}/CA.pem"
+
+  end
+
+  def stop_cert_server
+    @server.stop unless @server.nil?
+    @server_thread.terminate unless @server_thread.nil?
   end
 
 
@@ -117,5 +141,11 @@ class CAInterface
   end
 end
 
+class CAServlet < WEBrick::HTTPServlet::AbstractServlet
+    def do_GET (request, response)
+
+    end
+
+end
 
 

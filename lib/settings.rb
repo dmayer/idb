@@ -21,6 +21,8 @@ class Settings
     if File.exist? @file_name
       $log.info "Loading configuration from #{@file_name}"
       @data = YAML.load(File.open(@file_name).read)
+      @data["idb_utility_port"] = "4711" if @data["idb_utility_port"].nil?
+      true
     else
       $log.warn "No configuration found, generating default."
       @data = Hash.new
@@ -29,6 +31,7 @@ class Settings
       @data["ssh_username"] = "root"
       @data["ssh_password"] = "alpine"
       @data["manual_ssh_port"] = "2222"
+      @data["idb_utility_port"] = "4711"
       @data["device_connection_mode"] = "usb"
       $log.info "Storing new configuration at #{@file_name}"
       store

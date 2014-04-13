@@ -1,7 +1,7 @@
 require_relative 'ssh_port_forward_tab_widget'
 
 class SettingsTabWidget < Qt::TabWidget
-  attr_accessor :ssh_host, :ssh_port, :ssh_username, :ssh_password, :usbmux_radio, :manual_ssh_port
+  attr_accessor :ssh_host, :ssh_port, :ssh_username, :ssh_password, :usbmux_radio, :manual_ssh_port, :idb_utility_port
   attr_accessor :sqlite_editor
 
   def initialize *args
@@ -98,6 +98,12 @@ class SettingsTabWidget < Qt::TabWidget
     @manual_ssh_port = Qt::LineEdit.new  $settings.manual_ssh_port.to_s
     forward_config_layout.addWidget @label_manual_ssh_port, 2, 0
     forward_config_layout.addWidget @manual_ssh_port, 2, 1
+
+    # idb utility forward port
+    @label_idb_utility_port = Qt::Label.new  "Port for internal idb operations:", self, 0
+    @idb_utility_port = Qt::LineEdit.new  $settings.idb_utility_port.to_s
+    forward_config_layout.addWidget @label_idb_utility_port, 3, 0
+    forward_config_layout.addWidget @idb_utility_port, 3, 1
 
   end
 

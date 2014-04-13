@@ -34,6 +34,10 @@ class CAManagerDialog < Qt::Dialog
     }
 
 
+    @refresh_button = Qt::PushButton.new "Refresh"
+    @refresh_button.connect(SIGNAL(:released)) {|x|
+      refresh_table
+    }
 
     @delete_button = Qt::PushButton.new "Delete"
     @delete_button.setEnabled(false)
@@ -58,7 +62,7 @@ class CAManagerDialog < Qt::Dialog
 
       @file_dialog.connect(SIGNAL('fileSelected(QString)')) { |x|
         begin
-          @if.add_cert(x)
+          @if.server_cert(x)
         rescue Exception => e
           error = Qt::MessageBox.new self
           error.setInformativeText("Couldn't import certificate")
@@ -76,14 +80,16 @@ class CAManagerDialog < Qt::Dialog
 
     @close_button = Qt::PushButton.new "Close"
     @close_button.connect(SIGNAL(:released)) {|x|
+      @if.stop_cert_server
       reject()
     }
 
-    @layout.addWidget @cert_tab, 0, 0, 3, 4
-    @layout.addWidget @delete_button, 0,4
-    @layout.addWidget @import_button, 1,4
-    @layout.addItem Qt::SpacerItem.new(0,1, Qt::SizePolicy::Fixed, Qt::SizePolicy::Expanding), 2, 4
-    @layout.addWidget @close_button, 3, 4
+    @layout.addWidget @cert_tab, 0, 0, 4, 4
+    @layout.addWidget @refresh_button, 0, 4
+    @layout.addWidget @delete_button, 1,4
+    @layout.addWidget @import_button, 2,4
+    @layout.addItem Qt::SpacerItem.new(0,1, Qt::SizePolicy::Fixed, Qt::SizePolicy::Expanding), 3, 4
+    @layout.addWidget @close_button, 4, 4
 
     @if = $device.ca_interface
     refresh_table
