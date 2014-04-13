@@ -115,7 +115,13 @@ class FsViewerTabWidget < Qt::TabWidget
       if cache_name.nil?
         $log.error "File #{@selected_dir}/#{@model.item(x.row,0).text} could not be downloaded. Either the file does not exist (e.g., dead symlink) or there is a permission problem."
       else
-        $device.ops.open cache_name
+        unless $device.ops.open cache_name
+          error = Qt::MessageBox.new
+          error.setInformativeText("Could not open file #{cache_name}. Likely there is no app registered for this file type. See log for more details.")
+          error.setIcon(Qt::MessageBox::Critical)
+          error.exec
+
+        end
       end
     }
 
