@@ -13,13 +13,20 @@ class SSHOperations
 
     $log.info "Establishing SSH Session for #{username}@#{hostname}:#{port}"
 
-    @ssh = Net::SSH.start hostname, username, :password => password, :port => port
+    begin
+      @ssh = Net::SSH.start hostname, username, :password => password, :port => port
 
-    # initiali:wze sftp connection and wait until it is open
-    $log.info 'Establishing SFTP Session...'
-    @sftp = Net::SFTP::Session.new @ssh
-    @sftp.loop { @sftp.opening? }
-
+      # initiali:wze sftp connection and wait until it is open
+      $log.info 'Establishing SFTP Session...'
+      @sftp = Net::SFTP::Session.new @ssh
+      @sftp.loop { @sftp.opening? }
+    rescue Exception => ex
+      $log.error ex.message
+      error = Qt::MessageBox.new
+      error.setInformativeText("SSH connection could not be established: #{ex.message}")
+      error.setIcon(Qt::MessageBox::Critical)
+      error.exec
+    end
   end
 
   def disconnect
