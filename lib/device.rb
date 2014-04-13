@@ -42,6 +42,11 @@ class Device < AbstractDevice
       $log.debug "Using port #{proxy_port} for SSH forwarding"
 
       @usbmuxd.proxy proxy_port, $settings['ssh_port']
+      sleep 1
+
+
+
+
       @ops = SSHOperations.new username, password, 'localhost', proxy_port
 
       @usb_ssh_port = $settings['manual_ssh_port']
@@ -323,7 +328,7 @@ class Device < AbstractDevice
     @ops.execute "killall -9 #{process_name}"
   end
 
-  def device_id
+  def DEVICE_ID
     $log.error "Not implemented"
     nil
   end
