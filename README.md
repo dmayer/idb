@@ -10,7 +10,7 @@ Visit the [getting started guide](//github.com/dmayer/idb/wiki/Getting-started) 
 Bug reports, feature requests, and contributions are more than welcome!
 
 ## Command-Line Version
-idb started out as a command line tool which is still accessible through the `cli` branch. Find the [getting started](//github.com/dmayer/idb/wiki/CLI-Version:-Getting-Started) guid and some more documentation in the wiki.
+idb started out as a command line tool which is still accessible through the `cli` branch. Find the [getting started](//github.com/dmayer/idb/wiki/CLI-Version:-Getting-Started) guide and some more documentation in the wiki.
 
 ## gidb Features
 
