@@ -39,7 +39,6 @@ idb started out as a command line tool which is still accessible through the `cl
     * Search for, download, and view local caches  (`Cache.db`)
     * File system browser
 * Install utilities on iDevices 
-    * Ii   
     * Install [iOS SSL killswitch](//github.com/iSECPartners/ios-ssl-kill-switch)
     * alpha: Compile and install [dumpdecrypted](//github.com/stefanesser/dumpdecrypted)
 * Alpha:
