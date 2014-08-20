@@ -34,7 +34,7 @@ class AppBinary
       return "Error"
     end
     @otool.load_commands.each {|key, val|
-      if val['cmd'].strip == 'LC_ENCRYPTION_INFO' and val['cryptid'].strip == 1.to_s
+      if val['cmd'].strip.start_with?('LC_ENCRYPTION_INFO') and val['cryptid'].strip == 1.to_s
         encrypted =  true
       end
     }
