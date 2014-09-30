@@ -100,9 +100,7 @@ class CGBI
 							decompressed = nil if decompressed.length == 0
 						rescue => e
 							puts "Left: #{decompressed.inspect}"
-#				          require 'pry'
-#				          binding.pry
-				      	end
+              end
 					end
 				end
 
