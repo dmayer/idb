@@ -81,7 +81,7 @@ module Idb
     end
 
     def start_port_forwarding
-      @port_forward_pid = Process.spawn("#{RbConfig.ruby} helper/ssh_port_forwarder.rb"  )
+      @port_forward_pid = Process.spawn("#{RbConfig.ruby} lib/helper/ssh_port_forwarder.rb"  )
     end
 
     def restart_port_forwarding
@@ -105,7 +105,7 @@ module Idb
 
     def dump_keychain
       device_store_path = "/var/root/genp.plist"
-      local_dir = "tmp/device/"
+      local_dir = "#{$tmp_path}/device/"
       local_path = "#{local_dir}/genp.plist"
       FileUtils.mkdir_p local_dir unless Dir.exist? local_dir
 

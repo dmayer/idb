@@ -25,14 +25,14 @@ module Idb
     end
 
     def server_cert cert_file
-      FileUtils.mkpath "tmp/CAs"
-      cert_file_cache = "tmp/CAs/CA.pem"
+      FileUtils.mkpath "#{$tmp_path}/CAs"
+      cert_file_cache = "#{$tmp_path}/CAs/CA.pem"
 
       FileUtils.copy cert_file, cert_file_cache
       #copy cert file to tmp
       @server_thread = Thread.new {
         @server = WEBrick::HTTPServer.new(:Port => $settings['idb_utility_port'])
-        @server.mount "/", WEBrick::HTTPServlet::FileHandler, 'tmp/CAs/'
+        @server.mount "/", WEBrick::HTTPServlet::FileHandler, "#{$tmp_path}/CAs/"
         @server.start
       }
 

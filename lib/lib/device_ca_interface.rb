@@ -6,7 +6,7 @@ module Idb
     def initialize device
       @device = device
       @device_store_path = "/private/var/Keychains/TrustStore.sqlite3"
-      base_path = "tmp/device"
+      base_path = "#{$tmp_path}/device"
       FileUtils.mkdir_p base_path
       @db_path = "#{base_path}/TrustStore.sqlite3"
 

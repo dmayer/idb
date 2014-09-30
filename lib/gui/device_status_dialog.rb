@@ -4,7 +4,7 @@ module Idb
 
     def installed_check_mark
       installed_check_mark = Qt::Label.new
-      pixmap = Qt::Pixmap.new "gui/images/check.png"
+      pixmap = Qt::Pixmap.new File.join(File.dirname(File.expand_path(__FILE__)), '/images/check.png')
       installed_check_mark.setPixmap pixmap
       installed_check_mark
     end

@@ -22,14 +22,14 @@ module Idb
   $width = 1024
   $height = 768
 
-  class GIDB < Qt::MainWindow
+  class Idb < Qt::MainWindow
 
       def initialize
         super
 
 
         # initialize log
-        $log = Log4r::Logger.new 'gidb'
+        $log = Log4r::Logger.new 'idb'
         outputter = Log4r::Outputter.stdout
         outputter.formatter =  Log4r::PatternFormatter.new(:pattern => "[%l] %d :: %c ::  %m")
 
@@ -46,11 +46,20 @@ module Idb
 
         # enable threading. See https://github.com/ryanmelt/qtbindings/issues/63
         @thread_fix = QtThreadFix.new
-        $settings = Settings.new 'config/settings.yml'
+        settings_path = File.dirname(ENV['HOME'] + "/.idb/config/")
+        $tmp_path = ENV['HOME'] + "/.idb/tmp/"
+        puts $tmp_path
+        unless File.directory?(settings_path)
+          $log.info "Creating settings directory: #{settings_path}"
+          FileUtils.mkdir_p(settings_path)
+        end
 
-        setWindowTitle "gidb"
-        Qt::CoreApplication::setApplicationName("gidb")
-        setWindowIconText('gidb')
+        settings_filename = "settings.yml"
+        $settings = Settings.new "#{settings_path}/#{settings_filename}"
+
+        setWindowTitle "idb"
+        Qt::CoreApplication::setApplicationName("idb")
+        setWindowIconText('idb')
         init_ui
 
   #      size = Qt::Size.new($width, $height)
@@ -261,21 +270,26 @@ module Idb
           y = (screenHeight - $height) / 2
 
           move x, y
-      end
+     end
+
+    def self.run
+      app = Qt::Application.new ARGV
+      app.setWindowIcon(Qt::Icon.new File.join(File.dirname(File.expand_path(__FILE__)), '/gui/images/iphone.ico'))
+
+      app.setApplicationName("idb")
+
+      idb = Idb.new
+      idb.setWindowState Qt::WindowActive
+      idb.showMaximized
+      idb.raise
+      app.exec
+
+      $log.info "Performing cleanup before exiting."
+      $device.close unless $device.nil?
+      $log.info "Thanks for using idb."
+
+    end
   end
 
 
-  app = Qt::Application.new ARGV
-  app.setWindowIcon(Qt::Icon.new 'gui/images/iphone.ico')
-  app.setApplicationName("gidb")
-
-  gidb = GIDB.new
-  gidb.setWindowState Qt::WindowActive
-  gidb.showMaximized
-  gidb.raise
-  app.exec
-
-  $log.info "Performing cleanup before exiting."
-  $device.close unless $device.nil?
-  $log.info "Thanks for using gidb."
 end

@@ -46,7 +46,7 @@ module Idb
       @dump = Qt::PushButton.new "Dump Keychain"
       @dump.connect(SIGNAL :released) {
         $device.dump_keychain
-        @keychain = KeychainPlistParser.new "tmp/device/genp.plist"
+        @keychain = KeychainPlistParser.new "#{$tmp_path}/device/genp.plist"
         populate_table
       }
       @layout.addWidget @dump, 2, 0

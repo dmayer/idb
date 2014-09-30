@@ -2,11 +2,11 @@ module Idb
   class HostFileWrapper
 
     def initialize
-      @cache_path = "tmp/device/hosts"
+      @cache_path = "#{$tmp_path}/device/hosts"
     end
 
     def content
-      FileUtils.mkpath "tmp/device" unless File.directory? "tmp/device"
+      FileUtils.mkpath "#{$tmp_path}/device" unless File.directory? "#{$tmp_path}/device"
       $device.ops.download "/etc/hosts", @cache_path
       begin
         File.open(@cache_path,"r").read

@@ -10,7 +10,7 @@ module Idb
     def initialize uuid
       @uuid = uuid
       @app_dir = "#{$device.apps_dir}/#{@uuid}"
-      @cache_dir = "tmp/#{uuid}"
+      @cache_dir = "#{$tmp_path}/#{uuid}"
       FileUtils.mkdir_p @cache_dir  unless Dir.exist? @cache_dir
       parse_info_plist
     end
@@ -225,14 +225,14 @@ module Idb
     end
 
     def cache_dir
-     "tmp/#{@uuid}/"
+     "#{$tmp_path}/#{@uuid}/"
     end
 
 
     def cache_file f
       relative_file = f.sub(@app_dir,'')
       relative_dir = File.dirname relative_file
-      cache_dir = "tmp/#{@uuid}/#{relative_dir}"
+      cache_dir = "#{$tmp_path}/#{@uuid}/#{relative_dir}"
       FileUtils.mkdir_p(cache_dir) unless Dir.exist?(cache_dir)
       cached_file_path = "#{cache_dir}/#{File.basename(f)}"
 

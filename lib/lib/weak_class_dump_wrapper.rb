@@ -25,7 +25,7 @@ module Idb
         $device.ops.upload("utils/weak_class_dump/weak_classdump.cy", wc_file)
       end
 
-      local_instructions_file = "tmp/weak_classdump_instructions.cy"
+      local_instructions_file = "#{$tmp_path}/weak_classdump_instructions.cy"
       remote_instructions_file = "/var/root/weak_classdump_instructions.cy"
       File.open(local_instructions_file,"w") { |x|
         x.puts("weak_classdump_bundle([NSBundle mainBundle],\"#{@remote_header_dir}\")")
