@@ -3,3 +3,17 @@ tmp/
 .bundle
 config/settings.yml
 *.swp
+/.bundle/
+/.yardoc
+/gemfile.lock
+/_yardoc/
+/coverage/
+/doc/
+/pkg/
+/spec/reports/
+/tmp/
+*.bundle
+*.so
+*.o
+*.a
+mkmf.log

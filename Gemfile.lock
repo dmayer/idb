@@ -1,57 +1,65 @@
+PATH
+  remote: .
+  specs:
+    idb (1.3.1)
+      awesome_print
+      coderay
+      eventmachine
+      ffi
+      git
+      highline
+      htmlentities
+      launchy
+      log4r
+      net-sftp
+      net-ssh
+      nokogiri
+      plist4r
+      qtbindings
+      rbkb
+      sqlite3
+      trollop
+
 GEM
   remote: https://rubygems.org/
   specs:
-    addressable (2.3.4)
+    addressable (2.3.6)
     awesome_print (1.2.0)
-    coderay (1.0.8)
+    coderay (1.1.0)
     eventmachine (1.0.3)
-    ffi (1.9.0)
-    git (1.2.6)
+    ffi (1.9.5)
+    git (1.2.8)
     haml (4.0.5)
       tilt
-    highline (1.6.18)
-    htmlentities (4.3.1)
-    launchy (2.3.0)
+    highline (1.6.21)
+    htmlentities (4.3.2)
+    launchy (2.4.2)
       addressable (~> 2.3)
     libxml-ruby (2.7.0)
     libxml4r (0.2.6)
       libxml-ruby (>= 1.1.3)
     log4r (1.1.10)
-    mini_portile (0.5.0)
+    mini_portile (0.6.0)
     net-sftp (2.1.2)
       net-ssh (>= 2.6.5)
-    net-ssh (2.6.7)
-    nokogiri (1.6.0)
-      mini_portile (~> 0.5.0)
+    net-ssh (2.9.1)
+    nokogiri (1.6.3.1)
+      mini_portile (= 0.6.0)
     plist4r (1.2.2)
       haml
       libxml-ruby
       libxml4r
-    qtbindings (4.8.3.0)
-    rbkb (0.6.12)
-      eventmachine (>= 0.12.8)
-    sqlite3 (1.3.8)
-    tilt (2.0.0)
+    qtbindings (4.8.6.0)
+    rake (10.3.2)
+    rbkb (0.7.2)
+    sqlite3 (1.3.9)
+    tilt (2.0.1)
     trollop (2.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  awesome_print
-  coderay
-  eventmachine
-  ffi
-  git
-  highline
-  htmlentities
-  launchy
-  log4r
-  net-sftp
-  net-ssh
-  nokogiri
-  plist4r
-  qtbindings
-  rbkb
-  sqlite3
-  trollop
+  bundler (~> 1.6)
+  idb!
+  rake
