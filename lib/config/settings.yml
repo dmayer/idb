@@ -1,0 +1,8 @@
+---
+ssh_host: localhost
+ssh_port: 22
+ssh_username: root
+ssh_password: alpine
+manual_ssh_port: '2222'
+idb_utility_port: '4711'
+device_connection_mode: usb
