@@ -16,4 +16,9 @@ class URLHandlerWidget < Qt::TabWidget
     @tabs[:fuzzer] = addTab(@url_fuzz, "Fuzzer")
   end
 
+  def disable_for_simulator
+    @tabs[:fuzzer]
+
+  end
+
 end

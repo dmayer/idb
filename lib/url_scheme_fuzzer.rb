@@ -1,6 +1,10 @@
 require 'open-uri'
 
 class URLSchemeFuzzer
+  def initialize
+    @crash_report_folder = "/var/mobile/Library/Logs/CrashReporter"
+
+  end
 
 
   def default_fuzz_strings
@@ -34,6 +38,18 @@ class URLSchemeFuzzer
     fuzz_inputs
   end
 
+  def delete_old_reports
+    #remove old crash reports
+    crashes = $device.ops.dir_glob @crash_report_folder, "*"
+    crashes.each { |x|
+      if x.include? $selected_app.binary_name
+        $log.info "Deleting old log #{x}"
+        $device.ops.execute ("rm -f '#{x}' ")
+      end
+    }
+
+  end
+
 
   def generate_inputs url, fuzz_inputs
     inputs = Array.new
@@ -65,8 +81,7 @@ class URLSchemeFuzzer
   end
 
   def crashed?
-    crash_report_folder = "/var/mobile/Library/Logs/CrashReporter"
-    crashes = $device.ops.dir_glob crash_report_folder, "*"
+    crashes = $device.ops.dir_glob @crash_report_folder, "*"
     crashed = false
     crashes.each { |x|
       if x.include? $selected_app.binary_name

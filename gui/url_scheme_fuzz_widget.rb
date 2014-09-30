@@ -52,6 +52,9 @@ class URLSchemeFuzzWidget < Qt::Widget
 
     @fuzz_config_button = Qt::PushButton.new "Fuzz"
     @fuzz_config_button.connect(SIGNAL :released) {
+      @fuzzer.delete_old_reports
+
+
       fuzz_strings  = Array.new
       0.upto(@fuzz_config_fuzz_strings.count-1) { |i|
         fuzz_strings << @fuzz_config_fuzz_strings.item(i).text
@@ -63,8 +66,10 @@ class URLSchemeFuzzWidget < Qt::Widget
         #TODO: check for crash report
         crashed = @fuzzer.execute url
         @log_window.append_message "#{url}\t#{crashed}"
+        break if crashed
         Qt::CoreApplication.processEvents
         sleep 2
+        Qt::CoreApplication.processEvents
       }
     }
 
