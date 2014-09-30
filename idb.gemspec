@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Daniel A. Mayer"]
   spec.email         = ["mayer@cysec.org"]
   spec.summary       = %q{idb is a tool to simplify some common tasks for iOS pentesting and research.}
-  spec.description   = %q{TODO}
+  spec.description   = %q{Still under test but ready for prime-time soon!}
   spec.homepage      = "https://github.com/dmayer/idb"
   spec.license       = "MIT"
 
