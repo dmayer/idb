@@ -5,8 +5,13 @@ class HostFileWrapper
   end
 
   def content
+    FileUtils.mkpath "tmp/device" unless File.directory? "tmp/device"
     $device.ops.download "/etc/hosts", @cache_path
-    File.open(@cache_path,"r").read
+    begin
+      File.open(@cache_path,"r").read
+    rescue
+
+    end
   end
 
   def save text
