@@ -7,6 +7,7 @@ PATH
       eventmachine
       ffi
       git
+      hexdump
       highline
       htmlentities
       launchy
@@ -31,6 +32,7 @@ GEM
     git (1.2.8)
     haml (4.0.5)
       tilt
+    hexdump (0.2.3)
     highline (1.6.21)
     htmlentities (4.3.2)
     launchy (2.4.2)

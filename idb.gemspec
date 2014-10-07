@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Daniel A. Mayer"]
   spec.email         = ["mayer@cysec.org"]
   spec.summary       = %q{idb is a tool to simplify some common tasks for iOS pentesting and research.}
-  spec.description   = %q{Still under test but ready for prime-time soon!}
+  spec.description   = %q{idb is a tool to simplify some common tasks for iOS pentesting and research. Please see https://github.com/dmayer/idb for more details on installation and usage.}
   spec.homepage      = "https://github.com/dmayer/idb"
   spec.license       = "MIT"
 
@@ -38,4 +38,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'eventmachine'
   spec.add_runtime_dependency 'log4r'
   spec.add_runtime_dependency 'git'
+  spec.add_runtime_dependency 'hexdump'
 end

@@ -1,7 +1,9 @@
 require_relative '../lib/keychain_plist_parser'
+require_relative 'keychain_tab_widget'
 
 module Idb
-  class KeyChainWidget < Qt::TableWidget
+
+  class KeychainWidget < Qt::Widget
 
     def initialize *args
       super *args
@@ -15,17 +17,8 @@ module Idb
       @selection_model.connect(SIGNAL('selectionChanged(QItemSelection,QItemSelection)')) {|x,y|
         unless x.indexes.length == 0
           row = x.indexes[0].row
-          text = ""
-          text <<  "DATA\n"
-          text << "=======================\n"
-          text << @keychain.entries[row]["data"].to_s
-
-          text << "\n\nV_DATA\n"
-          text << "=======================\n"
-          text << @keychain.entries[row]["v_Data"].to_s
-          @details.clear
-          @details.appendPlainText text
-
+          @keychain_tab_widget.set_data @keychain.entries[row]["data"]
+          @keychain_tab_widget.set_vdata @keychain.entries[row]["v_Data"]
         end
 
       }
@@ -39,22 +32,24 @@ module Idb
 
       @layout.addWidget @keychain_tab, 0,0
 
-      @details = Qt::PlainTextEdit.new
-      @details.setReadOnly(true)
-      @layout.addWidget @details, 1, 0
 
       @dump = Qt::PushButton.new "Dump Keychain"
+      @layout.addWidget @dump, 2, 0
+
+      @keychain_tab_widget = KeychainTabWidget.new
+      @layout.addWidget @keychain_tab_widget, 3, 0
+
       @dump.connect(SIGNAL :released) {
         $device.dump_keychain
         @keychain = KeychainPlistParser.new "#{$tmp_path}/device/genp.plist"
         populate_table
       }
-      @layout.addWidget @dump, 2, 0
+
     end
 
+
     def populate_table
-      @details.clear
-      @model.clear
+      @keychain_tab_widget.clear
       @model.setHorizontalHeaderItem(0, Qt::StandardItem.new("Access Group"))
       @model.setHorizontalHeaderItem(1, Qt::StandardItem.new("Account"))
       @model.setHorizontalHeaderItem(2, Qt::StandardItem.new("Service"))
@@ -78,9 +73,6 @@ module Idb
 
 
     end
-
-
-
 
   end
 end

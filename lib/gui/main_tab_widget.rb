@@ -6,7 +6,7 @@ require_relative 'snoop_it_tab_widget'
 require_relative 'cycript_console_widget'
 require_relative 'pasteboard_monitor_widget'
 require_relative 'fs_viewer_tab_widget'
-require_relative 'key_chain_widget'
+require_relative 'keychain_widget'
 require_relative 'tool_widget'
 require 'Qt'
 
@@ -60,7 +60,7 @@ module Idb
       @log.setEnabled(false)
       @tabs[:log] = addTab(@log, "Log")
 
-      @keychain = KeyChainWidget.new self
+      @keychain = KeychainWidget.new self
       @keychain.setEnabled(false)
       @tabs[:keychain] = addTab(@keychain, "Keychain")
 
