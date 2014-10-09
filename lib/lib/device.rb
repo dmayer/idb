@@ -206,34 +206,34 @@ module Idb
 
     def upload_dumpdecrypted
       $log.info "Uploading dumpdecrypted library..."
-      @ops.upload("utils/dumpdecrypted/dumpdecrypted_armv6.dylib","/var/root/dumpdecrypted_armv6.dylib")
-      @ops.upload("utils/dumpdecrypted/dumpdecrypted_armv7.dylib","/var/root/dumpdecrypted_armv7.dylib")
+      @ops.upload("#{File.dirname(File.expand_path(__FILE__))}/../utils/dumpdecrypted/dumpdecrypted_armv6.dylib","/var/root/dumpdecrypted_armv6.dylib")
+      @ops.upload("#{File.dirname(File.expand_path(__FILE__))}/../utils/dumpdecrypted/dumpdecrypted_armv7.dylib","/var/root/dumpdecrypted_armv7.dylib")
       $log.info "'dumpdecrypted' installed successfully."
     end
 
     def install_keychain_dump
-      if File.exist? "utils/keychain_dump/keychain_dump"
+      if File.exist? "#{File.dirname(File.expand_path(__FILE__))}/../utils/keychain_dump/keychain_dump"
         upload_keychain_dump
       else
-        $log.error "keychain_dump not found at 'utils/keychain_dump/keychain_dump'."
+        $log.error "keychain_dump not found at '#{File.dirname(File.expand_path(__FILE__))}/../utils/keychain_dump/keychain_dump'."
         false
       end
     end
     def install_pcviewer
-      if File.exist? "utils/pcviewer/protectionclassviewer"
+      if File.exist? "#{File.dirname(File.expand_path(__FILE__))}/../utils/pcviewer/protectionclassviewer"
         upload_pcviewer
       else
-        $log.error "protectionclassviewer not found at 'utils/pcviewer/protectionclassviewer'."
+        $log.error "protectionclassviewer not found at '#{File.dirname(File.expand_path(__FILE__))}/../utils/pcviewer/protectionclassviewer'."
         false
       end
     end
 
 
     def install_pbwatcher
-      if File.exist? "utils/pbwatcher/pbwatcher"
+      if File.exist? "#{File.dirname(File.expand_path(__FILE__))}/../utils/pbwatcher/pbwatcher"
         upload_pbwatcher
       else
-        $log.error "pbwatcher not found at 'utils/pbwatcher/pbwatcher'."
+        $log.error "pbwatcher not found at '#{File.dirname(File.expand_path(__FILE__))}/../utils/pbwatcher/pbwatcher'."
         false
       end
     end
@@ -241,7 +241,7 @@ module Idb
     def upload_pcviewer
       begin
         $log.info "Uploading pcviewer..."
-        @ops.upload "utils/pcviewer/protectionclassviewer", "/var/root/protectionclassviewer"
+        @ops.upload "#{File.dirname(File.expand_path(__FILE__))}/../utils/pcviewer/protectionclassviewer", "/var/root/protectionclassviewer"
         @ops.chmod "/var/root/protectionclassviewer", 0744
         $log.info "'pcviewer' installed successfully."
   #      true
@@ -254,7 +254,7 @@ module Idb
     def upload_keychain_dump
       begin
         $log.info "Uploading keychain_dump..."
-        @ops.upload "utils/keychain_dump/keychain_dump", "/var/root/keychain_dump"
+        @ops.upload "#{File.dirname(File.expand_path(__FILE__))}/../utils/keychain_dump/keychain_dump", "/var/root/keychain_dump"
         @ops.chmod "/var/root/keychain_dump", 0744
         $log.info "'keychain_dump' installed successfully."
   #      true
@@ -266,7 +266,7 @@ module Idb
     def upload_pbwatcher
       begin
         $log.info "Uploading pbwatcher..."
-        @ops.upload "utils/pbwatcher/pbwatcher", "/var/root/pbwatcher"
+        @ops.upload "#{File.dirname(File.expand_path(__FILE__))}/../utils/pbwatcher/pbwatcher", "/var/root/pbwatcher"
         @ops.chmod "/var/root/pbwatcher", 0744
         $log.info "'pbwatcher' installed successfully."
   #      true
