@@ -81,7 +81,7 @@ module Idb
     end
 
     def start_port_forwarding
-      @port_forward_pid = Process.spawn("#{RbConfig.ruby} lib/helper/ssh_port_forwarder.rb"  )
+      @port_forward_pid = Process.spawn("#{RbConfig.ruby} #{File.dirname(File.expand_path(__FILE__))}/../helper/ssh_port_forwarder.rb"  )
     end
 
     def restart_port_forwarding
