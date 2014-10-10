@@ -1,3 +1,8 @@
+[![Gem Version](https://badge.fury.io/rb/idb.svg)](http://badge.fury.io/rb/idb)
+[![Dependency Status](https://gemnasium.com/dmayer/idb.png)](https://gemnasium.com/dmayer/idb)
+[![Code Climate](https://codeclimate.com/github/dmayer/idb.png)](https://codeclimate.com/github/dmayer/idb)
+
+
 # Idb
 
 idb is a tool to simplify some common tasks for iOS pentesting and research. Originally there was a command line version of the tool, but it is no longer under development so you should get the GUI version.
