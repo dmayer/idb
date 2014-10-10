@@ -4,11 +4,9 @@ PATH
     idb (1.3.2)
       awesome_print
       coderay
-      eventmachine
       ffi
       git
       hexdump
-      highline
       htmlentities
       launchy
       log4r
@@ -17,9 +15,7 @@ PATH
       nokogiri
       plist4r
       qtbindings
-      rbkb
       sqlite3
-      trollop
 
 GEM
   remote: https://rubygems.org/
@@ -27,13 +23,11 @@ GEM
     addressable (2.3.6)
     awesome_print (1.2.0)
     coderay (1.1.0)
-    eventmachine (1.0.3)
-    ffi (1.9.5)
+    ffi (1.9.6)
     git (1.2.8)
     haml (4.0.5)
       tilt
     hexdump (0.2.3)
-    highline (1.6.21)
     htmlentities (4.3.2)
     launchy (2.4.2)
       addressable (~> 2.3)
@@ -53,10 +47,8 @@ GEM
       libxml4r
     qtbindings (4.8.6.0)
     rake (10.3.2)
-    rbkb (0.7.2)
     sqlite3 (1.3.9)
     tilt (2.0.1)
-    trollop (2.0)
 
 PLATFORMS
   ruby

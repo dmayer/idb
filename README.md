@@ -6,25 +6,36 @@ idb was released as part of a talk at [ShmooCon](http://shmoocon.org) 2014. The 
 
 ## Installation
 
-I am currently working on making the installation proces much more pleasant. It is not fully auomated yet, but the dependencies and number steps are much simpler since I bundled idb into a gem. Basic instructions:
+idb has some prerequisites. As it turns out, things like ruby and Qt are difficult to bundle into a stand-alone installer. While idb itself can easily be installed via Ruby Gems, you need to have some additional software first:
 
+### 1. Prerequisites 
 * Install ruby (1.9.3 and 2.1 are known to work. **Don't use 2.0**)
   * **Shared library support is required!** 
     * Under `rvm` use `--enable-shared` when installing ruby.
     * Under `ruby-install`/`chruby` use `-- --enable-shared` when installing ruby.
     * Under `ruby-build`/`rbenv` with `ruby-build` use `CONFIGURE_OPTS=--enable-shared [command]` when installing Ruby.
-* Install prerequisites:
+* Install other prerequisites:
     *  OS X: `brew install qt cmake usbmuxd libimobiledevice`
     *  Ubuntu: `apt-get install cmake libqt4-dev git-core libimobiledevice-utils libplist-utils usbmuxd -y`
+
+### 2. a) Installation for Production Use
 *  Install idb: `gem install idb`
 *  Run idb: `idb`
 *  Hooray!
 
-Expect a fully bundled version which includes ruby and qt soon!
+### 2. b) Installation for Development
+* Clone the repository `git clone https://github.com/dmayer/idb`
+* `cd idb`
+* `bundle install` (using the right ruby version)
+* As for every ruby gem, the application code lives in the `lib` folder 
+* Run idb by calling `bundle exec rake run` or manually running `lib/run_idb.rb`
+
 
 ## Usage
 
 See the basic [manual and walk-through](//github.com/dmayer/idb/wiki/Manual-and--Walk-Through) to get started.
+
+**New as of October 2014:** Idb now stores its configuration and temporary files in `~/.idb/`
 
 ## FAQ
 
