@@ -1,7 +1,7 @@
 [![Gem Version](https://badge.fury.io/rb/idb.svg)](http://badge.fury.io/rb/idb)
 [![Dependency Status](https://gemnasium.com/dmayer/idb.png)](https://gemnasium.com/dmayer/idb)
 [![Code Climate](https://codeclimate.com/github/dmayer/idb.png)](https://codeclimate.com/github/dmayer/idb)
-
+<img src="https://stats.cysec.org/piwik.php?idsite=2&rec=1" style="border:0" alt="" />
 
 # Idb
 
