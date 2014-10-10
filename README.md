@@ -9,26 +9,31 @@ idb was released as part of a talk at [ShmooCon](http://shmoocon.org) 2014. The 
 idb has some prerequisites. As it turns out, things like ruby and Qt are difficult to bundle into a stand-alone installer. While idb itself can easily be installed via Ruby Gems, you need to have some additional software first:
 
 ### 1. Prerequisites 
-* Install ruby (1.9.3 and 2.1 are known to work. **Don't use 2.0**)
-  * **Shared library support is required!** 
-    * Under `rvm` use `--enable-shared` when installing ruby.
-    * Under `ruby-install`/`chruby` use `-- --enable-shared` when installing ruby.
-    * Under `ruby-build`/`rbenv` with `ruby-build` use `CONFIGURE_OPTS=--enable-shared [command]` when installing Ruby.
-* Install other prerequisites:
-    *  OS X: `brew install qt cmake usbmuxd libimobiledevice`
-    *  Ubuntu: `apt-get install cmake libqt4-dev git-core libimobiledevice-utils libplist-utils usbmuxd -y`
+####  1.1 Ruby Environment
+idb requires a valid ruby 1.9.3 or 2.1 installation. **Ruby 2.0 does not work properly** due to issues with qtbindings.
 
-### 2. a) Installation for Production Use
+**Important Note:** Shared library support is required! This is the default for many system rubies, but if you install a ruby via `rvm` or similar, you need to do one of the following:
+* Under `rvm` use `--enable-shared` when installing ruby.
+* Under `ruby-install`/`chruby` use `-- --enable-shared` when installing ruby.
+* Under `ruby-build`/`rbenv` with `ruby-build` use `CONFIGURE_OPTS=--enable-shared [command]` when installing Ruby.
+
+#### 1.2 Install Other Prerequisites:
+*  OS X: `brew install qt cmake usbmuxd libimobiledevice`
+*  Ubuntu: `apt-get install cmake libqt4-dev git-core libimobiledevice-utils libplist-utils usbmuxd -y`
+
+### 2. Installing idb
+#### 2.1 Production Use
 *  Install idb: `gem install idb`
 *  Run idb: `idb`
 *  Hooray!
 
-### 2. b) Installation for Development
+#### 2.2 Development
 * Clone the repository `git clone https://github.com/dmayer/idb`
 * `cd idb`
 * `bundle install` (using the right ruby version)
 * As for every ruby gem, the application code lives in the `lib` folder 
-* Run idb by calling `bundle exec rake run` or manually running `lib/run_idb.rb`
+* Run idb by calling `bundle exec rake run`
+  * Note: Running `bin/idb` directly won't work since it will not find the idb gem (or use the installed gem and not the checked out source code).  Instead, the `rake` task runs idb in the current bundler environment where bundler supplies the gem from source. 
 
 
 ## Usage
