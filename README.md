@@ -15,7 +15,7 @@ idb has some prerequisites. As it turns out, things like ruby and Qt are difficu
 
 ### 1. Prerequisites 
 ####  1.1 Ruby Environment
-idb requires a valid ruby 1.9.3 or 2.1 installation and it is recommended to install this using [RVM](https://rvm.io/). **Ruby 2.0 does not work properly** due to issues with qtbindings.
+idb requires a valid ruby 1.9.3 or 2.1 installation and it is recommended to install the used ruby using [RVM](https://rvm.io/). **Ruby 2.0 does not work properly** due to issues with qtbindings.
 
 **Important Note:** Shared library support is required! This is the default for many system rubies, but if you install a ruby via `rvm` or similar, you need to do one of the following:
 * **Under `rvm` use `rvm install 2.1 --enable-shared` when installing ruby.**
