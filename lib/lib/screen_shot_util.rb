@@ -5,6 +5,7 @@ module Idb
 
     def initialize data_path, ops, sim = true
       @data_path = data_path
+      ap @data_path
       @snapshot_path = "#{@data_path}/Library/Caches/Snapshots"
       @ops = ops
       @sim = sim

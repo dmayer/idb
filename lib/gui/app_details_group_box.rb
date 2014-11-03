@@ -34,7 +34,7 @@ module Idb
           @vals['sdk_version'].setText($selected_app.sdk_version)
           @vals['minimum_os_version'].setText($selected_app.minimum_os_version)
           @vals['keychain_access_groups'].setText($selected_app.keychain_access_groups)
-          @vals['data_dir'].setText($selected_app.data_dir.sub("/private/var/mobile/Containers/Data/Application",""))
+          @vals['data_dir'].setText($selected_app.data_directory.sub("/private/var/mobile/Containers/Data/Application",""))
           @launch_app.setEnabled(true)
           @open_folder.setEnabled(true)
 

@@ -25,7 +25,8 @@ module Idb
         @keychain_access_groups = mapper.keychain_access_groups_by_bundle_id @info_plist.bundle_identifier
 
        else
-        @data_dir = "#{$device.apps_dir}/#{@uuid}"
+        @data_dir = @app_dir
+        ap @data_dir
       end
 
 
@@ -183,8 +184,8 @@ module Idb
       end
     end
 
-    def data_dir
-      if @data_dir.nil?
+    def data_directory
+      if $device.ios_version != 8
         "[iOS 8 specific]"
       else
         @data_dir
