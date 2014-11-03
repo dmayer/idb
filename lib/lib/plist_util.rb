@@ -13,7 +13,10 @@ module Idb
 
       @plutil = Pathname.new("/usr/bin/plutil")
       if(!@plutil.exist?)
-        raise "plutil not found at #{@plutil}. aborting."
+        @plutil = Pathname.new("/usr/bin/plistutil")
+          if(!@plutil.exist?)
+            raise "plutil not found at #{@plutil}. aborting."
+          end
       end
 
       parse_plist_file
