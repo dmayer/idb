@@ -33,6 +33,8 @@ module Idb
           @vals['platform_version'].setText($selected_app.platform_version)
           @vals['sdk_version'].setText($selected_app.sdk_version)
           @vals['minimum_os_version'].setText($selected_app.minimum_os_version)
+          @vals['keychain_access_groups'].setText($selected_app.keychain_access_groups)
+          @vals['data_dir'].setText($selected_app.data_dir.sub("/private/var/mobile/Containers/Data/Application",""))
           @launch_app.setEnabled(true)
           @open_folder.setEnabled(true)
 
@@ -77,6 +79,8 @@ module Idb
       addDetail 'platform_version', 'Platform Version'
       addDetail 'sdk_version', 'SDK Version'
       addDetail 'minimum_os_version', 'Minimum OS'
+      addDetail 'keychain_access_groups', 'Keychain Access Groups'
+      addDetail 'data_dir', 'Data Directory'
 
       @launch_app = Qt::PushButton.new "Launch App"
       @launch_app.setEnabled(false)
@@ -117,6 +121,8 @@ module Idb
       @vals['platform_version'].setText("")
       @vals['sdk_version'].setText("")
       @vals['minimum_os_version'].setText("")
+      @vals['data_dir'].setText("")
+      @vals['keychain_access_groups'].setText("")
       @launch_app.setEnabled(false)
       @open_folder.setEnabled(false)
 

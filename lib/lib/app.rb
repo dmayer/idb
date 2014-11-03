@@ -22,6 +22,7 @@ module Idb
         mapper = IOS8LastLaunchServicesMapWrapper.new local_mapping_file
 
         @data_dir = mapper.data_path_by_bundle_id @info_plist.bundle_identifier
+        @keychain_access_groups = mapper.keychain_access_groups_by_bundle_id @info_plist.bundle_identifier
 
        else
         @data_dir = "#{$device.apps_dir}/#{@uuid}"
@@ -172,6 +173,22 @@ module Idb
 
     def bundle_name
       get_raw_plist_value 'CFBundleDisplayName'
+    end
+
+    def keychain_access_groups
+      if @keychain_access_groups.nil?
+        "[iOS 8 specific]"
+      else
+        @keychain_access_groups.join "\n"
+      end
+    end
+
+    def data_dir
+      if @data_dir.nil?
+        "[iOS 8 specific]"
+      else
+        @data_dir
+      end
     end
 
     def platform_version
