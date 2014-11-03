@@ -20,9 +20,9 @@ module Idb
           $log.error "File #{item.full_path} could not be downloaded. Either the file does not exist (e.g., dead symlink) or there is a permission problem."
         else
           if RbConfig::CONFIG['host_os'] =~ /linux/
-            Process.spawn "'#{$settings['sqlite_editor']}' '#{Dir.getwd}/#{cache_name}'"
+            Process.spawn "'#{$settings['sqlite_editor']}' '#{cache_name}'"
           else
-            Process.spawn "open -a '#{$settings['sqlite_editor']}' '#{Dir.getwd}/#{cache_name}'"
+            Process.spawn "open -a '#{$settings['sqlite_editor']}' '#{cache_name}'"
           end
         end
 
