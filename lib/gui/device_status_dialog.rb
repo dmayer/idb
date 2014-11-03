@@ -99,7 +99,10 @@ module Idb
       else
         @install_aptget = Qt::PushButton.new "Install"
         @install_aptget.connect(SIGNAL(:released)) {
-          $device.install_apt_get
+          error = Qt::MessageBox.new
+          error.setText("Aptitude or apt-get must be installed on the device using Cydia.")
+          error.setIcon(Qt::MessageBox::Critical)
+          error.exec
           if $device.apt_get_installed?
             @install_aptget.hide
             mark_apt_get_installed
