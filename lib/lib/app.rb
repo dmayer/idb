@@ -1,18 +1,33 @@
 require_relative 'plist_util'
 require_relative 'app_binary'
 require_relative 'CgBI'
+require_relative 'ios8_last_launch_services_map_wrapper'
 
 module Idb
   class App
-    attr_accessor :uuid, :app_dir, :binary, :cache_dir
+    attr_accessor :uuid, :app_dir, :binary, :cache_dir, :data_dir
 
 
     def initialize uuid
       @uuid = uuid
-      @app_dir = "#{$device.apps_dir}/#{@uuid}"
       @cache_dir = "#{$tmp_path}/#{uuid}"
       FileUtils.mkdir_p @cache_dir  unless Dir.exist? @cache_dir
+
+      @app_dir = "#{$device.apps_dir}/#{@uuid}"
       parse_info_plist
+
+      if $device.ios_version == 8
+        mapping_file = "/var/mobile/Library/MobileInstallation/LastLaunchServicesMap.plist"
+        local_mapping_file =  cache_file mapping_file
+        mapper = IOS8LastLaunchServicesMapWrapper.new local_mapping_file
+
+        @data_dir = mapper.data_path_by_bundle_id @info_plist.bundle_identifier
+
+       else
+        @data_dir = "#{$device.apps_dir}/#{@uuid}"
+      end
+
+
     end
 
     def analyze
@@ -207,17 +222,37 @@ module Idb
 
     def find_plist_files
       $log.info "Looking for plist files..."
-      $device.ops.dir_glob(@app_dir, "**/*plist")
+      app_dir_files = $device.ops.dir_glob(@app_dir, "**/*plist")
+      data_dir_files = Array.new
+
+      if app_dir != data_dir
+        data_dir_files = $device.ops.dir_glob(@data_dir, "**/*plist")
+      end
+      app_dir_files + data_dir_files
+
     end
 
     def find_sqlite_dbs
       $log.info "Looking for sqlite files..."
-      $device.ops.dir_glob(@app_dir, "**/*sql**")
+      app_dir_files = $device.ops.dir_glob(@app_dir, "**/*sql**")
+      data_dir_files = Array.new
+
+      if app_dir != data_dir
+        data_dir_files = $device.ops.dir_glob(@data_dir, "**/*sql**")
+      end
+      app_dir_files + data_dir_files
+
     end
 
     def find_cache_dbs
       $log.info "Looking for Cache.db files..."
-      $device.ops.dir_glob(@app_dir, "**/Cache.db")
+      app_dir_files = $device.ops.dir_glob(@app_dir, "**/Cache.db")
+      data_dir_files = Array.new
+
+      if app_dir != data_dir
+        data_dir_files = $device.ops.dir_glob(@data_dir, "**/Cache.db")
+      end
+      app_dir_files + data_dir_files
     end
 
     def get_url_handlers

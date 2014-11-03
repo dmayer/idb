@@ -63,7 +63,11 @@ module Idb
           item.setText full_path.sub($selected_app.app_dir,'')
         else
           pc = $device.protection_class full_path
-          item.setText full_path.sub($selected_app.app_dir,'') + " => " + pc.strip
+          if full_path.start_with? $selected_app.app_dir
+            item.setText "[App Bundle]" + full_path.sub($selected_app.app_dir,'') + " => " + pc.strip
+          elsif full_path.start_with? $selected_app.data_dir
+            item.setText "[Data Dir]" + full_path.sub($selected_app.data_dir,'') + " => " + pc.strip
+          end
         end
 
         item.full_path = full_path

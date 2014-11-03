@@ -7,10 +7,11 @@ require_relative 'usb_muxd_wrapper'
 
 module Idb
   class Device < AbstractDevice
-    attr_accessor :usb_ssh_port, :mode, :tool_port
+    attr_accessor :usb_ssh_port, :mode, :tool_port, :ios_version
 
     def initialize username, password, hostname, port
-      @apps_dir = '/private/var/mobile/Applications'
+
+
       @username = username
       @password = password
       @hostname = hostname
@@ -57,6 +58,28 @@ module Idb
         @tool_port = @usbmuxd.find_available_port
         $log.debug "opening tool port #{@tool_port} for internal ssh connection"
         @usbmuxd.proxy @tool_port, $settings['ssh_port']
+
+
+
+        @apps_dir_ios_pre8 = '/private/var/mobile/Applications'
+        @apps_dir_ios_8 = '/private/var/mobile/Containers/Bundle/Application'
+        @data_dir_ios_8 = '/private/var/mobile/Containers/Data/Application'
+
+        if @ops.directory? @apps_dir_ios_pre8
+          @ios_version = 7 # 7 or earlier
+          @apps_dir = @apps_dir_ios_pre8
+          @data_dir = @apps_dir_ios_pre8
+
+        elsif @ops.directory? @apps_dir_ios_8
+          @ios_version = 8
+          @apps_dir = @apps_dir_ios_8
+          @data_dir = @data_dir_ios_8
+
+        else
+          $log.error "Unsupported iOS Version."
+          raise
+        end
+
 
       end
 

@@ -14,7 +14,7 @@ module ScreenShotWizard
     def self.new_with_app app
       wiz = self.new
       wiz.app = app
-      wiz.screenshot = ScreenShotUtil.new app.app_dir, $device.ops, false
+      wiz.screenshot = ScreenShotUtil.new app.data_dir, $device.ops, false
       wiz
     end
 

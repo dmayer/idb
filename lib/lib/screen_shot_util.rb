@@ -3,9 +3,9 @@ require_relative 'ssh_operations'
 module Idb
   class ScreenShotUtil
 
-    def initialize app_path, ops, sim = true
-      @app_path = app_path
-      @snapshot_path = "#{@app_path}/Library/Caches/Snapshots"
+    def initialize data_path, ops, sim = true
+      @data_path = data_path
+      @snapshot_path = "#{@data_path}/Library/Caches/Snapshots"
       @ops = ops
       @sim = sim
     end
