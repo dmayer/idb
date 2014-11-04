@@ -15,7 +15,14 @@ module Idb
       @rsync = Qt::PushButton.new "Rsync + Git"
       @layout.addWidget @rsync, 0,0
       @rsync.connect(SIGNAL :released) {
-        @manager.sync_new_revision
+        @manager.start_new_revision
+        if $device.ios_version == 8
+          @manager.sync_dir $selected_app.app_dir, "app_bundle"
+          @manager.sync_dir $selected_app.data_dir, "data_bundle"
+        else
+          @manager.sync_dir $selected_app.app_dir, "app_bundle"
+        end
+        @manager.commit_new_revision
 
       }
 
@@ -228,17 +235,40 @@ module Idb
       tree_item
     end
 
-    def set_start start
+    def update_start
       @treeview.clear
+      @selected_dir = $selected_app.app_dir
+      @local_path = "#{$selected_app.cache_dir}/idb_mirror.git"
+      @manager = RsyncGitManager.new @local_path
+
+      if $device.ios_version == 8
+        start_ios_8
+      else
+        start_ios_pre8
+      end
+    end
+
+    def start_ios_pre8
       @root_node = Qt::TreeWidgetItem.new
-      @root_node.setText(0, "app root")
+      @root_node.setText(0, "[App Bundle]")
       @root_node.setChildIndicatorPolicy(Qt::TreeWidgetItem::ShowIndicator)
       @treeview.addTopLevelItem @root_node
-      @start = start
-      @selected_dir = start
-      @root_node.setText(1, @start)
-      @local_path = "#{$selected_app.cache_dir}/idb_mirror.git"
-      @manager = RsyncGitManager.new start, @local_path
+      @root_node.setText(1, $selected_app.app_dir)
+    end
+
+    def start_ios_8
+      @bundle_root_node = Qt::TreeWidgetItem.new
+      @bundle_root_node.setText(0, "[App Bundle]")
+      @bundle_root_node.setChildIndicatorPolicy(Qt::TreeWidgetItem::ShowIndicator)
+      @bundle_root_node.setText(1, $selected_app.app_dir)
+
+      @data_root_node = Qt::TreeWidgetItem.new
+      @data_root_node.setText(0, "[Data Dir]")
+      @data_root_node.setChildIndicatorPolicy(Qt::TreeWidgetItem::ShowIndicator)
+      @data_root_node.setText(1, $selected_app.data_dir)
+
+      @treeview.addTopLevelItem @bundle_root_node
+      @treeview.addTopLevelItem @data_root_node
     end
 
   end

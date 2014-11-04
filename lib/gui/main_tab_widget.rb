@@ -166,7 +166,7 @@ module Idb
   #    refresh_current_tab
       @app_binary.refresh
       enableFSViewer
-      @fs_viewer.set_start  $selected_app.app_dir
+      @fs_viewer.update_start
       enableTools
       @tools.enable_screenshot
 
