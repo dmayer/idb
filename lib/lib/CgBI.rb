@@ -39,11 +39,14 @@ module Idb
     end
 
     def self.from_file(file_path)
+
       self.new(File.open(file_path, 'rb') {|f| f.read})
     end
 
     def png
       return @png if @png
+
+      all_idats = ""
 
       #Convert from cgbi, set instance var, return
       data = @cgbi.dup
@@ -89,14 +92,14 @@ module Idb
           #(1..@height).each do |y|
             # Copy over the filter type byte on each line
             # TODO: Might not be necessary for all filter types
-            chunk[:data] << decompressed.slice!(0,1)
+            all_idats << decompressed.slice!(0,1)
             (1..@width).each do |x|
               # BGRA => RGBA
               b,g,r,a = decompressed.unpack("CCCC")
               decompressed.slice!(0,4).split(//)
 
               begin
-                chunk[:data] += [r,g,b,a].pack("CCCC")
+                all_idats += [r,g,b,a].pack("CCCC")
                 decompressed = nil if decompressed.length == 0
               rescue => e
                 puts "Left: #{decompressed.inspect}"
@@ -104,20 +107,19 @@ module Idb
             end
           end
 
-          # Deflate the IDAT chunk
-          chunk[:type] = "IDAT"
-          chunk[:data] = Zlib::Deflate.deflate(chunk[:data])
-          chunk[:length] = [chunk[:data].length].pack("N")
-          chunk[:crc] = [Zlib::crc32('IDAT' + chunk[:data])].pack("N")
-
-          # store it away
-          png << chunk[:length]
-          png << chunk[:type]
-          png << chunk[:data]
-          png << chunk[:crc]
 
         when "IEND"
           raise "Data after IEND" unless data.empty?
+
+          #first write IDAT
+          # Deflate the IDAT chunk
+          compressed_idats = Zlib::Deflate.deflate(all_idats)
+          png << [compressed_idats.length].pack("N")
+          png <<  "IDAT"
+          png << compressed_idats
+          png <<  [Zlib::crc32('IDAT' + compressed_idats)].pack("N")
+
+
           png << [chunk[:length]].pack("N")
           png << chunk[:type]
           png << chunk[:data]
@@ -150,4 +152,7 @@ module Idb
     end
 
   end
+
+
 end
+

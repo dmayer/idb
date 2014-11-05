@@ -16,23 +16,6 @@ module Idb
       setTitle "App Details"
 
 
-      @icon_button_layout = Qt::GridLayout.new
-
-
-
-
-      @icon_button_widget = Qt::Widget.new self
-      @icon_button_widget.setLayout @icon_button_layout
-
-      @icon = Qt::Label.new
-
-      @icon_button_layout.addWidget @icon, 0, 0, 1, 1
-      @icon_button_layout.addWidget @select_app_button, 0, 1, 1, 3
-      @layout.addWidget @icon_button_widget, 0, 0, 1, 2
-
-
-
-
       @labels = Hash.new
       @vals = Hash.new
       @cur_row = 1
@@ -94,16 +77,6 @@ module Idb
 
 
 
-      begin
-        icon_file = $selected_app.get_icon_file
-        pixmap = Qt::Pixmap.new(icon_file)
-        @icon.setPixmap pixmap.scaledToWidth(50)  unless icon_file.nil?
-
-      rescue => e
-        $log.error "Icon CONVERSION failed.  #{e.message}"
-        @icon.setPixmap Qt::Pixmap.new
-        # lets ignore conversion errors for now..
-      end
     end
 
     def clear

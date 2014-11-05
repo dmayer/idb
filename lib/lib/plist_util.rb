@@ -34,6 +34,15 @@ module Idb
         puts CodeRay.scan(doc.to_xml(:indent => 2), :xml).terminal
     end
 
+    def get_with_regex regex
+      ap @plist_data.to_hash
+      a = @plist_data.to_hash.find { |x|
+        not (x =~ regex).nil?
+      }
+      ap a
+      a
+    end
+
     private
     def parse_plist_file
       $log.info 'Parsing plist file..'
@@ -67,6 +76,7 @@ module Idb
       @binary_name = @plist_data['CFBundleExecutable']
       @bundle_identifier =  @plist_data['CFBundleIdentifier']
     end
+
 
 
 

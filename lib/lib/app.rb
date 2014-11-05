@@ -26,7 +26,6 @@ module Idb
 
        else
         @data_dir = @app_dir
-        ap @data_dir
       end
 
 
@@ -130,26 +129,41 @@ module Idb
     end
 
 
-    def icon_path
+    def find_icon
+      # lets try the easy way first...
       icon_name = get_raw_plist_value('CFBundleIconFile')
-
-      unless icon_name
-        # If there's no icon specified, grab the first one from the array.
-        # If it's large, this could make the app nonresponsive.
-        icon_name = get_raw_plist_value('CFBundleIconFiles').first
-        # NOTE: This still fails to find the icon for some apps that store it in odd places,
-        # Like Netflix' plist_data['CFBundleIcons~ipad']['CFBundlePrimaryIcon']['CFBundleIconFiles']
+      if not icon_name.nil?
+        return icon_name
       end
 
+      # lets try iphone icons
+      icon_name = get_raw_plist_value('CFBundleIcons')
+      unless icon_name.nil?
+        if not icon_name["CFBundlePrimaryIcon"].nil? and not icon_name["CFBundlePrimaryIcon"]["CFBundleIconFiles"].nil?
+          return icon_name["CFBundlePrimaryIcon"]["CFBundleIconFiles"].sort.last
+        end
+      end
+
+      # lets try ipad icons
+      icon_name = get_raw_plist_value('CFBundleIcons~ipad')
+      unless icon_name.nil?
+        if not icon_name["CFBundlePrimaryIcon"].nil? and not icon_name["CFBundlePrimaryIcon"]["CFBundleIconFiles"].nil?
+          return icon_name["CFBundlePrimaryIcon"]["CFBundleIconFiles"].sort.last
+        end
+      end
+    end
+
+    def icon_path
       app_dir = Shellwords.escape(@app_dir)
+      icon_name = find_icon
 
       unless (icon_name[-4,4] == ".png")
         $log.debug "Appending extension to #{icon_name}"
-        icon_name += ".png"
+        icon_name += "*.png"
         $log.debug "Now: #{icon_name}"
       end
 
-      icon_file = $device.ops.execute("ls #{app_dir}/*app/#{icon_name}").strip
+      icon_file = $device.ops.execute("ls #{app_dir}/*app/#{icon_name}").split("\n").first.strip
 
       if not $device.ops.file_exists? icon_file
         $log.warn "Icon not found: #{icon_file}"
