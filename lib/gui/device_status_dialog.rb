@@ -71,25 +71,7 @@ module Idb
     end
 
 
-    def initialize *args
-      super *args
-      @layout = Qt::GridLayout.new
-      setLayout(@layout)
-      setWindowTitle "Device Status"
-
-      @close_button = Qt::PushButton.new "Close"
-      @close_button.connect(SIGNAL(:released)) {|x|
-        reject()
-      }
-      #TODO: prevent closing
-      @layout.addWidget @close_button, 9, 2
-
-
-      #######################
-      ### APT-GET
-      #######################
-
-
+    def apt_get_section
       @aptget_label = Qt::Label.new "<b>apt-get / aptitude</b><br>(Install additional software packages)"
       @layout.addWidget @aptget_label, 0, 0
 
@@ -110,10 +92,10 @@ module Idb
         }
         @layout.addWidget @install_aptget, 0, 1
       end
-      #######################
-      ### OPEN
-      #######################
 
+    end
+
+    def open_section
       @open_label = Qt::Label.new "<b>open</b><br>(Open apps on the device)"
       @layout.addWidget @open_label, 1, 0
 
@@ -136,11 +118,9 @@ module Idb
         @layout.addWidget @install_open, 1, 1
       end
 
-      #######################
-      ### OPEN URL
-      #######################
+    end
 
-
+    def open_url_section
       @openurl_label = Qt::Label.new "<b>openURL</b><br>(Open URL on the device)"
       @layout.addWidget @openurl_label, 2, 0
 
@@ -148,22 +128,11 @@ module Idb
       if $device.openurl_installed?
         mark_openurl_installed
       else
-  #      @install_openurl = Qt::PushButton.new "Install"
-  #      @install_openurl.connect(SIGNAL(:released)) {
-  #        $device.install_openurl
-  #        if $device.open_installed?
-  #          @install_open.hide
-  #          mark_open_installed
-  #        end
-  #      }
-  #      @layout.addWidget @install_openurl, 2, 1
       end
 
+    end
 
-      #######################
-      ### DUMPDECRYPTED
-      #######################
-
+    def dumpdecrypted_section
       @dumpdecrypted_label = Qt::Label.new "<b>dumpdecrypted</b><br>(Decrypt app binaries on the device).<br>Developed and maintained by Stefan Esser https://github.com/stefanesser/dumpdecrypted"
       @layout.addWidget @dumpdecrypted_label, 3, 0
 
@@ -186,13 +155,10 @@ module Idb
         }
         @layout.addWidget @install_dumpdecrypted, 3, 1
       end
+    end
 
 
-      #######################
-      ### PBWATCHER
-      #######################
-
-
+    def pbwatcher_section
       @pbwatcher_label = Qt::Label.new "<b>pbwatcher</b><br>(idb pasteboard monitor helper)"
       @layout.addWidget @pbwatcher_label, 4, 0
 
@@ -212,12 +178,9 @@ module Idb
         @layout.addWidget @install_pbwatcher, 4, 1
       end
 
+    end
 
-      #######################
-      ### PCVIEWER
-      #######################
-
-
+    def pcviewer_section
       @pcviewer_label = Qt::Label.new "<b>pcviewer</b><br>(idb file protection class helper)"
       @layout.addWidget @pcviewer_label, 5, 0
 
@@ -237,37 +200,31 @@ module Idb
         @layout.addWidget @install_pcviewer, 5, 1
       end
 
-        #######################
-        ### KEYCHAIN_DUMPER
-        #######################
+    end
+
+    def keychaindumper_section
+      @keychain_dump_label = Qt::Label.new "<b>keychain_dump</b><br>(dumps the keychain into a plist file.<br>https://code.google.com/p/iphone-dataprotection/)"
+      @layout.addWidget @keychain_dump_label, 6, 0
+
+      if $device.keychain_dump_installed?
+        mark_keychain_dump_installed
+      else
+        @install_keychain_dump = Qt::PushButton.new "Install"
+        @install_keychain_dump.connect(SIGNAL(:released)) {
+          $device.install_keychain_dump
+          if $device.keychain_dump_installed?
+            @install_keychain_dump.hide
+            mark_keychain_dump_installed
+          end
+        }
 
 
-        @keychain_dump_label = Qt::Label.new "<b>keychain_dump</b><br>(dumps the keychain into a plist file.<br>https://code.google.com/p/iphone-dataprotection/)"
-        @layout.addWidget @keychain_dump_label, 6, 0
+        @layout.addWidget @install_keychain_dump, 6, 1
 
-        if $device.keychain_dump_installed?
-          mark_keychain_dump_installed
-        else
-          @install_keychain_dump = Qt::PushButton.new "Install"
-          @install_keychain_dump.connect(SIGNAL(:released)) {
-            $device.install_keychain_dump
-            if $device.keychain_dump_installed?
-              @install_keychain_dump.hide
-              mark_keychain_dump_installed
-            end
-          }
+      end
+    end
 
-
-          @layout.addWidget @install_keychain_dump, 6, 1
-
-        end
-
-
-      #######################
-      ### rsync
-      #######################
-
-
+    def rsync_section
       @rsync_label = Qt::Label.new "<b>rsync</b><br>(folder synchronization)"
       @layout.addWidget @rsync_label, 7, 0
 
@@ -292,12 +249,9 @@ module Idb
         @layout.addWidget @install_rsync, 7, 1
 
       end
+    end
 
-
-      #######################
-      ### CYCRIPT
-      #######################
-
+    def cycript_section
       @cycript_label = Qt::Label.new "<b>cycript</b><br>(explore and modify running applications using a hybrid of Objective-C++ and JavaScript. http://www.cycript.org/ )"
       @layout.addWidget @cycript_label, 8, 0
 
@@ -319,32 +273,32 @@ module Idb
         }
         @layout.addWidget @install_cycript, 8, 1
       end
-
-      #######################
-      ### clutch
-      #######################
+    end
 
 
-  #    @clutch_label = Qt::Label.new "<b>Clutch (not used by idb)</b><br>(App cracking tool that also performs decryption. Installation from cydia.iphonecake.com.)"
-  #    @layout.addWidget @clutch_label, 8, 0
-  #
-  #    if $device.clutch_installed?
-  #      mark_clutch_installed
-  #    else
-  #      @install_clutch = Qt::PushButton.new "Install"
-  #      @install_clutch.connect(SIGNAL(:released)) {
-  #        $device.setup_clutch_source
-  #        $device.install_clutch
-  #        if $device.clutch_installed?
-  #          @install_clutch.hide
-  #          mark_clutch_installed
-  #        end
-  #      }
-  #
-  #
-  #      @layout.addWidget @install_clutch, 8, 1
-  #
-  #    end
+    def initialize *args
+      super *args
+      @layout = Qt::GridLayout.new
+      setLayout(@layout)
+      setWindowTitle "Device Status"
+
+      @close_button = Qt::PushButton.new "Close"
+      @close_button.connect(SIGNAL(:released)) {|x|
+        reject()
+      }
+      #TODO: prevent closing
+      @layout.addWidget @close_button, 9, 2
+
+      apt_get_section
+      open_section
+      open_url_section
+      dumpdecrypted_section
+      pbwatcher_section
+      pcviewer_section
+      keychaindumper_section
+      rsync_section
+      cycript_section
+
 
       setFixedHeight(sizeHint().height());
     end

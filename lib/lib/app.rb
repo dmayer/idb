@@ -85,41 +85,6 @@ module Idb
 
     end
 
-    def decrypt_binary_clutch!
-      # not in use since Stefan Esser updated dumpdecrypted
-      unless $device.clutch_installed?
-        $log.error "clutch not installed."
-        return false
-      end
-
-      $log.info "Binary name is: '#{binary_name}'"
-
-      $device.ops.execute "cd /var/root/"
-      output = $device.ops.execute "#{$device.clutch_path} #{binary_name}"
-      puts output
-
-      decrypted_path = "/var/root/Documents/Cracked/#{binary_name}*.ipa"
-      $log.info "Checking if decrypted file #{decrypted_path} was created..."
-      if not $device.ops.file_exists? decrypted_path
-        $log.error "Decryption / Cracking failed."
-        return
-      end
-
-      $log.info "Decrypted file found. Downloading..."
-
-      @local_decrypted_binary = "#{cache_dir}/#{File.basename full_remote_path}.decrypted"
-      @binary.setDecryptedPath @local_decrypted_binary
-
-      local_path = $device.ops.download decrypted_path, @local_decrypted_binary
-
-      $log.info "Decrypted binary downloaded to #{@local_decrypted_binary}"
-      @local_decrypted_binary
-
-    end
-
-
-
-
     def get_raw_plist_value val
       begin
         @info_plist.plist_data[val]
@@ -252,39 +217,29 @@ module Idb
       `#{rsync} avc -e ssh TKTK #{} `
     end
 
-    def find_plist_files
-      $log.info "Looking for plist files..."
-      app_dir_files = $device.ops.dir_glob(@app_dir, "**/*plist")
+    def find_files_by_pattern pattern
+      app_dir_files = $device.ops.dir_glob(@app_dir, pattern)
       data_dir_files = Array.new
 
       if app_dir != data_dir
-        data_dir_files = $device.ops.dir_glob(@data_dir, "**/*plist")
+        data_dir_files = $device.ops.dir_glob(@data_dir, pattern)
       end
       app_dir_files + data_dir_files
+    end
 
+    def find_plist_files
+      $log.info "Looking for plist files..."
+      find_files_by_pattern "**/*plist"
     end
 
     def find_sqlite_dbs
       $log.info "Looking for sqlite files..."
-      app_dir_files = $device.ops.dir_glob(@app_dir, "**/*sql**")
-      data_dir_files = Array.new
-
-      if app_dir != data_dir
-        data_dir_files = $device.ops.dir_glob(@data_dir, "**/*sql**")
-      end
-      app_dir_files + data_dir_files
-
+      find_files_by_pattern "**/*sql**"
     end
 
     def find_cache_dbs
       $log.info "Looking for Cache.db files..."
-      app_dir_files = $device.ops.dir_glob(@app_dir, "**/Cache.db")
-      data_dir_files = Array.new
-
-      if app_dir != data_dir
-        data_dir_files = $device.ops.dir_glob(@data_dir, "**/Cache.db")
-      end
-      app_dir_files + data_dir_files
+      find_files_by_pattern "**/Cache.db"
     end
 
     def get_url_handlers
