@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    idb (2.1.0)
+    idb (2.5.0)
       awesome_print
       coderay
       ffi
@@ -29,7 +29,7 @@ GEM
       tilt
     hexdump (0.2.3)
     htmlentities (4.3.2)
-    launchy (2.4.2)
+    launchy (2.4.3)
       addressable (~> 2.3)
     libxml-ruby (2.7.0)
     libxml4r (0.2.6)
