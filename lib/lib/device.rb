@@ -352,21 +352,15 @@ module Idb
       @ops.execute "killall -9 #{process_name}"
     end
 
-    def DEVICE_ID
+    def device_id
+
       $log.error "Not implemented"
       nil
     end
 
     def configured?
-      if $settings['devices'].nil?
-        false
-      elsif $settings['devices'][device_id].nil?
-        false
-      else
-        true
-      end
+      apt_get_installed? and open_installed? and openurl_installed? and dumpdecrypted_installed? and pbwatcher_installed? and pcviewer_installed? and keychain_dump_installed? and rsync_installed? and cycript_installed?
     end
-
 
 
     def cycript_installed?
