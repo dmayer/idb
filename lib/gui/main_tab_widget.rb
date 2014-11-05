@@ -8,15 +8,24 @@ require_relative 'pasteboard_monitor_widget'
 require_relative 'fs_viewer_tab_widget'
 require_relative 'keychain_widget'
 require_relative 'tool_widget'
+require_relative 'app_tab_widget'
 require 'Qt'
 
 module Idb
   class MainTabWidget < Qt::TabWidget
-
+    attr_accessor :app_info
 
     def initialize *args
       super *args
       @tabs = Hash.new
+
+
+      @app_info = AppTabWidget.new self
+      @tabs[:app_info] = addTab(@app_info, "App Info")
+      @app_info.connect(SIGNAL('binary_analyzed()')) {
+        enableAppBinary
+      }
+
 
       @local_storage = LocalStorageTabWidget.new self
       @local_storage.setEnabled(false)
@@ -74,6 +83,10 @@ module Idb
       @tabs[:pasteboard] = addTab(@pasteboard, "Pasteboard")
 
       disable_all
+    end
+
+    def enable_select_app
+      @app_info.enable_select_app
     end
 
     def enableLog
@@ -165,6 +178,7 @@ module Idb
       enableURLHandlers
   #    refresh_current_tab
       @app_binary.refresh
+      @app_info.app_changed
       enableFSViewer
       @fs_viewer.update_start
       enableTools

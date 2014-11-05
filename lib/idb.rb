@@ -12,6 +12,7 @@ require_relative 'gui/main_tab_widget'
 require_relative 'gui/settings_dialog'
 require_relative 'gui/device_info_group_box'
 require_relative 'gui/ca_manager_dialog'
+require_relative 'gui/global_app_details_group_box'
 
 module Idb
   TARGET = "Hello"
@@ -69,9 +70,10 @@ module Idb
 
   #      center
 
-  #      showMaximized();
-  #      show
-  #      self.raise
+        self.showMaximized()
+        self.raise
+        self.activateWindow
+
       end
 
      def self.execute_in_main_thread(blocking = false, sleep_period = 0.001)
@@ -96,47 +98,47 @@ module Idb
 
         @grid.setColumnMinimumWidth(0,450)
 
-
-        # Box for App details
-        @app_details = AppDetailsGroupBox.new @central_widget
-        @app_details.connect(SIGNAL(:app_changed)) {
-          @main_tabs.app_changed
-          @app_binary.app_changed
-          @menu_item_screenshot.setEnabled(true)
-        }
-        @app_details.connect(SIGNAL(:show_device_status)) {
-          @device_status = DeviceStatusDialog.new
-          @device_status.exec
-        }
-
-
-        @grid.addWidget @app_details, 0,0
-
-        # App Binary Details
-        @app_binary = AppBinaryGroupBox.new @central_widget
-        @grid.addWidget @app_binary, 1,0
-        @app_binary.connect(SIGNAL('binary_analyzed()')) {
-          @main_tabs.refresh_app_binary
-        }
-
-        @spacer = Qt::SpacerItem.new 0,1, Qt::SizePolicy::Fixed, Qt::SizePolicy::Expanding
-        @grid.addItem @spacer, 2,0
-
         # Main Tab Widget
         @main_tabs = MainTabWidget.new @central_widget
-        @grid.addWidget @main_tabs, 0,1,3,1
+        @grid.addWidget @main_tabs, 4,0,1,2
+
 
         # device Details
         @device_details = DeviceInfoGroupBox.new @central_widget
+        @device_details.setSizePolicy Qt::SizePolicy::Expanding, Qt::SizePolicy::Fixed
+        @device_details.connect(SIGNAL(:connect_clicked)) {
+          @usb_device.trigger
+        }
         @device_details.connect(SIGNAL :disconnect) {
           @main_tabs.disable_all
-          @app_binary.clear
-          @app_binary.disable_analyze_binary
-          @app_details.clear
-          @app_details.disable_select_app
+          @main_tabs.app_info.app_binary.clear
+          @main_tabs.app_info.app_binary.disable_analyze_binary
+          @main_tabs.app_info.app_details.clear
           @usb_device.setChecked(false)
+          @global_app_details.disconnect
         }
-        @grid.addWidget @device_details, 3,0,2,2
+        @grid.addWidget @device_details, 0,0
+
+
+        # global app details
+        @global_app_details = GlobalAppDetailsGroupBox.new
+        @global_app_details.setSizePolicy Qt::SizePolicy::Expanding, Qt::SizePolicy::Fixed
+        @global_app_details.connect(SIGNAL :app_changed) {
+          @menu_item_screenshot.setEnabled(true)
+          @main_tabs.app_changed
+        }
+        @grid.addWidget @global_app_details, 0, 1
+
+
+        @spacer = Qt::SpacerItem.new 0,5, Qt::SizePolicy::Fixed, Qt::SizePolicy::Fixed
+        @grid.addItem @spacer, 1,0,1,2
+        @grid.addItem @spacer, 3,0,1,2
+
+        line = Qt::Frame.new
+        line.setFrameShape(Qt::Frame::HLine)
+        line.setFrameShadow(Qt::Frame::Sunken)
+        @grid.addWidget line,2,0,1,2
+
 
         menu
 
@@ -161,8 +163,9 @@ module Idb
           }
           setting.exec
         }
-        @menu_file = menuBar().addMenu "&File"
+        @menu_file = Qt::Menu.new "&File"
         @menu_file.addAction menu_item_settings
+        menuBar().addAction @menu_file.menuAction()
 
         @menu_item_screenshot = Qt::Action.new "&Screenshot", self
         @menu_item_screenshot.setEnabled(false)
@@ -175,15 +178,16 @@ module Idb
           ca = CAManagerDialog.new self
           ca.exec
         }
-        @menu_tools = menuBar().addMenu "&Tools"
+        @menu_tools = Qt::Menu.new "&Tools"
         @menu_tools.addAction @menu_item_screenshot
         @menu_tools.addAction @menu_item_cert
+        menuBar.addAction @menu_tools.menuAction
 
 
         #Devices
         @sim_group = Qt::ActionGroup.new @menu_devices
 
-        @menu_devices = menuBar().addMenu "&Devices"
+        @menu_devices = Qt::Menu.new "&Devices"
         @usb_device = Qt::Action.new "USB Device", self
         if $settings['device_connection_mode'] == "ssh"
           @usb_device.setText("SSH Device")
@@ -220,11 +224,7 @@ module Idb
               @device_status = DeviceStatusDialog.new
               @device_status.exec
             end
-
-
-
-
-            @app_details.enable_select_app
+            @global_app_details.enable
             @device_details.update_device
             @menu_item_cert.setEnabled(true)
             @main_tabs.enableDeviceFunctions
@@ -233,6 +233,8 @@ module Idb
 
           progress.reset
         }
+
+
         menu_item = @menu_devices.addAction @usb_device
         @sim_group.addAction @usb_device
 
@@ -254,11 +256,10 @@ module Idb
           @menu_devices.addAction action
         }
 
-
+        menuBar.addAction @menu_devices.menuAction()
 
 
       end
-
 
      def center
           qdw = Qt::DesktopWidget.new
@@ -279,9 +280,7 @@ module Idb
       app.setApplicationName("idb")
 
       idb = Idb.new
-      idb.setWindowState Qt::WindowActive
-      idb.showMaximized
-      idb.raise
+      app.setActiveWindow(idb)
       app.exec
 
       $log.info "Performing cleanup before exiting."

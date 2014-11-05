@@ -3,7 +3,7 @@ require_relative '../lib/app'
 module Idb
 
   class AppDetailsGroupBox < Qt::GroupBox
-    attr_accessor :uuid, :bundle_id
+    attr_accessor :uuid, :bundle_id, :vals, :icon
     signals "app_changed()"
     signals "show_device_status()"
 
@@ -19,41 +19,6 @@ module Idb
       @icon_button_layout = Qt::GridLayout.new
 
 
-      # select app
-      @select_app_button = Qt::PushButton.new "Select App..."
-      @select_app_button.setEnabled(false)
-      @select_app_button.connect(SIGNAL(:released)) { |x|
-        @app_list = AppListDialog.new
-        @app_list.connect(SIGNAL('accepted()')) {
-          $selected_app =  @app_list.app_list.currentItem().app
-          @vals['uuid'].setText($selected_app.uuid)
-          @vals['bundle_id'].setText($selected_app.bundle_id)
-          @vals['bundle_name'].setText($selected_app.bundle_name)
-          @vals['url_handlers'].setText($selected_app.get_url_handlers.join("\n"))
-          @vals['platform_version'].setText($selected_app.platform_version)
-          @vals['sdk_version'].setText($selected_app.sdk_version)
-          @vals['minimum_os_version'].setText($selected_app.minimum_os_version)
-          @vals['keychain_access_groups'].setText($selected_app.keychain_access_groups)
-          @vals['data_dir'].setText($selected_app.data_directory.sub("/private/var/mobile/Containers/Data/Application",""))
-          @launch_app.setEnabled(true)
-          @open_folder.setEnabled(true)
-
-          begin
-          icon_file = $selected_app.get_icon_file
-          pixmap = Qt::Pixmap.new(icon_file)
-          @icon.setPixmap pixmap.scaledToWidth(50)  unless icon_file.nil?
-
-          rescue => e
-            $log.error "Icon CONVERSION failed.  #{e.message}"
-            @icon.setPixmap Qt::Pixmap.new
-            # lets ignore conversion errors for now..
-          end
-
-          emit app_changed()
-        }
-
-        @app_list.exec
-      }
 
 
       @icon_button_widget = Qt::Widget.new self
@@ -110,23 +75,54 @@ module Idb
 
       }
 
+      clear
+
+    end
+
+    def app_changed
+      @vals['uuid'].setText($selected_app.uuid)
+      @vals['bundle_id'].setText($selected_app.bundle_id)
+      @vals['bundle_name'].setText($selected_app.bundle_name)
+      @vals['url_handlers'].setText($selected_app.get_url_handlers.join("\n"))
+      @vals['platform_version'].setText($selected_app.platform_version)
+      @vals['sdk_version'].setText($selected_app.sdk_version)
+      @vals['minimum_os_version'].setText($selected_app.minimum_os_version)
+      @vals['keychain_access_groups'].setText($selected_app.keychain_access_groups)
+      @vals['data_dir'].setText($selected_app.data_directory.sub("/private/var/mobile/Containers/Data/Application",""))
+      @launch_app.setEnabled(true)
+      @open_folder.setEnabled(true)
+
+
+
+      begin
+        icon_file = $selected_app.get_icon_file
+        pixmap = Qt::Pixmap.new(icon_file)
+        @icon.setPixmap pixmap.scaledToWidth(50)  unless icon_file.nil?
+
+      rescue => e
+        $log.error "Icon CONVERSION failed.  #{e.message}"
+        @icon.setPixmap Qt::Pixmap.new
+        # lets ignore conversion errors for now..
+      end
     end
 
     def clear
       $selected_app =  nil
-      @vals['uuid'].setText("")
-      @vals['bundle_id'].setText("")
-      @vals['bundle_name'].setText("")
-      @vals['url_handlers'].setText("")
-      @vals['platform_version'].setText("")
-      @vals['sdk_version'].setText("")
-      @vals['minimum_os_version'].setText("")
-      @vals['data_dir'].setText("")
-      @vals['keychain_access_groups'].setText("")
+      @vals['uuid'].setText("[No Application Selected]")
+      @vals['bundle_id'].setText("[No Application Selected]")
+      @vals['bundle_name'].setText("[No Application Selected]")
+      @vals['url_handlers'].setText("[No Application Selected]")
+      @vals['platform_version'].setText("[No Application Selected]")
+      @vals['sdk_version'].setText("[No Application Selected]")
+      @vals['minimum_os_version'].setText("[No Application Selected]")
+      @vals['data_dir'].setText("[No Application Selected]")
+      @vals['keychain_access_groups'].setText("[No Application Selected]")
       @launch_app.setEnabled(false)
       @open_folder.setEnabled(false)
 
     end
+
+
 
 
 
@@ -136,15 +132,6 @@ module Idb
       @layout.addWidget @labels[id], @cur_row, 0
       @layout.addWidget @vals[id], @cur_row, 1
       @cur_row += 1
-    end
-
-
-    def enable_select_app
-      @select_app_button.setEnabled(true)
-    end
-
-    def disable_select_app
-      @select_app_button.setEnabled(false)
     end
 
   end
@@ -186,6 +173,8 @@ module Idb
       addDetail 'canaries', 'Stack Canaries'
       addDetail 'arc', 'ARC'
 
+      clear
+
     end
 
 
@@ -203,11 +192,11 @@ module Idb
     end
 
     def clear
-      @vals['encryption_enabled'].setText("")
-      @vals['cryptid'].setText("")
-      @vals['pie'].setText("")
-      @vals['canaries'].setText("")
-      @vals['arc'].setText("")
+      @vals['encryption_enabled'].setText("[Binary not yet analyzed]")
+      @vals['cryptid'].setText("[Binary not yet analyzed]")
+      @vals['pie'].setText("[Binary not yet analyzed]")
+      @vals['canaries'].setText("[Binary not yet analyzed]")
+      @vals['arc'].setText("[Binary not yet analyzed]")
     end
 
     def disable_analyze_binary
