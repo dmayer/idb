@@ -152,7 +152,7 @@ module Idb
     end
 
     def bundle_name
-      get_raw_plist_value 'CFBundleDisplayName'
+      get_raw_plist_value('CFBundleDisplayName').to_s
     end
 
     def keychain_access_groups
@@ -183,9 +183,9 @@ module Idb
       get_raw_plist_value 'MinimumOSVersion'
     end
 
-    def bundle_id
+    def undle_id
       begin
-        @info_plist.bundle_identifier
+        @info_plist.bundle_identifier.to_s
       rescue
         "[error]"
       end
