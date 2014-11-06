@@ -183,7 +183,7 @@ module Idb
       get_raw_plist_value 'MinimumOSVersion'
     end
 
-    def undle_id
+    def bundle_id
       begin
         @info_plist.bundle_identifier.to_s
       rescue
