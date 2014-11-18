@@ -58,29 +58,25 @@ module Idb
         @tool_port = @usbmuxd.find_available_port
         $log.debug "opening tool port #{@tool_port} for internal ssh connection"
         @usbmuxd.proxy @tool_port, $settings['ssh_port']
+     end
 
+      @apps_dir_ios_pre8 = '/private/var/mobile/Applications'
+      @apps_dir_ios_8 = '/private/var/mobile/Containers/Bundle/Application'
+      @data_dir_ios_8 = '/private/var/mobile/Containers/Data/Application'
 
+      if @ops.directory? @apps_dir_ios_8
+        @ios_version = 8
+        @apps_dir = @apps_dir_ios_8
+        @data_dir = @data_dir_ios_8
 
-        @apps_dir_ios_pre8 = '/private/var/mobile/Applications'
-        @apps_dir_ios_8 = '/private/var/mobile/Containers/Bundle/Application'
-        @data_dir_ios_8 = '/private/var/mobile/Containers/Data/Application'
+      elsif @ops.directory? @apps_dir_ios_pre8
+        @ios_version = 7 # 7 or earlier
+        @apps_dir = @apps_dir_ios_pre8
+        @data_dir = @apps_dir_ios_pre8
 
-        if @ops.directory? @apps_dir_ios_pre8
-          @ios_version = 7 # 7 or earlier
-          @apps_dir = @apps_dir_ios_pre8
-          @data_dir = @apps_dir_ios_pre8
-
-        elsif @ops.directory? @apps_dir_ios_8
-          @ios_version = 8
-          @apps_dir = @apps_dir_ios_8
-          @data_dir = @data_dir_ios_8
-
-        else
-          $log.error "Unsupported iOS Version."
-          raise
-        end
-
-
+      else
+        $log.error "Unsupported iOS Version."
+        raise
       end
 
       start_port_forwarding
