@@ -65,15 +65,16 @@ module Idb
       @apps_dir_ios_8 = '/private/var/mobile/Containers/Bundle/Application'
       @data_dir_ios_8 = '/private/var/mobile/Containers/Data/Application'
 
-      if @ops.directory? @apps_dir_ios_pre8
-        @ios_version = 7 # 7 or earlier
-        @apps_dir = @apps_dir_ios_pre8
-        @data_dir = @apps_dir_ios_pre8
 
-      elsif @ops.directory? @apps_dir_ios_8
+      if @ops.directory? @apps_dir_ios_8
         @ios_version = 8
         @apps_dir = @apps_dir_ios_8
         @data_dir = @data_dir_ios_8
+
+      elsif @ops.directory? @apps_dir_ios_pre8
+        @ios_version = 7 # 7 or earlier
+        @apps_dir = @apps_dir_ios_pre8
+        @data_dir = @apps_dir_ios_pre8
 
       else
         $log.error "Unsupported iOS Version."
