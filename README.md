@@ -49,7 +49,7 @@ See the basic [manual and walk-through](//github.com/dmayer/idb/wiki/Manual-and-
 
 ## FAQ
 
-### Q: After staring idb, the menu bar does not appear
+### Q: After starting idb, the menu bar does not appear
 A: This seems to be a bug when using ruby 2.1 on OS X. I have no idea why this is happening, but switching to a different application and the back to idb fixes it. Any pointers on how to fix this are greatly appreciated!
 
 
