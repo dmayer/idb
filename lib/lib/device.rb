@@ -334,7 +334,10 @@ module Idb
       $log.info "Terminating port forwarding helper..."
       Process.kill("INT", @port_forward_pid)
       $log.info "Stopping any SSH via USB forwarding"
-      @usbmuxd.stop_all
+
+      if $settings['device_connection_mode'] != "ssh"
+        @usbmuxd.stop_all
+      end
     end
 
     def open_url url
