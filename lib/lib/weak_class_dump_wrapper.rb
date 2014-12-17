@@ -22,7 +22,7 @@ module Idb
       wc_file = "/var/root/weak_classdump.cy"
       unless $device.ops.file_exists?  wc_file
         $log.info "weak_classdump not found, Installing onto device."
-        $device.ops.upload("utils/weak_class_dump/weak_classdump.cy", wc_file)
+        $device.ops.upload("#{File.dirname(File.expand_path(__FILE__))}/../utils/weak_class_dump/weak_classdump.cy", wc_file)
       end
 
       local_instructions_file = "#{$tmp_path}/weak_classdump_instructions.cy"
