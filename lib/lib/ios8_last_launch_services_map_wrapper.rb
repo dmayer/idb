@@ -15,6 +15,10 @@ class IOS8LastLaunchServicesMapWrapper
 
 
   def keychain_access_groups_by_bundle_id bundle_id
-    @plist_data.to_hash["User"][bundle_id]["Entitlements"]["keychain-access-groups"]
+    begin
+      @plist_data.to_hash["User"][bundle_id]["Entitlements"]["keychain-access-groups"]
+    rescue
+      ""
+    end
   end
 end
