@@ -2,6 +2,7 @@ require 'plist4r'
 require 'rbconfig'
 require 'nokogiri'
 require 'coderay'
+require 'pathname'
 
 module Idb
   class PlistUtil
