@@ -48,7 +48,7 @@ module Idb
         box.raise
         # need to refresh iOS uicache in case app was installed after last reboot.
         # Otherwise the /var/mobile/Library/MobileInstallation/LastLaunchServicesMap.plist will be out of date
-        $device.ops.execute "/usr/bin/uicache"
+        $device.ops.execute "/bin/su mobile -c /usr/bin/uicache"
         box.hide
       end
       app_uuids =  $device.get_app_uuids

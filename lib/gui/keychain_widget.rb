@@ -50,6 +50,7 @@ module Idb
 
     def populate_table
       @keychain_tab_widget.clear
+      @model.clear
       @model.setHorizontalHeaderItem(0, Qt::StandardItem.new("Access Group"))
       @model.setHorizontalHeaderItem(1, Qt::StandardItem.new("Account"))
       @model.setHorizontalHeaderItem(2, Qt::StandardItem.new("Service"))
