@@ -24,12 +24,11 @@ idb requires a valid ruby 1.9.3 or 2.1 installation and it is recommended to ins
 
 #### 1.2 Install Other Prerequisites:
 *  OS X: `brew install qt cmake usbmuxd libimobiledevice`
-*  Ubuntu: `apt-get install cmake libqt4-dev git-core libimobiledevice-utils libplist-utils usbmuxd -y`
+*  Ubuntu: `apt-get install cmake libqt4-dev git-core libimobiledevice-utils libplist-utils usbmuxd libxml2-dev libsqlite3-dev -y`
 
 ### 2. Installing idb
 #### 2.1 Production Use
 *  Install idb: `gem install idb`
-  *  On Linux install prerequisites first: `apt-get install libxml2-dev libsqlite3-dev`
 *  Run idb: `idb`
 *  Hooray!
 
