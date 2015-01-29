@@ -29,6 +29,7 @@ idb requires a valid ruby 1.9.3 or 2.1 installation and it is recommended to ins
 ### 2. Installing idb
 #### 2.1 Production Use
 *  Install idb: `gem install idb`
+  *  On Linux install prerequisites first: `apt-get install libxml2-dev libsqlite3-dev`
 *  Run idb: `idb`
 *  Hooray!
 
