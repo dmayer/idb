@@ -95,6 +95,10 @@ module Idb
       @file_details.setSizePolicy(Qt::SizePolicy::Minimum, Qt::SizePolicy::Minimum)
 
 
+      @refresh_tree = Qt::PushButton.new "Refresh"
+      @refresh_tree.connect(SIGNAL :released) {
+        update_start
+      }
 
       @model = Qt::StandardItemModel.new
 
@@ -108,8 +112,14 @@ module Idb
       @file_list.setEditTriggers(Qt::AbstractItemView::NoEditTriggers	)
       @file_list.setSizePolicy(Qt::SizePolicy::Expanding,Qt::SizePolicy::Expanding);
 
+      @tree_widget = Qt::Widget.new
+      @tree_widget_layout = Qt::VBoxLayout.new
+      @tree_widget.setLayout @tree_widget_layout
+      @tree_widget_layout.add_widget @treeview
+      @tree_widget_layout.add_widget @refresh_tree
+
       @splitter = Qt::Splitter.new
-      @splitter.addWidget @treeview
+      @splitter.addWidget @tree_widget
       @splitter.addWidget @file_list
       @splitter.setStretchFactor 1, 1.5
       @splitter.setSizePolicy(Qt::SizePolicy::Expanding, Qt::SizePolicy::Expanding)
@@ -157,6 +167,15 @@ module Idb
       @model.setHorizontalHeaderItem(3, Qt::StandardItem.new("uid"))
       @model.setHorizontalHeaderItem(4, Qt::StandardItem.new("gid"))
 
+      unless $device.ops.file_exists? path
+        reply = Qt::MessageBox::critical(self, "Directory not found", "Could not open directory #{path}. The selected directory no longer exists on the target device.\n\nDo you want to reload the directory tree?", Qt::MessageBox::Yes, Qt::MessageBox::No)
+        if reply == Qt::MessageBox::Yes
+          update_start
+          return
+        else
+          return
+        end
+      end
       dirs = $device.ops.list_dir_full path
       dirs.each { |d|
         unless d.directory?
@@ -182,7 +201,7 @@ module Idb
 
     def add_dirs parent, cur_dir
       if parent.text(2) == "true"
-        # we added chilcren for this already
+        # we added children for this already
         return
       end
       parent.setText(2, "true")
@@ -247,6 +266,7 @@ module Idb
         start_ios_pre8
       end
     end
+
 
     def start_ios_pre8
       @root_node = Qt::TreeWidgetItem.new
