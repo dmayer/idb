@@ -16,6 +16,15 @@ module Idb
       @binary = KeychainBinaryWidget.new self
       @tabs[:binary] = addTab(@binary, "Binary VData")
 
+      @gena = KeychainTextWidget.new self
+      @tabs[:gena] = addTab(@gena, "gena")
+
+    end
+
+
+    def set_gena text
+      @gena.clear
+      @gena.set_data text
     end
 
     def set_data text

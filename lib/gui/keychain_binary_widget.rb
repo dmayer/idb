@@ -44,8 +44,14 @@ module Idb
 
     def set_data data
       output = ""
-      Hexdump.dump(data, {:output => output } )
-      @vdata_text.appendPlainText output
+      begin
+        Hexdump.dump(data, {:output => output } )
+        @vdata_text.appendPlainText output
+      rescue Exception => e
+        $log.error "Something went wrong with the hexdump: #{e.exception}"
+        $log.error "Tried hexdumping: #{data}"
+        @vdata_text.appendPlainText "Error dumping data."
+      end
     end
 
     def clear
