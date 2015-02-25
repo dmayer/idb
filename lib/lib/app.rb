@@ -5,7 +5,7 @@ require_relative 'ios8_last_launch_services_map_wrapper'
 
 module Idb
   class App
-    attr_accessor :uuid, :app_dir, :binary, :cache_dir, :data_dir
+    attr_accessor :uuid, :app_dir, :binary, :cache_dir, :data_dir, :services_map
 
 
     def initialize uuid
@@ -19,10 +19,10 @@ module Idb
       if $device.ios_version == 8
         mapping_file = "/var/mobile/Library/MobileInstallation/LastLaunchServicesMap.plist"
         local_mapping_file =  cache_file mapping_file
-        mapper = IOS8LastLaunchServicesMapWrapper.new local_mapping_file
+        @services_map = IOS8LastLaunchServicesMapWrapper.new local_mapping_file
 
-        @data_dir = mapper.data_path_by_bundle_id @info_plist.bundle_identifier
-        @keychain_access_groups = mapper.keychain_access_groups_by_bundle_id @info_plist.bundle_identifier
+        @data_dir = @services_map.data_path_by_bundle_id @info_plist.bundle_identifier
+        @keychain_access_groups = @services_map.keychain_access_groups_by_bundle_id @info_plist.bundle_identifier
 
        else
         @data_dir = @app_dir

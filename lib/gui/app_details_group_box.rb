@@ -27,7 +27,6 @@ module Idb
       addDetail 'platform_version', 'Platform Version'
       addDetail 'sdk_version', 'SDK Version'
       addDetail 'minimum_os_version', 'Minimum OS'
-      addDetail 'keychain_access_groups', 'Keychain Access Groups'
       addDetail 'data_dir', 'Data Directory'
 
       @launch_app = Qt::PushButton.new "Launch App"
@@ -70,7 +69,6 @@ module Idb
       @vals['platform_version'].setText($selected_app.platform_version)
       @vals['sdk_version'].setText($selected_app.sdk_version)
       @vals['minimum_os_version'].setText($selected_app.minimum_os_version)
-      @vals['keychain_access_groups'].setText($selected_app.keychain_access_groups)
       @vals['data_dir'].setText($selected_app.data_directory.sub("/private/var/mobile/Containers/Data/Application",""))
       @launch_app.setEnabled(true)
       @open_folder.setEnabled(true)
@@ -89,7 +87,6 @@ module Idb
       @vals['sdk_version'].setText("[No Application Selected]")
       @vals['minimum_os_version'].setText("[No Application Selected]")
       @vals['data_dir'].setText("[No Application Selected]")
-      @vals['keychain_access_groups'].setText("[No Application Selected]")
       @launch_app.setEnabled(false)
       @open_folder.setEnabled(false)
 
@@ -108,6 +105,70 @@ module Idb
     end
 
   end
+
+
+  class AppEntitlementsGroupBox < Qt::GroupBox
+    def initialize args
+      super *args
+
+      # details on selected app
+
+      @layout = Qt::GridLayout.new
+      setLayout(@layout)
+      setTitle "App Entitlements"
+
+      @labels = Hash.new
+      @vals = Hash.new
+      clear
+
+      addDetail 'application-identifier', 'Application Identifier'
+      @vals['application-identifier'].setText("[No Application Selected]")
+    end
+
+    def clear
+      @labels.each { |x|
+        @layout.removeWidget x[1]
+        x[1].destroy
+        x[1].dispose
+      }
+
+      @vals.each { |x|
+        @layout.removeWidget x[1]
+        x[1].destroy
+        x[1].dispose
+      }
+
+      @labels = Hash.new
+      @vals = Hash.new
+      @cur_row = 1
+
+
+
+    end
+
+    def app_changed
+      if $device.ios_version < 8
+        addDetail 'application-identifier', 'Only available in iOS 8+'
+      else
+        $selected_app.services_map.entitlements_by_bundle_id($selected_app.bundle_id).each { |x|
+          addDetail x[0].to_s, x[0].to_s
+          @vals[x[0].to_s].setText(x[1].to_s)
+        }
+      end
+
+    end
+
+
+    def addDetail id, label
+      @labels[id] = Qt::Label.new  "<b>#{label}</b>", self, 0
+      @vals[id] = Qt::Label.new  "", self, 0
+      @layout.addWidget @labels[id], @cur_row, 0
+      @layout.addWidget @vals[id], @cur_row, 1
+      @cur_row += 1
+    end
+  end
+
+
 
   class AppBinaryGroupBox < Qt::GroupBox
     signals "binary_analyzed()"

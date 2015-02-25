@@ -22,21 +22,25 @@ module Idb
       }
 
 
-      @layout.addWidget @app_details, 1,0, 2, 1
+      @layout.addWidget @app_details, 0,0,2,1
+
+      # Entitlements
+      @app_entitlements = AppEntitlementsGroupBox.new @central_widget
+      @layout.addWidget @app_entitlements, 2,0, 1, 2
 
       # App Binary Details
       @app_binary = AppBinaryGroupBox.new @central_widget
-      @layout.addWidget @app_binary, 1,1
+      @layout.addWidget @app_binary, 0,1
       @app_binary.connect(SIGNAL('binary_analyzed()')) {
         emit binary_analyzed()
       }
 
       @spacer_horizontal = Qt::SpacerItem.new 0,1, Qt::SizePolicy::Expanding, Qt::SizePolicy::Fixed
-      @layout.addItem @spacer_horizontal, 1, 2
+      @layout.addItem @spacer_horizontal, 0, 3
 
       @spacer = Qt::SpacerItem.new 0,1, Qt::SizePolicy::Fixed, Qt::SizePolicy::Expanding
+      @spacer2 = Qt::SpacerItem.new 0,1, Qt::SizePolicy::Fixed, Qt::SizePolicy::Expanding
 
-      @layout.addItem @spacer, 2, 1, 2,1
       @layout.addItem @spacer, 3, 0
 
 
@@ -45,6 +49,8 @@ module Idb
     def app_changed
       @app_binary.app_changed
       @app_details.app_changed
+      @app_entitlements.clear
+      @app_entitlements.app_changed
 
     end
 
