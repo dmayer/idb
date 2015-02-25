@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    idb (2.6.1)
+    idb (2.6.2)
       awesome_print
       coderay
       ffi

@@ -5,11 +5,11 @@ module Idb
     def initialize args
       super *args
 
-      setTitle  "Default Protection Protection"
+      setTitle  "Default Data Protection"
 
       @layout = Qt::GridLayout.new
       label =  Qt::Label.new  "<b>Default Data Protection</b>", self, 0
-      @val =  Qt::Label.new  "Please refresh to show entries", self, 0
+      @val =  Qt::Label.new  "No default set in the entitlements of this app.", self, 0
       @layout.addWidget label, 0, 0
       @layout.addWidget @val, 0, 1
       spacer_horizontal = Qt::SpacerItem.new 0,1, Qt::SizePolicy::Expanding, Qt::SizePolicy::Fixed
