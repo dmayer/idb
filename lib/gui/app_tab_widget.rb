@@ -1,6 +1,6 @@
 module Idb
   class AppTabWidget < Qt::TabWidget
-    attr_accessor :app_details, :app_binary
+    attr_accessor :app_details, :app_binary, :app_entitlements
     signals "app_changed()"
     signals "binary_analyzed()"
 

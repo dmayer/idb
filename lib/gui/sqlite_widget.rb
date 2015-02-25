@@ -42,7 +42,9 @@ module Idb
       }
      # "Launch app"
 
+      @default_protection = DefaultProtectionClassGroupWidget.new self
       layout = Qt::VBoxLayout.new do |v|
+        v.add_widget(@default_protection)
         v.add_widget(@list)
         v.add_widget(@refresh)
       end
@@ -53,9 +55,19 @@ module Idb
       @list.clear
     end
 
+    def setup
+      @list.clear
+      @default_protection.update
+      item = PathListWidgetItem.new
+      item.setText "Please click 'Refresh' below to show files."
+      @list.addItem item
+      @list.setEnabled false
+    end
 
     def refresh
       @list.clear
+      @list.setEnabled true
+      @default_protection.update
       sqlite_dbs = $selected_app.find_sqlite_dbs
       sqlite_dbs.each { |full_path|
         item = PathListWidgetItem.new

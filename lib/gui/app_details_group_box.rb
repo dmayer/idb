@@ -148,7 +148,7 @@ module Idb
 
     def app_changed
       if $device.ios_version < 8
-        addDetail 'application-identifier', 'Only available in iOS 8+'
+        addDetail 'application-identifier', 'Only available for iOS 8+'
       else
         $selected_app.services_map.entitlements_by_bundle_id($selected_app.bundle_id).each { |x|
           addDetail x[0].to_s, x[0].to_s

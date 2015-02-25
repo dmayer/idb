@@ -21,6 +21,12 @@ module Idb
 
     end
 
+    def setup
+      @plist.setup
+      @sqlite.setup
+      @cachedb.setup
+    end
+
     def clear
       @tabs.each { |tab|
         tab.clear

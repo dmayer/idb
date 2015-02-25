@@ -92,6 +92,9 @@ module Idb
       @file_details_layout.addWidget @file_details_protection, 4, 1
       @file_details_layout.addItem Qt::SpacerItem.new(0,1, Qt::SizePolicy::Expanding, Qt::SizePolicy::Fixed ), 0, 2
       @layout.addWidget @file_details, 2, 0, 1, 3
+
+      @default_protection = DefaultProtectionClassGroupWidget.new self
+      @layout.addWidget @default_protection, 3, 0, 1, 3
       @file_details.setSizePolicy(Qt::SizePolicy::Minimum, Qt::SizePolicy::Minimum)
 
 
@@ -256,6 +259,7 @@ module Idb
 
     def update_start
       @treeview.clear
+      @default_protection.update
       @selected_dir = $selected_app.app_dir
       @local_path = "#{$selected_app.cache_dir}/idb_mirror.git"
       @manager = RsyncGitManager.new @local_path

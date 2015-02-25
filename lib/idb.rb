@@ -114,6 +114,7 @@ module Idb
           @main_tabs.app_info.app_binary.clear
           @main_tabs.app_info.app_binary.disable_analyze_binary
           @main_tabs.app_info.app_details.clear
+          @main_tabs.app_info.app_entitlements.clear
           @usb_device.setChecked(false)
           @global_app_details.disconnect
         }

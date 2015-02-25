@@ -108,6 +108,7 @@ module Idb
     def enableLocalStorage
       @local_storage.setEnabled(true)
       setTabEnabled(@tabs[:local_storage], true)
+      @local_storage.setup
     end
 
     def enableURLHandlers

@@ -1,4 +1,5 @@
 require_relative 'path_list_widget_item'
+require_relative 'default_protection_class_group_widget'
 
 module Idb
   class PlistFileWidget < Qt::Widget
@@ -32,7 +33,10 @@ module Idb
 
       # "Launch app"
 
+      @default_protection = DefaultProtectionClassGroupWidget.new self
+
       layout = Qt::VBoxLayout.new do |v|
+        v.add_widget(@default_protection)
         v.add_widget(@list)
         v.add_widget(@refresh)
       end
@@ -43,8 +47,19 @@ module Idb
       @list.clear
     end
 
+    def setup
+      @list.clear
+      @default_protection.update
+      item = PathListWidgetItem.new
+      item.setText "Please click 'Refresh' below to show files."
+      @list.addItem item
+      @list.setEnabled false
+    end
+
     def refresh
       @list.clear
+      @list.setEnabled true
+      @default_protection.update
       plist_files = $selected_app.find_plist_files
       plist_files.each { |full_path|
         item = PathListWidgetItem.new
