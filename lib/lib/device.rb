@@ -7,7 +7,7 @@ require_relative 'usb_muxd_wrapper'
 
 module Idb
   class Device < AbstractDevice
-    attr_accessor :usb_ssh_port, :mode, :tool_port, :ios_version
+    attr_accessor :usb_ssh_port, :mode, :tool_port, :ios_version, :proxy_port
 
     def initialize username, password, hostname, port
 
@@ -41,6 +41,7 @@ module Idb
         @mode = 'usb'
         @usbmuxd = USBMuxdWrapper.new
         proxy_port = @usbmuxd.find_available_port
+        @proxy_port = proxy_port
         $log.debug "Using port #{proxy_port} for SSH forwarding"
 
         @usbmuxd.proxy proxy_port, $settings['ssh_port']

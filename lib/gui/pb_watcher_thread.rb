@@ -44,7 +44,6 @@ module Idb
           #even better: make one central thread that calls process.
           # and all functions using it call it to ensure its running. or auto start it.
           sleep 0.5
-          $device.ssh.process
           #$device.ssh.process 0
           if $terminate_pbwatcher_thread
             $log.info "Terminating pbwatcher"

@@ -103,7 +103,6 @@ module Idb
           @log_window.append_message "<font color='#{color}'>#{h.encode(new_entry.chomp)}</font>"
         end
 
-
       }
       @pbwatcher_thread.start_pbwatcher_thread @pbs_to_watch.select{|x,y| x != 'general' }.map{|x,y| "\"#{x}\""}.join ' '
 

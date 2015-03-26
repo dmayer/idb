@@ -46,6 +46,26 @@ module Idb
 
       @layout.addWidget @launch_app, @cur_row, 0, 1, 2
 
+
+#     TODO
+#      @cur_row+=1
+#
+#
+#      @debug_app = Qt::PushButton.new "Debug App"
+#      @debug_app.setEnabled(false)
+#      @debug_app.connect(SIGNAL(:released)) {
+#        if $device.open_installed?
+#          $selected_app.launch
+#        else
+#          error = Qt::MessageBox.new self
+#          error.setInformativeText("'open' not found on the device. Please visit the status dialog and install it.")
+#          error.setIcon(Qt::MessageBox::Critical)
+#          error.setMinimumWidth(500)
+#          error.exec
+#          emit show_device_status()
+#        end
+#      }
+
       @cur_row+=1
 
       @open_folder = Qt::PushButton.new "Open Local Temp Folder"

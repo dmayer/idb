@@ -195,6 +195,11 @@ module Idb
         $device.app_launch self
     end
 
+    def launch_debugger
+
+
+    end
+
     def binary_path
       $log.info "Locating application binary..."
       dirs = $device.ops.dir_glob("#{@app_dir}/","**")
