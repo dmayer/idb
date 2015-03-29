@@ -17,7 +17,6 @@ module Idb
       }
       @layout.addWidget @app_list, 0, 0, 1, 2
 
-      refresh_app_list
 
 
       @save_button = Qt::PushButton.new "Select"
@@ -30,6 +29,10 @@ module Idb
       @cancel_button.connect(SIGNAL(:released)) {|x|
         reject()
       }
+
+      unless refresh_app_list
+        @save_button.setEnabled(false)
+      end
 
       @layout.addWidget @save_button, 1, 1
       @layout.addWidget @cancel_button, 1, 0
@@ -56,10 +59,10 @@ module Idb
         app_uuids =  $device.get_app_uuids
       rescue Exception => e
         error = Qt::MessageBox.new
-        error.setInformativeText("Unable to get list of applications: "+e.message)
+        error.setInformativeText("Unable to get list of applications. Ensure that you have at least one non-system app installed.")
         error.setIcon(Qt::MessageBox::Critical)
         error.exec
-        return
+        return false
       end
 
       progress = Qt::ProgressDialog.new "Reading App list...", nil, 1, app_uuids.size, self
