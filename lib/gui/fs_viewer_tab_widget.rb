@@ -1,19 +1,56 @@
 require_relative '../lib/rsync_git_manager'
 module Idb
-  class FsViewerTabWidget < Qt::TabWidget
 
-    attr_accessor :start
-
+  class FSViewerControlGroupBox < Qt::GroupBox
     def initialize *args
-      super *args
-
-      @icons = Qt::FileIconProvider.new
-
       @layout = Qt::GridLayout.new
+      super *args
       setLayout @layout
 
+      setTitle "Rsync app folder locally and keep git revisions"
+
+
+      @sync_path_label = Qt::Label.new "<b>Local Sync Path:</b>"
+      @layout.addWidget @sync_path_label, 0,0, 1,3
+
+      @sync_path_change = Qt::PushButton.new "Change Folder"
+      @sync_path_change.connect(SIGNAL :released) {
+        file_dialog = Qt::FileDialog.new
+        file_dialog.setFileMode(Qt::FileDialog::Directory)
+        file_dialog.setAcceptMode(Qt::FileDialog::AcceptOpen)
+        file_dialog.connect(SIGNAL('fileSelected(QString)')) { |x|
+          @local_path = x
+          dir_changed
+        }
+        file_dialog.exec
+      }
+
+      @layout.addWidget @sync_path_change, 1,1
+
+      @open_folder = Qt::PushButton.new "Open Folder"
+      @layout.addWidget @open_folder, 1,0
+
+      @open_folder.connect(SIGNAL :released) {
+        Launchy.open @local_path
+
+      }
+
+
+      @reset_folder = Qt::PushButton.new "Use Default Folder"
+      @layout.addWidget @reset_folder, 1,2
+
+      @reset_folder.connect(SIGNAL :released) {
+        update_start
+      }
+
+      line = Qt::Frame.new
+      line.setFrameShape Qt::Frame::VLine
+      line.setFrameShadow Qt::Frame::Sunken
+      @layout.addWidget line, 0,3,2,1
+
+
       @rsync = Qt::PushButton.new "Rsync + Git"
-      @layout.addWidget @rsync, 0,0
+      @layout.addWidget @rsync, 0,4
       @rsync.connect(SIGNAL :released) {
         @manager.start_new_revision
         if $device.ios_version == 8
@@ -26,20 +63,48 @@ module Idb
 
       }
 
-      @open_folder = Qt::PushButton.new "Open Folder"
-      @layout.addWidget @open_folder, 0,1
-
-      @open_folder.connect(SIGNAL :released) {
-        Launchy.open @local_path
-
-      }
 
       @open_gitk = Qt::PushButton.new "Open gitk"
-      @layout.addWidget @open_gitk, 0,2
+      @layout.addWidget @open_gitk, 1,4
 
       @open_gitk.connect(SIGNAL :released) {
         Process.spawn "(cd #{@local_path} && gitk)"
       }
+
+
+    end
+
+    def update_start
+      @selected_dir = $selected_app.app_dir
+      @local_path = "#{$selected_app.cache_dir}/idb_mirror.git"
+      dir_changed
+    end
+
+    def dir_changed
+      @sync_path_label.setText "<b>Local Sync Path:</b> " + @local_path
+      @manager = RsyncGitManager.new @local_path
+    end
+
+
+
+
+  end
+
+
+  class FsViewerTabWidget < Qt::TabWidget
+
+    attr_accessor :start
+
+    def initialize *args
+      super *args
+
+      @icons = Qt::FileIconProvider.new
+
+      @layout = Qt::GridLayout.new
+      setLayout @layout
+
+      @controls = FSViewerControlGroupBox.new self
+      layout.addWidget @controls, 0, 0, 1, 2
 
 
 
@@ -126,7 +191,7 @@ module Idb
       @splitter.addWidget @file_list
       @splitter.setStretchFactor 1, 1.5
       @splitter.setSizePolicy(Qt::SizePolicy::Expanding, Qt::SizePolicy::Expanding)
-      @layout.addWidget @splitter, 1, 0, 1, 3
+      @layout.addWidget @splitter, 1, 0
 
 
 
@@ -260,9 +325,8 @@ module Idb
     def update_start
       @treeview.clear
       @default_protection.update
-      @selected_dir = $selected_app.app_dir
-      @local_path = "#{$selected_app.cache_dir}/idb_mirror.git"
-      @manager = RsyncGitManager.new @local_path
+
+      @controls.update_start
 
       if $device.ios_version == 8
         start_ios_8

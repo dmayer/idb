@@ -47,7 +47,7 @@ module ScreenShotWizard
     end
 
     def validatePage
-      puts "[*] Marking screenshot time"
+      $log.info "Marking screenshot time"
       #wiz = parentWidget.parentWidget.parentWidget
       wizard.screenshot.mark
       return true
