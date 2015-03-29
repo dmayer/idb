@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    idb (2.6.2)
+    idb (2.7)
       awesome_print
       coderay
       ffi
@@ -20,7 +20,7 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    addressable (2.3.6)
+    addressable (2.3.8)
     awesome_print (1.6.1)
     coderay (1.1.0)
     ffi (1.9.6)
