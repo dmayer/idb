@@ -51,7 +51,17 @@ module Idb
         $device.ops.execute "/bin/su mobile -c /usr/bin/uicache"
         box.hide
       end
-      app_uuids =  $device.get_app_uuids
+
+      begin
+        app_uuids =  $device.get_app_uuids
+      rescue Exception => e
+        error = Qt::MessageBox.new
+        error.setInformativeText("Unable to get list of applications: "+e.message)
+        error.setIcon(Qt::MessageBox::Critical)
+        error.exec
+        return
+      end
+
       progress = Qt::ProgressDialog.new "Reading App list...", nil, 1, app_uuids.size, self
       progress.setAutoClose true
       progress.setWindowModality(Qt::WindowModal);
