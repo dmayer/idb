@@ -111,24 +111,31 @@
 <li>Under <code>ruby-build</code>/<code>rbenv</code> with <code>ruby-build</code> use <code>CONFIGURE_OPTS=--enable-shared [command]</code> when installing Ruby.</li>
 </ul>
 
+
 <h4>1.2 Install Other Prerequisites:</h4>
 
-<p>For OS X:
+<p>For OS X:</p>
+
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>brew install qt cmake usbmuxd libimobiledevice</span></code></pre></td></tr></table></div></figure>
-For Ubuntu:
+
+
+<p>For Ubuntu:</p>
+
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>apt-get install cmake libqt4-dev git-core libimobiledevice-utils libplist-utils usbmuxd libxml2-dev libsqlite3-dev -y</span></code></pre></td></tr></table></div></figure></p>
+</pre></td><td class='code'><pre><code class=''><span class='line'>apt-get install cmake libqt4-dev git-core libimobiledevice-utils libplist-utils usbmuxd libxml2-dev libsqlite3-dev -y</span></code></pre></td></tr></table></div></figure>
+
 
 <h3>2. Installing idb</h3>
 
 <h4>2.1 Production Use</h4>
 
 <ul>
-<li> Install idb: <code>gem install idb</code></li>
-<li> Run idb: <code>idb</code></li>
-<li> Hooray!</li>
+<li>Install idb: <code>gem install idb</code></li>
+<li>Run idb: <code>idb</code></li>
+<li>Hooray!</li>
 </ul>
+
 
 <h4>2.2 Development</h4>
 
@@ -140,9 +147,11 @@ For Ubuntu:
 <li>Run idb by calling <code>bundle exec idb</code>
 
 <ul>
-<li><strong>Note:</strong> Running <code>bin/idb</code> directly won&#39;t work since it will not find the idb gem (or use the installed gem and not the checked out source code).  Instead, the <code>bundle exec</code> command runs idb in the current bundler environment where bundler supplies the gem from source.</li>
-</ul></li>
+<li><strong>Note:</strong> Running <code>bin/idb</code> directly won&rsquo;t work since it will not find the idb gem (or use the installed gem and not the checked out source code).  Instead, the <code>bundle exec</code> command runs idb in the current bundler environment where bundler supplies the gem from source.</li>
 </ul>
+</li>
+</ul>
+
 
 
 </article>

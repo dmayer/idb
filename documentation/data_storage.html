@@ -12,7 +12,7 @@
         <title>Documentation: Data Storage - </title>
         <meta name="author" content="idb">
         
-        <meta name="description" content="Documentation: Data Storage Main Setup Data Storage Binary Analysis IPC Tools Data Storage The first tab of idb&#39;s interface provides an easy way &hellip;">
+        <meta name="description" content="Documentation: Data Storage Main Setup Data Storage Binary Analysis IPC Tools Data Storage The first tab of idb&rsquo;s interface provides an easy &hellip;">
         
         <meta name="viewport" content="width=device-width">
         <link rel="canonical" href="http://dmayer.github.io/idb/documentation/data_storage.html">
@@ -95,7 +95,7 @@
     <hr class="divider">
     
 
-    <div style="width:100%; position: relative; top:-30px;"><ul class="menu">
+    <div style="width:100%; position: relative; top:-30px;"><ul class="doc_menu">
     <li><a href="/documentation/">Main</a></li>
     <li><a href="/documentation/setup.html">Setup</a></li>
     <li><a href="/documentation/data_storage.html">Data Storage</a></li>
@@ -105,52 +105,54 @@
 </ul>
 </div>
 
-<p><hr class="divider" style="position: relative; top:-30px;"></p>
+
+<hr class="divider" style="position: relative; top:-30px;">
+
 
 <h2>Data Storage</h2>
 
-<p>The first tab of idb&#39;s interface provides an easy way to analyze data stored in common file types. At the moment,
+<p>The first tab of idb&rsquo;s interface provides an easy way to analyze data stored in common file types. At the moment,
 this includes plist files, SQLite databases, and HTTP request caches (<code>Cache.db</code>). The functionality provided by idb
 for each of the file types is similar: You can automatically search the entire app directory for the specific file
 type, list the results including their <code>DataProtection</code> class (encryption!), and view the files by simply
-double-clicking a result entry. Click the &quot;Refresh&quot; button at the bottom to retrieve the list.</p>
+double-clicking a result entry. Click the &ldquo;Refresh&rdquo; button at the bottom to retrieve the list.</p>
 
-<p>For iOS 8+, Each storage related tab displays the &quot;Default Data Protection&quot; of the app which is set via app entitlements.
+<p>For iOS 8+, Each storage related tab displays the &ldquo;Default Data Protection&rdquo; of the app which is set via app entitlements.
 This class defines the default protection class used for files created by the app.  In order to determine the
  <code>DataProtection</code> class for each file, <code>idb</code> uses a small helper utility which is available at:
-  https://github.com/dmayer/protectionclassviewer</p>
+  <a href="https://github.com/dmayer/protectionclassviewer">https://github.com/dmayer/protectionclassviewer</a></p>
 
 <h3>plist Files</h3>
 
-<p>Plist files are used  by most iOS application for structured data storage. Typically they are accessed via iOS&#39;s
+<p>Plist files are used  by most iOS application for structured data storage. Typically they are accessed via iOS&rsquo;s
 <code>NSUserDefaults</code> which automatically  persists the data on the file system in the form of <code>.plist</code> files (XML or binary).</p>
 
-<p><img src="/images/doc/idb_plist_files.png" alt="Listing Plist Files"></p>
+<p><img src="/images/doc/idb_plist_files.png" alt="Listing Plist Files" /></p>
 
 <h3>SQLite Databases</h3>
 
 <p>SQLite support has been part of the iOS SDK since early on. SQLite databases are stored on the file system
  (generally unencrypted) and can be queried using a limited set of SQL.</p>
 
-<p><img src="/images/doc/idb_sqlite_files.png" alt="Listing SQLite Files"></p>
+<p><img src="/images/doc/idb_sqlite_files.png" alt="Listing SQLite Files" /></p>
 
 <h3>Cache.db Files</h3>
 
 <p>The automatic request and response caching performed by <code>NSURLConnection</code> can disclose sensitive data on the file
 system. Specifically, it stores request and response data in a <code>Cache.db</code> file, an unencrypted sqlite database.</p>
 
-<p><img src="/images/doc/idb_cachedb_files.png" alt="Listing Cache.db Files"></p>
+<p><img src="/images/doc/idb_cachedb_files.png" alt="Listing Cache.db Files" /></p>
 
 <h2>File System Browser</h2>
 
-<p>The file system browser provides an easy to use interface for browsing the app&#39;s sandbox. All directories and files
+<p>The file system browser provides an easy to use interface for browsing the app&rsquo;s sandbox. All directories and files
 are listed in a familiar tree and list structure. The details pane at the bottom displays file permissions and the
 <code>DataProtection</code> class which applies to the file. This way one can easily verify that sensitive files are properly
 protected. Moreover, double-clicking on any file will automatically download and open it on the idb host with the
 application that is associated with the file extension. At the bottom of this tab is a section for displaying the
-&quot;Default Data Protection&quot; of the app, the default encryption class of files created by this app.</p>
+&ldquo;Default Data Protection&rdquo; of the app, the default encryption class of files created by this app.</p>
 
-<p><img src="/images/doc/idb_fs_browser.png%20=800x" alt="File System Browser"></p>
+<p><img src="/images/doc/idb_fs_browser.png" width="800" alt="File System Browser" /></p>
 
 <h3>Git + Rsync</h3>
 
@@ -167,13 +169,14 @@ compare or keep track of installations on different devices.</p>
 <li>Open gitk: Opens gitk to explore the git repo.</li>
 </ul>
 
-<p><img src="/images/doc/idb_fs_browser_open.png%20=800x" alt="Open Sync Folder"></p>
 
-<p><img src="/images/doc/idb_fs_browser_gitk.png%20=800x" alt="Open gitk"></p>
+<p><img src="/images/doc/idb_fs_browser_open.png" width="800" alt="Open Sync Folder" /></p>
+
+<p><img src="/images/doc/idb_fs_browser_gitk.png" width="800" alt="Open gitk" /></p>
 
 <h2>iOS Keychain</h2>
 
-<p>idb provides a convenient way for dumping the content of the iOS Keychain. Navigate to the &quot;Keychain&quot; tab and click
+<p>idb provides a convenient way for dumping the content of the iOS Keychain. Navigate to the &ldquo;Keychain&rdquo; tab and click
  the <code>Dump Keychain</code> button to extract and display all keychain entries. Under the hood idb uses the <code>keychain_dump</code>
 utility which is part of the <a href="https://code.google.com/p/iphone-dataprotection/">iphone-dataprotection</a> forensics
 tools.</p>
@@ -181,7 +184,7 @@ tools.</p>
 <p><strong>Stay Tuned:</strong> A new tool that allows editing and deletion of keychain entries is in the works and will be integrated
 over the next few weeks.</p>
 
-<p><img src="/images/doc/idb_keychain.png%20=800x" alt="iOS keychain"></p>
+<p><img src="/images/doc/idb_keychain.png" width="800" alt="iOS keychain" /></p>
 
 
 </article>

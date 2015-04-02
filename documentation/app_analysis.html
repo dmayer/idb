@@ -95,7 +95,7 @@
     <hr class="divider">
     
 
-    <div style="width:100%; position: relative; top:-30px;"><ul class="menu">
+    <div style="width:100%; position: relative; top:-30px;"><ul class="doc_menu">
     <li><a href="/documentation/">Main</a></li>
     <li><a href="/documentation/setup.html">Setup</a></li>
     <li><a href="/documentation/data_storage.html">Data Storage</a></li>
@@ -105,12 +105,14 @@
 </ul>
 </div>
 
-<p><hr class="divider" style="position: relative; top:-30px;"></p>
+
+<hr class="divider" style="position: relative; top:-30px;">
+
 
 <h2>Performing an Analysis of the Application Binary</h2>
 
-<p>In order to enable idb&#39;s remaining functions, the  analysis of the application binary has to be triggered by clicking
-the &#39;Analyze Binary&#39; button. This will download the decrypted application binary and perform some basic analysis to
+<p>In order to enable idb&rsquo;s remaining functions, the  analysis of the application binary has to be triggered by clicking
+the &lsquo;Analyze Binary&rsquo; button. This will download the decrypted application binary and perform some basic analysis to
 extract information such as:</p>
 
 <ul>
@@ -121,58 +123,59 @@ extract information such as:</p>
 <li><code>ARC</code>: Does the application use Automatic Reference Counting (ARC).</li>
 </ul>
 
-<p>If the application binary is encrypted, idb uses Stefan Esser&#39;s
+
+<p>If the application binary is encrypted, idb uses Stefan Esser&rsquo;s
  <a href="https://github.com/stefanesser/dumpdecrypted">dumpdecryoted</a> to decrypt it before downloading and analyzing it.</p>
 
-<p><img src="/images/doc/idb_empty_binary_details.png%20=400x" alt="Application Binary Details">
-<img src="/images/doc/idb_binary_details.png%20=400x" alt="Application Binary Details"></p>
+<p><img src="/images/doc/idb_empty_binary_details.png" width="400" alt="Application Binary Details" />
+<img src="/images/doc/idb_binary_details.png" width="400" alt="Application Binary Details" /></p>
 
 <h3>Application Binary</h3>
 
-<p>Once &quot;Analyze App Binary&quot; was clicked and completed, the &quot;Application Binary&quot; tab becomes fully active.
+<p>Once &ldquo;Analyze App Binary&rdquo; was clicked and completed, the &ldquo;Application Binary&rdquo; tab becomes fully active.
 It provides three functions: display shared libraries, display strings, and extract class signatures and functions.</p>
 
 <h4>Shared Libraries</h4>
 
-<p>The &quot;Shared Libraries&quot; tab allows you list all the external libraries the app references. This allows for the easy
+<p>The &ldquo;Shared Libraries&rdquo; tab allows you list all the external libraries the app references. This allows for the easy
 discovery of any suspicious frameworks that may be in use by the app. Internally, idb uses <code>otool</code> to analyze the
 binary. Since idb runs <code>otool</code> on the host, this is an OS X feature only at this point. There are <a href="../issues/12">plans</a>
 for moving the analysis onto the device which will make the feature available for other platforms as well.</p>
 
-<p><img src="/images/doc/idb_shared_libraries.png%20=800x" alt="Listing Shared Libraries"></p>
+<p><img src="/images/doc/idb_shared_libraries.png" width="800" alt="Listing Shared Libraries" /></p>
 
 <h4>Strings</h4>
 
 <p>Application binaries frequently include data of interest such as API keys, credentials, encryption keys, URLs, etc.
 The strings tab extracts all strings in the (decrypted!) application binary and displays them right in the UI.</p>
 
-<p><img src="/images/doc/idb_strings.png" alt="Strings"></p>
+<p><img src="/images/doc/idb_strings.png" alt="Strings" /></p>
 
 <h4>Class and Method Signature Dumping</h4>
 
 <p>When reversing, instrumenting (e.g., using Cycript or Mobile Substrate), or simply trying to understand an app,
 knowing all of the classes and method signatures of the app is of great help. idb provides a convenient way for
 obtaining these from compiled iOS applications. Under the hood, this function uses <code>cycript</code> and the <code>weak_classdump</code>
-<a href="https://github.com/limneos/weak_classdump">script by Elias Limneos</a>. To use this, simply click the &quot;Dump Classes&quot;
+<a href="https://github.com/limneos/weak_classdump">script by Elias Limneos</a>. To use this, simply click the &ldquo;Dump Classes&rdquo;
 button in idb while the device is unlocked.</p>
 
 <p><strong>Note:</strong> Since iOS 8, there seems to be some issue with running weak class-dump. Working on a better solution that
 works across platforms.</p>
 
-<p><img src="/images/doc/idb_classdump.png" alt="Weak Classdump"></p>
+<p><img src="/images/doc/idb_classdump.png" alt="Weak Classdump" /></p>
 
 <p>This will launch the app with cycript attached and dump all the class information. Depending on the size of the
 application, this process will take up to several minutes. There is no visual feedback that class information is being
-dumped, but the device will play the &quot;locking&quot; sound once the dump is complete. In some rare instances the app may
+dumped, but the device will play the &ldquo;locking&rdquo; sound once the dump is complete. In some rare instances the app may
 crash during this process which may lead to an incomplete class dump.</p>
 
-<p><img src="/images/doc/idb_classdump_dumping.png" alt="Please wait"></p>
+<p><img src="/images/doc/idb_classdump_dumping.png" alt="Please wait" /></p>
 
-<p>At any time during the process the &quot;List Results&quot; button can be used to retrieve all of the class information that has
+<p>At any time during the process the &ldquo;List Results&rdquo; button can be used to retrieve all of the class information that has
 been collected thus far. To gain a full list, you should wait until the execution of <code>weak_classdump</code> is finished.
 The results will look similar to this:</p>
 
-<p><img src="/images/doc/idb_classdump_results.png" alt="Classdump Results "></p>
+<p><img src="/images/doc/idb_classdump_results.png" alt="Classdump Results " /></p>
 
 
 </article>

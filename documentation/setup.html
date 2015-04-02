@@ -95,7 +95,7 @@
     <hr class="divider">
     
 
-    <div style="width:100%; position: relative; top:-30px;"><ul class="menu">
+    <div style="width:100%; position: relative; top:-30px;"><ul class="doc_menu">
     <li><a href="/documentation/">Main</a></li>
     <li><a href="/documentation/setup.html">Setup</a></li>
     <li><a href="/documentation/data_storage.html">Data Storage</a></li>
@@ -105,41 +105,42 @@
 </ul>
 </div>
 
-<p><hr class="divider" style="position: relative; top:-30px;"></p>
+
+<hr class="divider" style="position: relative; top:-30px;">
+
 
 <p><strong>Note:</strong> When starting idb on OS X with ruby 2.1 the menu bar might not appear until you switch to a different
 app and back to idb. Any pointers on how to fix that would be greatly appreciated.</p>
 
 <h3>Basic SSH Connectivity</h3>
 
-<p>The first time you star-up idb, visit the preference Dialog in the &#39;File&#39; (or &#39;ruby&#39;) menu. In the &#39;Device Config&#39;
-tab you can configure how to connect to your iDevice. The &#39;SSH directly&#39; option  performs a regular TCP connection
-to the device&#39;s SSH service while the &#39;SSH via USB&#39; option uses
+<p>The first time you star-up idb, visit the preference Dialog in the &lsquo;File&rsquo; (or &lsquo;ruby&rsquo;) menu. In the &lsquo;Device Config&rsquo;
+tab you can configure how to connect to your iDevice. The &lsquo;SSH directly&rsquo; option  performs a regular TCP connection
+to the device&rsquo;s SSH service while the &lsquo;SSH via USB&rsquo; option uses
 <a href="http://cgit.sukimashita.com/usbmuxd.git/">usbmuxd</a> to connect to your iDevice via USB. Note that you still need
 to have an SSH server running on the device (get it using Cydia) even if you are connecting via USB. All that usbmuxd
- does is forward the TCP connection via USB; so the &#39;hostname&#39; field becomes no longer relevant.</p>
+ does is forward the TCP connection via USB; so the &lsquo;hostname&rsquo; field becomes no longer relevant.</p>
 
-<p><img src="/images/doc/idb_ssh_connection_settings.png%20=600x" alt="SSH Setting Dialog"></p>
+<p><img src="/images/doc/idb_ssh_connection_settings.png" width="600" alt="SSH Setting Dialog" /></p>
 
 <h3>SSH Port-Forwarding</h3>
 
-<p>The second tab of the settings dialog controls the optional port forwarding between the host running idb (&#39;client&#39;)
-and the iDevice (&#39;server&#39;). The forwarding settings follow the SSH naming conventions so &#39;Remote&#39; forwarding opens up
-a port on the server and forwards it to the given host and port starting from the client. Conversely, &#39;Local&#39;
+<p>The second tab of the settings dialog controls the optional port forwarding between the host running idb (&lsquo;client&rsquo;)
+and the iDevice (&lsquo;server&rsquo;). The forwarding settings follow the SSH naming conventions so &lsquo;Remote&rsquo; forwarding opens up
+a port on the server and forwards it to the given host and port starting from the client. Conversely, &lsquo;Local&rsquo;
 forwarding opens up a port on the client and forwards incoming connection to the specified host and port on the
 server side. You can specify an arbitrary number of each forward type. This function is particularly useful for
 investigating traffic from the device, e.g., using an intercepting HTTP proxy. For example, assume your proxy is
 running on the client and listens on port <code>8080</code> then you can define</p>
 
-<blockquote>
-<div class="highlight"><pre><code class="language-text" data-lang="text">remote:8080 -&gt; localhost:8080
-</code></pre></div></blockquote>
+<blockquote><pre><code>remote:8080 -&gt; localhost:8080
+</code></pre></blockquote>
 
 <p>as a remote forward which will open port <code>8080</code> on the device and forwards all incoming connections to port <code>8080</code>
 on the host running idb. Now you simply configure the proxy server on the device as <code>localhost:8080</code> and you are good
 to go!</p>
 
-<p><img src="/images/doc/idb_ssh_forwarding.png" alt="SSH Port Forwarding"></p>
+<p><img src="/images/doc/idb_ssh_forwarding.png" alt="SSH Port Forwarding" /></p>
 
 <h3>External Applications</h3>
 
@@ -148,29 +149,29 @@ to a SQLite editor.</p>
 
 <h2>Connecting to the Device</h2>
 
-<p>After all connection parameters are configured, you connect to the device by clicking the &quot;USB Device&quot; option
-in the &quot;Devices&quot; menu. This establishes the SSH connection via the specified method. Once the connection succeeds, idb
+<p>After all connection parameters are configured, you connect to the device by clicking the &ldquo;USB Device&rdquo; option
+in the &ldquo;Devices&rdquo; menu. This establishes the SSH connection via the specified method. Once the connection succeeds, idb
 checks if all tools that are required have been installed on the device. If not, a status dialog opens up which lists
-all the tools and their status. Each tool can be installed by simply clicking the corresponding &quot;Install&quot; button. Note
+all the tools and their status. Each tool can be installed by simply clicking the corresponding &ldquo;Install&rdquo; button. Note
  that the automated installation requires <code>apt-get</code> or <code>aptitude</code> to be installed on the device.</p>
 
 <p>Once all tools are installed, close the dialog. Connecting to the
-device enables some of the basic functions such as the &quot;Log&quot; and the &quot;Pasteboard&quot; monitor. Different components of
+device enables some of the basic functions such as the &ldquo;Log&rdquo; and the &ldquo;Pasteboard&rdquo; monitor. Different components of
 idb are activated when certain selections or actions are performed in the UI.</p>
 
-<p><img src="/images/doc/idb_connect_to_usb.png%20=500x" alt="Connect to Device"></p>
+<p><img src="/images/doc/idb_connect_to_usb.png" width="500" alt="Connect to Device" /></p>
 
-<p><img src="/images/doc/idb_device_status.png%20=800x" alt="Device Status"></p>
+<p><img src="/images/doc/idb_device_status.png" width="800" alt="Device Status" /></p>
 
 <h2>Selecting an Application</h2>
 
 <p>The next step after connecting to the device is selecting the application you would like to assess. For this, you
-click on the &quot;Select App&#8230;&quot; button in the upper right and select the desired application from the dialog.</p>
+click on the &ldquo;Select App&hellip;&rdquo; button in the upper right and select the desired application from the dialog.</p>
 
-<p><img src="/images/doc/idb_select_app.png%20=800x" alt="Application Selection"></p>
+<p><img src="/images/doc/idb_select_app.png" width="800" alt="Application Selection" /></p>
 
 <p>Note that additional functions have now been enabled. In addition, some basic information on the application is extracted
-from its <code>Info.plist</code> file and displayed in the &#39;App Info&#39; Tab:</p>
+from its <code>Info.plist</code> file and displayed in the &lsquo;App Info&rsquo; Tab:</p>
 
 <ul>
 <li>Bundle ID</li>
@@ -183,9 +184,10 @@ from its <code>Info.plist</code> file and displayed in the &#39;App Info&#39; Ta
 <li>The folder where app data is stored (iOS 8+)</li>
 </ul>
 
-<p>In addition, all of the app&#39;s entitlements are displayed as well.</p>
 
-<p><img src="/images/doc/idb_app_details.png%20=800x" alt="Application Details"></p>
+<p>In addition, all of the app&rsquo;s entitlements are displayed as well.</p>
+
+<p><img src="/images/doc/idb_app_details.png" width="800" alt="Application Details" /></p>
 
 
 </article>
