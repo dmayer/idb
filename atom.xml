@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
     <title><![CDATA[]]></title>
-    <link href="http://idbtoo.com/idb/atom.xml" rel="self"/>
-    <link href="http://idbtoo.com/idb/"/>
-    <updated>2015-04-02T12:13:36-05:00</updated>
-    <id>http://idbtoo.com/idb/</id>
+    <link href="http://dmayer.github.io/idb/atom.xml" rel="self"/>
+    <link href="http://dmayer.github.io/idb/"/>
+    <updated>2015-04-02T12:23:30-05:00</updated>
+    <id>http://dmayer.github.io/idb/</id>
     <author>
         <name><![CDATA[idb]]></name>
         
@@ -15,29 +15,29 @@
     
     <entry>
         <title type="html"><![CDATA[New: Entitlements and Default Protection Class]]></title>
-        <link href="http://idbtoo.com/idb/blog/2015/02/26/new-entitlements-and-default-protection-class/"/>
+        <link href="http://dmayer.github.io/idb/blog/2015/02/26/new-entitlements-and-default-protection-class/"/>
         <updated>2015-02-26T11:04:12-06:00</updated>
-        <id>http://idbtoo.com/idb/blog/2015/02/26/new-entitlements-and-default-protection-class</id>
+        <id>http://dmayer.github.io/idb/blog/2015/02/26/new-entitlements-and-default-protection-class</id>
         <content type="html"><![CDATA[<p>The new version of idb now lists iOS app entitlements including the default data protection class.</p>
 ]]></content>
     </entry>
     
     <entry>
         <title type="html"><![CDATA[New: iOS 8 Support and UI Improvements]]></title>
-        <link href="http://idbtoo.com/idb/blog/2014/11/05/new-ios-8-support-and-ui-improvements/"/>
+        <link href="http://dmayer.github.io/idb/blog/2014/11/05/new-ios-8-support-and-ui-improvements/"/>
         <updated>2014-11-05T11:04:35-06:00</updated>
-        <id>http://idbtoo.com/idb/blog/2014/11/05/new-ios-8-support-and-ui-improvements</id>
+        <id>http://dmayer.github.io/idb/blog/2014/11/05/new-ios-8-support-and-ui-improvements</id>
         <content type="html"><![CDATA[<p>The new idb version now has iOS 8+ support and received a face-lift to make the UI more functional.</p>
 
-<p><img src="http://idbtoo.com/idb/images/2015-04-02-new-ios-8-support-and-ui-improvements/screenshot.png" width="800" alt="UI Improvements" /></p>
+<p><img src="http://dmayer.github.io/idb/images/2015-04-02-new-ios-8-support-and-ui-improvements/screenshot.png" width="800" alt="UI Improvements" /></p>
 ]]></content>
     </entry>
     
     <entry>
         <title type="html"><![CDATA[Video of Seminar at Toorcon 16]]></title>
-        <link href="http://idbtoo.com/idb/blog/2014/10/24/video-of-seminar-at-toorcon-16/"/>
+        <link href="http://dmayer.github.io/idb/blog/2014/10/24/video-of-seminar-at-toorcon-16/"/>
         <updated>2014-10-24T11:53:25-05:00</updated>
-        <id>http://idbtoo.com/idb/blog/2014/10/24/video-of-seminar-at-toorcon-16</id>
+        <id>http://dmayer.github.io/idb/blog/2014/10/24/video-of-seminar-at-toorcon-16</id>
         <content type="html"><![CDATA[<div class="embed-video-container"><iframe src="//www.youtube.com/embed/jHLxFKPIOj8" allowfullscreen></iframe></div>
 
 ]]></content>
@@ -45,18 +45,18 @@
     
     <entry>
         <title type="html"><![CDATA[New Location for Configuration File]]></title>
-        <link href="http://idbtoo.com/idb/blog/2014/10/01/new-location-for-configuration-file/"/>
+        <link href="http://dmayer.github.io/idb/blog/2014/10/01/new-location-for-configuration-file/"/>
         <updated>2014-10-01T19:49:16-05:00</updated>
-        <id>http://idbtoo.com/idb/blog/2014/10/01/new-location-for-configuration-file</id>
+        <id>http://dmayer.github.io/idb/blog/2014/10/01/new-location-for-configuration-file</id>
         <content type="html"><![CDATA[<p>As of October 2014: idb now stores its configuration and temporary files in <code>~/.idb/</code></p>
 ]]></content>
     </entry>
     
     <entry>
         <title type="html"><![CDATA[Updated Talk at SOURCE Boston 2014]]></title>
-        <link href="http://idbtoo.com/idb/blog/2014/04/14/talk-at-source-boston-2014/"/>
+        <link href="http://dmayer.github.io/idb/blog/2014/04/14/talk-at-source-boston-2014/"/>
         <updated>2014-04-14T11:50:30-05:00</updated>
-        <id>http://idbtoo.com/idb/blog/2014/04/14/talk-at-source-boston-2014</id>
+        <id>http://dmayer.github.io/idb/blog/2014/04/14/talk-at-source-boston-2014</id>
         <content type="html"><![CDATA[<p>Last weekend I also spoke at <a href="http://sourceconference.com/boston/">SOURCE Boston</a> about idb and some of the new features. SOURCE is a great conference with excellent talks and an audience size that makes it personal enough to connect and engage with many of the attendees.</p>
 
 <p>Read more about the new idb features and see my updated slide deck after the jump.</p>
@@ -75,9 +75,9 @@
     
     <entry>
         <title type="html"><![CDATA[New: Classdump, Certificate Installer, Hosts File Editor, Screenshot Utility]]></title>
-        <link href="http://idbtoo.com/idb/blog/2014/04/13/new-idb-features-classdump/"/>
+        <link href="http://dmayer.github.io/idb/blog/2014/04/13/new-idb-features-classdump/"/>
         <updated>2014-04-13T19:49:16-05:00</updated>
-        <id>http://idbtoo.com/idb/blog/2014/04/13/new-idb-features-classdump</id>
+        <id>http://dmayer.github.io/idb/blog/2014/04/13/new-idb-features-classdump</id>
         <content type="html"><![CDATA[<p>During the last weeks I released a few new features as well as stability and usability improvements for <a href="http://github.com/dmayer/idb">idb</a>.
 The more notable ones are:</p>
 
@@ -89,15 +89,15 @@ The more notable ones are:</p>
 </ul>
 
 
-<p>All of the features are now documented in the new <a href="http://idbtoo.com/idb/documentation">Documentation</a>.</p>
+<p>All of the features are now documented in the new <a href="http://dmayer.github.io/idb/documentation">Documentation</a>.</p>
 ]]></content>
     </entry>
     
     <entry>
         <title type="html"><![CDATA[ShmooCon 2014 Video Recording]]></title>
-        <link href="http://idbtoo.com/idb/blog/2014/02/10/shmoocon-2014-video-recording/"/>
+        <link href="http://dmayer.github.io/idb/blog/2014/02/10/shmoocon-2014-video-recording/"/>
         <updated>2014-02-10T10:35:38-06:00</updated>
-        <id>http://idbtoo.com/idb/blog/2014/02/10/shmoocon-2014-video-recording</id>
+        <id>http://dmayer.github.io/idb/blog/2014/02/10/shmoocon-2014-video-recording</id>
         <content type="html"><![CDATA[<p>The recording of my ShmooCon talk was now <a href="https://archive.org/details/ShmooCon2014_Introducing_idb_Simplified_Blackbox_iOS_App_Pentesting">posted on archive.org</a>. Below is the Youtube version of the video.</p>
 
 <div class="embed-video-container"><iframe src="//www.youtube.com/embed/y98mYDeSCOc" allowfullscreen></iframe></div>
@@ -107,9 +107,9 @@ The more notable ones are:</p>
     
     <entry>
         <title type="html"><![CDATA[idb - iOS Research / Pentesting Tool]]></title>
-        <link href="http://idbtoo.com/idb/blog/2014/01/23/idb-ios-research-slash-pentesting-tool/"/>
+        <link href="http://dmayer.github.io/idb/blog/2014/01/23/idb-ios-research-slash-pentesting-tool/"/>
         <updated>2014-01-23T19:09:00-06:00</updated>
-        <id>http://idbtoo.com/idb/blog/2014/01/23/idb-ios-research-slash-pentesting-tool</id>
+        <id>http://dmayer.github.io/idb/blog/2014/01/23/idb-ios-research-slash-pentesting-tool</id>
         <content type="html"><![CDATA[<p>Last weekend (January 17-19 2014) I gave a talk on blackbox iOS app pentesting at <a href="http://shmoocon.org">ShmooCon 2014</a>
  in Washington, D.C. The talk covered various common iOS app vulnerabilities, mitigation techniques, and also
  introduced a new tool called <code>idb</code> and demonstrated how it can be used to test for the discussed vulnerabilities.</p>
