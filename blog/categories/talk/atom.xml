@@ -4,7 +4,7 @@
     <title><![CDATA[Category: talk | ]]></title>
     <link href="http://dmayer.github.io/idb/blog/categories/talk/atom.xml" rel="self"/>
     <link href="http://dmayer.github.io/idb/"/>
-    <updated>2015-04-02T15:19:15-05:00</updated>
+    <updated>2015-04-02T16:23:13-05:00</updated>
     <id>http://dmayer.github.io/idb/</id>
     <author>
         <name><![CDATA[idb]]></name>
@@ -28,7 +28,6 @@
 
 <!-- more -->
 
-
 <h2>idb</h2>
 
 <p><code>idb</code> is a tool to simplify some common tasks for iOS pentesting and
@@ -45,44 +44,38 @@ research. It is written in ruby with a Qt GUI frontend and should run on OS X an
 <ul>
 <li>Setup port forwarding</li>
 <li>Certificate management</li>
-</ul>
-</li>
+</ul></li>
 <li>iOS log viewer</li>
 <li>Screen shot utility
 
 <ul>
 <li>Simplifies testing for the creation of backgrounding screenshots</li>
-</ul>
-</li>
+</ul></li>
 <li>App-related functions
 
 <ul>
-<li> App binary
+<li>App binary
 
 <ul>
 <li>Download</li>
 <li>List imported libraries</li>
 <li>Check for encrypttion, ASLR, stack canaries</li>
 <li>Decrypt and download an app binary (requires <a href="//github.com/stefanesser/dumpdecrypted">dumpdecrypted</a>)</li>
-</ul>
-</li>
-<li> Launch an app</li>
-<li> View app details such as name, bundleid, and <code>Info.plist</code> file.</li>
-</ul>
-</li>
+</ul></li>
+<li>Launch an app</li>
+<li>View app details such as name, bundleid, and <code>Info.plist</code> file.</li>
+</ul></li>
 <li>Inter-Process Communication
 
 <ul>
-<li> URL Handlers
+<li>URL Handlers
 
 <ul>
 <li>List URL handlers</li>
 <li>Invoke and fuzz URL handlers</li>
-</ul>
-</li>
-<li> Pasteboard monitor</li>
-</ul>
-</li>
+</ul></li>
+<li>Pasteboard monitor</li>
+</ul></li>
 <li>Analyze local file storage
 
 <ul>
@@ -90,24 +83,20 @@ research. It is written in ruby with a Qt GUI frontend and should run on OS X an
 <li>Search for, download, and view sqlite databases</li>
 <li>Search for, download, and view local caches  (<code>Cache.db</code>)</li>
 <li>File system browser</li>
-</ul>
-</li>
+</ul></li>
 <li>Install utilities on iDevices
 
 <ul>
 <li>Install <a href="//github.com/iSECPartners/ios-ssl-kill-switch">iOS SSL killswitch</a></li>
 <li>alpha: Compile and install <a href="//github.com/stefanesser/dumpdecrypted">dumpdecrypted</a></li>
-</ul>
-</li>
+</ul></li>
 <li>Alpha:
 
 <ul>
 <li>Cycript console</li>
 <li>Snoop-It integration</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-
 ]]></content>
     </entry>
     

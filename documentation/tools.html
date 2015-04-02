@@ -105,29 +105,27 @@
 </ul>
 </div>
 
-
-<hr class="divider" style="position: relative; top:-30px;">
-
+<p><hr class="divider" style="position: relative; top:-30px;"></p>
 
 <h2>Tools</h2>
 
 <p>This tab groups several miscellaneous tools.</p>
 
-<p><img src="/images/doc/idb_tools.png" alt="Tools" /></p>
+<p><img src="/images/doc/idb_tools.png" alt="Tools"></p>
 
 <h3>Screenshot Utility</h3>
 
 <p>The screen shot utility is a simple wizard that can be used to test whether an app is disclosing sensitive data
- in the automatic backgrounding screenshots taken by iOS. After starting the wizard, the &ldquo;Launch Application&rdquo; button
+ in the automatic backgrounding screenshots taken by iOS. After starting the wizard, the &quot;Launch Application&quot; button
   can be used to launch the app under investigation (make sure the device screen is on and not locked):</p>
 
-<p><img src="/images/doc/idb_screenshot_launch.png" alt="Launch App" /></p>
+<p><img src="/images/doc/idb_screenshot_launch.png" alt="Launch App"></p>
 
-<p>After clicking &ldquo;Continue&rdquo;, the next screen asks you to background the application by clicking the home button on the
- device. Once you did, click &ldquo;Continue&rdquo; to see whether a screenshot was found. If it was, idb downloads it and allows
+<p>After clicking &quot;Continue&quot;, the next screen asks you to background the application by clicking the home button on the
+ device. Once you did, click &quot;Continue&quot; to see whether a screenshot was found. If it was, idb downloads it and allows
   you to open it in your default image viewer. If no screenshot is found, a corresponding message is displayed.</p>
 
-<p><img src="/images/doc/idb_screenshot_found.png" alt="Screenshot found" /></p>
+<p><img src="/images/doc/idb_screenshot_found.png" alt="Screenshot found"></p>
 
 <h3>CA Certificate Manager</h3>
 
@@ -135,25 +133,25 @@
 faster by automatically making the respective certificate accessible to the iDevice.</p>
 
 <p>First, if your iDevice is set up to go through <a href="http://www.portswigger.net/burp/">Burp Suite</a>, clicking
- &ldquo;Install Burp Cert&rdquo; will automatically launch a URL handler on the device which redirects to <code>http://burp/cert</code> and
+ &quot;Install Burp Cert&quot; will automatically launch a URL handler on the device which redirects to <code>http://burp/cert</code> and
   allows the installation of the Burp CA cert with one click (make sure the device screen is on and not locked).</p>
 
-<p><img src="/images/doc/idb_burp_cert.png" alt="Burp CA Install" /></p>
+<p><img src="/images/doc/idb_burp_cert.png" alt="Burp CA Install"></p>
 
-<p><img src="/images/doc/idb_cert_install_screen.png" alt="iOS Cert Install Dialog" /></p>
+<p><img src="/images/doc/idb_cert_install_screen.png" alt="iOS Cert Install Dialog"></p>
 
-<p>Second, for all other certificates, you can use the &ldquo;Certificate Manager&rdquo;.</p>
+<p>Second, for all other certificates, you can use the &quot;Certificate Manager&quot;.</p>
 
-<p><img src="/images/doc/idb_cert_manager_empty.png" alt="idb cert manager" /></p>
+<p><img src="/images/doc/idb_cert_manager_empty.png" alt="idb cert manager"></p>
 
-<p>In order to install a new certificate, click on &ldquo;Import&rdquo; and select the desired certificate file. Both PEM and DER
+<p>In order to install a new certificate, click on &quot;Import&quot; and select the desired certificate file. Both PEM and DER
 formats are supported. After selecting the file, idb will internally serve the file on an HTTP server and trigger a
-URL handler on the device in order to install it. After installation, use the &ldquo;Refresh&rdquo; button to update the certificate
+URL handler on the device in order to install it. After installation, use the &quot;Refresh&quot; button to update the certificate
 list.</p>
 
-<p><img src="/images/doc/idb_cert_manager.png" alt="idb cert manager" /></p>
+<p><img src="/images/doc/idb_cert_manager.png" alt="idb cert manager"></p>
 
-<p>Finally, clicking &ldquo;Delete&rdquo;, will remove the file from the iDevice&rsquo;s trust store.</p>
+<p>Finally, clicking &quot;Delete&quot;, will remove the file from the iDevice&#39;s trust store.</p>
 
 <h3>/etc/hosts File Editor</h3>
 
@@ -163,10 +161,10 @@ iOS system proxy to make the app connect to it. However, when the app does not r
 via non-HTTP protocols, this may fail. In these instances modifying the <code>/etc/hosts</code> may help in pointing the app at a
 running proxy instance which then forwards traffic to the actual server expected by the app.</p>
 
-<p>idb&rsquo;s interface is very simple. The &ldquo;Load&rdquo; button retrieves the current <code>/etc/hosts</code> file from the device and displays
- it. After making the desired modifications, clicking &ldquo;Save&rdquo; will store the new file on the device.</p>
+<p>idb&#39;s interface is very simple. The &quot;Load&quot; button retrieves the current <code>/etc/hosts</code> file from the device and displays
+ it. After making the desired modifications, clicking &quot;Save&quot; will store the new file on the device.</p>
 
-<p><img src="/images/doc/idb_hosts_file.png" alt="Hosts File Editor" /></p>
+<p><img src="/images/doc/idb_hosts_file.png" alt="Hosts File Editor"></p>
 
 <h2>iOS Log</h2>
 
@@ -175,7 +173,7 @@ running proxy instance which then forwards traffic to the actual server expected
   <code>idevicesyslog</code> which is part of <a href="http://www.libimobiledevice.org/">libmobiledevice</a>. Clicking the <code>start</code> button
    will launch <code>idevicesyslog</code> and stream severity-highlighted log messages right into idb.</p>
 
-<p><img src="/images/doc/idb_log.png" width="800" alt="iOS Syslog" /></p>
+<p><img src="/images/doc/idb_log.png%20=800x" alt="iOS Syslog"></p>
 
 
 </article>

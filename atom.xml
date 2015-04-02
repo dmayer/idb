@@ -4,7 +4,7 @@
     <title><![CDATA[]]></title>
     <link href="http://dmayer.github.io/idb/atom.xml" rel="self"/>
     <link href="http://dmayer.github.io/idb/"/>
-    <updated>2015-04-02T15:19:15-05:00</updated>
+    <updated>2015-04-02T16:23:13-05:00</updated>
     <id>http://dmayer.github.io/idb/</id>
     <author>
         <name><![CDATA[idb]]></name>
@@ -29,7 +29,7 @@
         <id>http://dmayer.github.io/idb/blog/2014/11/05/new-ios-8-support-and-ui-improvements</id>
         <content type="html"><![CDATA[<p>The new idb version now has iOS 8+ support and received a face-lift to make the UI more functional.</p>
 
-<p><img src="http://dmayer.github.io/idb/images/2015-04-02-new-ios-8-support-and-ui-improvements/screenshot.png" width="800" alt="UI Improvements" /></p>
+<p><img src="http://dmayer.github.io/idb/images/2015-04-02-new-ios-8-support-and-ui-improvements/screenshot.png%20=800x" alt="UI Improvements"></p>
 ]]></content>
     </entry>
     
@@ -39,7 +39,6 @@
         <updated>2014-10-24T11:53:25-05:00</updated>
         <id>http://dmayer.github.io/idb/blog/2014/10/24/video-of-seminar-at-toorcon-16</id>
         <content type="html"><![CDATA[<div class="embed-video-container"><iframe src="//www.youtube.com/embed/jHLxFKPIOj8" allowfullscreen></iframe></div>
-
 ]]></content>
     </entry>
     
@@ -63,13 +62,7 @@
 
 <!-- more -->
 
-
-
-
 <script async="true" class="speakerdeck-embed" data-id="8aebc590a30401311a754eb53c3a6292" src="//speakerdeck.com/assets/embed.js"> </script>
-
-
-
 ]]></content>
     </entry>
     
@@ -88,7 +81,6 @@ The more notable ones are:</p>
 <li>Adding documentation and increasing visibility for the screenshot utility.</li>
 </ul>
 
-
 <p>All of the features are now documented in the new <a href="http://dmayer.github.io/idb/documentation">Documentation</a>.</p>
 ]]></content>
     </entry>
@@ -101,7 +93,6 @@ The more notable ones are:</p>
         <content type="html"><![CDATA[<p>The recording of my ShmooCon talk was now <a href="https://archive.org/details/ShmooCon2014_Introducing_idb_Simplified_Blackbox_iOS_App_Pentesting">posted on archive.org</a>. Below is the Youtube version of the video.</p>
 
 <div class="embed-video-container"><iframe src="//www.youtube.com/embed/y98mYDeSCOc" allowfullscreen></iframe></div>
-
 ]]></content>
     </entry>
     
@@ -118,11 +109,7 @@ The more notable ones are:</p>
 
 <script async="true" class="speakerdeck-embed" data-id="488ce8e0642301313e7e4a3a480508b9" src="//speakerdeck.com/assets/embed.js"> </script>
 
-
-
-
 <!-- more -->
-
 
 <h2>idb</h2>
 
@@ -140,44 +127,38 @@ research. It is written in ruby with a Qt GUI frontend and should run on OS X an
 <ul>
 <li>Setup port forwarding</li>
 <li>Certificate management</li>
-</ul>
-</li>
+</ul></li>
 <li>iOS log viewer</li>
 <li>Screen shot utility
 
 <ul>
 <li>Simplifies testing for the creation of backgrounding screenshots</li>
-</ul>
-</li>
+</ul></li>
 <li>App-related functions
 
 <ul>
-<li> App binary
+<li>App binary
 
 <ul>
 <li>Download</li>
 <li>List imported libraries</li>
 <li>Check for encrypttion, ASLR, stack canaries</li>
 <li>Decrypt and download an app binary (requires <a href="//github.com/stefanesser/dumpdecrypted">dumpdecrypted</a>)</li>
-</ul>
-</li>
-<li> Launch an app</li>
-<li> View app details such as name, bundleid, and <code>Info.plist</code> file.</li>
-</ul>
-</li>
+</ul></li>
+<li>Launch an app</li>
+<li>View app details such as name, bundleid, and <code>Info.plist</code> file.</li>
+</ul></li>
 <li>Inter-Process Communication
 
 <ul>
-<li> URL Handlers
+<li>URL Handlers
 
 <ul>
 <li>List URL handlers</li>
 <li>Invoke and fuzz URL handlers</li>
-</ul>
-</li>
-<li> Pasteboard monitor</li>
-</ul>
-</li>
+</ul></li>
+<li>Pasteboard monitor</li>
+</ul></li>
 <li>Analyze local file storage
 
 <ul>
@@ -185,24 +166,20 @@ research. It is written in ruby with a Qt GUI frontend and should run on OS X an
 <li>Search for, download, and view sqlite databases</li>
 <li>Search for, download, and view local caches  (<code>Cache.db</code>)</li>
 <li>File system browser</li>
-</ul>
-</li>
+</ul></li>
 <li>Install utilities on iDevices
 
 <ul>
 <li>Install <a href="//github.com/iSECPartners/ios-ssl-kill-switch">iOS SSL killswitch</a></li>
 <li>alpha: Compile and install <a href="//github.com/stefanesser/dumpdecrypted">dumpdecrypted</a></li>
-</ul>
-</li>
+</ul></li>
 <li>Alpha:
 
 <ul>
 <li>Cycript console</li>
 <li>Snoop-It integration</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-
 ]]></content>
     </entry>
     

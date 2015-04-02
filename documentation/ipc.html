@@ -12,7 +12,7 @@
         <title>documentation: IPC - </title>
         <meta name="author" content="idb">
         
-        <meta name="description" content="Documentation: IPC Main Setup Data Storage Binary Analysis IPC Tools URL Handlers The URL handler tab provides two main functions. The first tab & &hellip;">
+        <meta name="description" content="Documentation: IPC Main Setup Data Storage Binary Analysis IPC Tools URL Handlers The URL handler tab provides two main functions. The first tab &# &hellip;">
         
         <meta name="viewport" content="width=device-width">
         <link rel="canonical" href="http://dmayer.github.io/idb/documentation/ipc.html">
@@ -105,35 +105,30 @@
 </ul>
 </div>
 
-
-<hr class="divider" style="position: relative; top:-30px;">
-
+<p><hr class="divider" style="position: relative; top:-30px;"></p>
 
 <h2>URL Handlers</h2>
 
-<p>The URL handler tab provides two main functions. The first tab &lsquo;URL Schemes&rsquo; can be used to list all URL
+<p>The URL handler tab provides two main functions. The first tab &#39;URL Schemes&#39; can be used to list all URL
 schemes registered by the application. By clicking an entry in the list, it is transferred to the text box
 on the right side. Using that text box any URL handler can be invoked on the device. Simply enter the URL and
-click the &lsquo;Open&rsquo; button. Note that the device needs to be unlocked for the URL handler to trigger correctly.</p>
+click the &#39;Open&#39; button. Note that the device needs to be unlocked for the URL handler to trigger correctly.</p>
 
-<p><img src="/images/doc/idb_url.png" alt="Listing Registered URL Schemes" /></p>
+<p><img src="/images/doc/idb_url.png" alt="Listing Registered URL Schemes"></p>
 
 <h3>Basic Fuzzer</h3>
 
 <p>Input received via URL schemes is often used in unsafe ways which can lead to vulnerabilities including logic flaws and
-memory corruption. idb includes a basic fuzzer that can be used to fuzz input data via URL schemes. On the &lsquo;Fuzzer&rsquo;
+memory corruption. idb includes a basic fuzzer that can be used to fuzz input data via URL schemes. On the &#39;Fuzzer&#39;
 tab, the list on the upper left holds the list of fuzzz strings. Below, is a text box to specify the fuzz template.
-Use <code>$@$</code> to mark potential injection points. For example, if a valid URL is</p>
-
+Use <code>$@$</code> to mark potential injection points. For example, if a valid URL is
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>dvia://configure?input1=hello&input2=woot</span></code></pre></td></tr></table></div></figure>
-
+</pre></td><td class='code'><pre><code class=''><span class='line'>dvia://configure?input1=hello&amp;input2=woot</span></code></pre></td></tr></table></div></figure></p>
 
 <p>you could specify</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>dvia://configure?input1=$@$&input2=$@$</span></code></pre></td></tr></table></div></figure>
-
 
 <p>as the template to fuzz both of the intended inputs
 (of course you can fuzz any part of the URL you like). For each position, idb will cycle through all the possible fuzz
@@ -145,7 +140,7 @@ for the application in question.</p>
 or not (<code>false</code>). If a crash occurred, the crash report can be viewed using the XCode Organizer or similar tools.
 Obviously, there is plenty of room for improvements here.</p>
 
-<p><img src="/images/doc/idb_url_fuzzer.png" width="800" alt="Example URL Scheme Fuzzer run" /></p>
+<p><img src="/images/doc/idb_url_fuzzer.png%20=800x" alt="Example URL Scheme Fuzzer run"></p>
 
 <h2>Pasteboard Monitor</h2>
 
@@ -155,10 +150,10 @@ pasteboards can be monitored. After clicking the start button, a custom utility 
 pasteboards. If a change is detected, the new pasteboard value and the corresponding time stamp are displayed on
 the left side of the tab.</p>
 
-<p><img src="/images/doc/idb_pasteboard.png" width="800" alt="iOS Pasteboard" /></p>
+<p><img src="/images/doc/idb_pasteboard.png%20=800x" alt="iOS Pasteboard"></p>
 
 <p>In order to monitor the pasteboard,  <code>idb</code> uses a small helper utility which is available at:
- <a href="https://github.com/dmayer/pbwatcher">https://github.com/dmayer/pbwatcher</a></p>
+ https://github.com/dmayer/pbwatcher</p>
 
 
 </article>
