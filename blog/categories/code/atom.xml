@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+    <title><![CDATA[Category: code | ]]></title>
+    <link href="http://idbtoo.com/idb/blog/categories/code/atom.xml" rel="self"/>
+    <link href="http://idbtoo.com/idb/"/>
+    <updated>2015-04-02T12:13:36-05:00</updated>
+    <id>http://idbtoo.com/idb/</id>
+    <author>
+        <name><![CDATA[idb]]></name>
+        
+      </author>
+    <generator uri="http://octopress.org/">Octopress</generator>
+
+    
+    <entry>
+        <title type="html"><![CDATA[idb - iOS Research / Pentesting Tool]]></title>
+        <link href="http://idbtoo.com/idb/blog/2014/01/23/idb-ios-research-slash-pentesting-tool/"/>
+        <updated>2014-01-23T19:09:00-06:00</updated>
+        <id>http://idbtoo.com/idb/blog/2014/01/23/idb-ios-research-slash-pentesting-tool</id>
+        <content type="html"><![CDATA[<p>Last weekend (January 17-19 2014) I gave a talk on blackbox iOS app pentesting at <a href="http://shmoocon.org">ShmooCon 2014</a>
+ in Washington, D.C. The talk covered various common iOS app vulnerabilities, mitigation techniques, and also
+ introduced a new tool called <code>idb</code> and demonstrated how it can be used to test for the discussed vulnerabilities.</p>
+
+<p>Here is the slide deck:</p>
+
+<p><script async="true" class="speakerdeck-embed" data-id="488ce8e0642301313e7e4a3a480508b9" src="//speakerdeck.com/assets/embed.js"> </script></p>
+
+<!-- more -->
+
+
+<h2>idb</h2>
+
+<p><code>idb</code> is a tool to simplify some common tasks for iOS pentesting and
+research. It is written in ruby with a Qt GUI frontend and should run on OS X and Linux (with some restrictions).
+  This is the first public release of the tool so bug reports, feature requests, and contributions are more than welcome! The code is available under the MIT license on <a href="//github.com/dmayer/idb">Github</a>:</p>
+
+<p>Read the full list of features after the jump.</p>
+
+<h2>Notable features</h2>
+
+<ul>
+<li>Simplified pentesting setup
+
+<ul>
+<li>Setup port forwarding</li>
+<li>Certificate management</li>
+</ul>
+</li>
+<li>iOS log viewer</li>
+<li>Screen shot utility
+
+<ul>
+<li>Simplifies testing for the creation of backgrounding screenshots</li>
+</ul>
+</li>
+<li>App-related functions
+
+<ul>
+<li> App binary
+
+<ul>
+<li>Download</li>
+<li>List imported libraries</li>
+<li>Check for encrypttion, ASLR, stack canaries</li>
+<li>Decrypt and download an app binary (requires <a href="//github.com/stefanesser/dumpdecrypted">dumpdecrypted</a>)</li>
+</ul>
+</li>
+<li> Launch an app</li>
+<li> View app details such as name, bundleid, and <code>Info.plist</code> file.</li>
+</ul>
+</li>
+<li>Inter-Process Communication
+
+<ul>
+<li> URL Handlers
+
+<ul>
+<li>List URL handlers</li>
+<li>Invoke and fuzz URL handlers</li>
+</ul>
+</li>
+<li> Pasteboard monitor</li>
+</ul>
+</li>
+<li>Analyze local file storage
+
+<ul>
+<li>Search for, download, and view plist files</li>
+<li>Search for, download, and view sqlite databases</li>
+<li>Search for, download, and view local caches  (<code>Cache.db</code>)</li>
+<li>File system browser</li>
+</ul>
+</li>
+<li>Install utilities on iDevices
+
+<ul>
+<li>Install <a href="//github.com/iSECPartners/ios-ssl-kill-switch">iOS SSL killswitch</a></li>
+<li>alpha: Compile and install <a href="//github.com/stefanesser/dumpdecrypted">dumpdecrypted</a></li>
+</ul>
+</li>
+<li>Alpha:
+
+<ul>
+<li>Cycript console</li>
+<li>Snoop-It integration</li>
+</ul>
+</li>
+</ul>
+
+]]></content>
+    </entry>
+    
+</feed>

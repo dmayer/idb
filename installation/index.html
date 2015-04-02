@@ -9,13 +9,13 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>idb - iOS Application Security Assessment Tool - </title>
+        <title>installation - </title>
         <meta name="author" content="idb">
         
-        <meta name="description" content="Blog Check the blog for updates and new features. Installation Installation instructions for both production and development use. Documentation &hellip;">
+        <meta name="description" content="Installation idb has some prerequisites. As it turns out, things like ruby and Qt are difficult to bundle into a stand-alone installer. While idb &hellip;">
         
         <meta name="viewport" content="width=device-width">
-        <link rel="canonical" href="http://idbtoo.com/idb">
+        <link rel="canonical" href="http://idbtoo.com/idb/installation">
 
         <link href='http://fonts.googleapis.com/css?family=Droid+Serif:400,400italic' rel='stylesheet' type='text/css'>
         <link href="http://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet" type="text/css">
@@ -79,90 +79,79 @@
 
 
             
-                <div class="hero" style="background-image: url('/images/hero_background.jpg');">
-    <div class="row middle-xs center-xs start-sm">
-        <div class="col-xs-12 col-sm-4">
-            <img class="hero__gravatar" src="/images/logo.png" width="250" height="250" alt="idb's Picture">
-        </div>
-        <div class="col-xs-12 col-sm-8">
-            <div>
-    <div style="width:180px; float: right;">
-        <a href="https://github.com/dmayer/idb"><img src="images/octocat.png"></a>
-    </div>
-    <div style="width:400px;">
-        <h1 class="hero__title">
-    idb
-    
-        <small class="hero__subtitle">iOS App Security Assessment Tool</small>
-    
-        </h1>
-    </div>
-</div>
-<hr class="hero__divider">
-<p class="hero__text lead">
-    idb is a tool to simplify some common tasks for iOS app security assessments and research.
-</p>
-
-        </div>
-    </div>
-
-    <div class="hero__credit">
-        <p>
-        </p>
-    </div>
-</div>
-
-            
 
             <div class="row top-xs center-sm center-md center-lg site-wrapper">
                 
-                <div class="col-xs-12">
+                <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
                 
                     <article class="page">
 
     
+    <header>
+        <h1 class="page__title">
+            Installation
+        </h1>
+    </header>
+    <hr class="divider">
+    
 
-    <div class="row top-xs">
-    <div class="col-xs-12 col-lg-4">
-        <div class="row usp">
-            <div class="col-xs-12 col-sm-4 col-lg-12">
-                <span class="usp__icon"><a href="/blog"><i class="fa fa-pencil"></i></a></span>
-            </div>
-            <div class="col-xs-12 col-sm-8 col-lg-12"><h2 class="usp__title">Blog</h2>
-<hr class="usp__divider">
-<p class="usp__text">
-    Check the blog for updates and new features.
-</p>
-</div>
-        </div>
-    </div>
-    <div class="col-xs-12 col-lg-4">
-        <div class="row usp">
-            <div class="col-xs-12 col-sm-4 col-lg-12">
-                <span class="usp__icon"><a href="/installation"><i class="fa fa-laptop"></i></a></span>
-            </div>
-            <div class="col-xs-12 col-sm-8 col-lg-12"><h2 class="usp__title">Installation</h2>
-<hr class="usp__divider">
-<p class="usp__text">
-    Installation instructions for both production and development use.
-</p>
-</div>
-        </div>
-    </div>
-    <div class="col-xs-12 col-lg-4">
-        <div class="row usp">
-            <div class="col-xs-12 col-sm-4 col-lg-12">
-                <span class="usp__icon"><a href="/documentation"><i class="fa fa-file-text-o"></i></a></span>
-            </div>
-            <div class="col-xs-12 col-sm-8 col-lg-12"><h2 class="usp__title">Documentation</h2>
-<hr class="usp__divider">
-<p class="usp__text">
-    Manual and documentation of idb&#8217;s functions.
-</p>
-</div>
-        </div>
-    </div>
-</div>
+    <p>idb has some prerequisites. As it turns out, things like ruby and Qt are difficult to bundle into a stand-alone installer. While idb itself can easily be installed via Ruby Gems, you need to have some additional software first:</p>
+
+<h3>1. Prerequisites</h3>
+
+<h4>1.1 Ruby Environment</h4>
+
+<p>idb requires a valid ruby 1.9.3 or 2.1 installation and it is recommended to install the used ruby using <a href="https://rvm.io/">RVM</a>. <strong>Ruby 2.0 does not work properly</strong> due to issues with qtbindings.</p>
+
+<p><strong>Important Note:</strong> Shared library support is required! This is the default for many system rubies, but if you install a ruby via <code>rvm</code> or similar, you need to do one of the following:</p>
+
+<ul>
+<li>Under <code>rvm</code> use <code>rvm install 2.1 --enable-shared</code> when installing ruby.</li>
+<li>Under <code>ruby-install</code>/<code>chruby</code> use <code>-- --enable-shared</code> when installing ruby.</li>
+<li>Under <code>ruby-build</code>/<code>rbenv</code> with <code>ruby-build</code> use <code>CONFIGURE_OPTS=--enable-shared [command]</code> when installing Ruby.</li>
+</ul>
+
+
+<h4>1.2 Install Other Prerequisites:</h4>
+
+<p>For OS X:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>brew install qt cmake usbmuxd libimobiledevice</span></code></pre></td></tr></table></div></figure>
+
+
+<p>For Ubuntu:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>apt-get install cmake libqt4-dev git-core libimobiledevice-utils libplist-utils usbmuxd libxml2-dev libsqlite3-dev -y</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>2. Installing idb</h3>
+
+<h4>2.1 Production Use</h4>
+
+<ul>
+<li>Install idb: <code>gem install idb</code></li>
+<li>Run idb: <code>idb</code></li>
+<li>Hooray!</li>
+</ul>
+
+
+<h4>2.2 Development</h4>
+
+<ul>
+<li>Clone the repository: <code>git clone https://github.com/dmayer/idb</code></li>
+<li><code>cd idb</code></li>
+<li><code>bundle install</code> (using the right ruby version)</li>
+<li>As for every ruby gem, the application code lives in the <code>lib</code> folder</li>
+<li>Run idb by calling <code>bundle exec idb</code>
+
+<ul>
+<li><strong>Note:</strong> Running <code>bin/idb</code> directly won&rsquo;t work since it will not find the idb gem (or use the installed gem and not the checked out source code).  Instead, the <code>bundle exec</code> command runs idb in the current bundler environment where bundler supplies the gem from source.</li>
+</ul>
+</li>
+</ul>
+
 
 
 </article>

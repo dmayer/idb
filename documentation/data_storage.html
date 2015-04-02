@@ -1,0 +1,233 @@
+<!doctype html>
+    <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+    <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+    <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+    <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+
+    
+      
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Documentation: Data Storage - </title>
+        <meta name="author" content="idb">
+        
+        <meta name="description" content="Documentation: Data Storage Main Setup Data Storage Binary Analysis IPC Tools Data Storage The first tab of idb&rsquo;s interface provides an easy &hellip;">
+        
+        <meta name="viewport" content="width=device-width">
+        <link rel="canonical" href="http://idbtoo.com/idb/documentation/data_storage.html">
+
+        <link href='http://fonts.googleapis.com/css?family=Droid+Serif:400,400italic' rel='stylesheet' type='text/css'>
+        <link href="http://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet" type="text/css">
+
+
+        
+        <link href="/favicon.png" rel="icon">
+        <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet">
+        <link href="/atom.xml" rel="alternate" title="" type="application/atom+xml">
+    </head>
+
+
+    <body >
+
+        <header id="header">
+    <a href="https://github.com/dmayer/idb"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-8 col-md-4">
+        <a href="/" class="site-title"></a>
+    </div>
+    <div class="col-xs-12 col-sm-4 col-md-8">
+        <nav>
+    <input type="checkbox" id="toggle">
+    <label for="toggle" class="toggle" data-open="Main Menu" data-close="Close Menu"></label>
+    <ul class="menu">
+    <li><a href="/">Home</a></li>
+    <li><a href="/blog/">Blog</a></li>
+    <li><a href="/features/">Features</a></li>
+    <li><a href="/installation/">Installation</a></li>
+    <li><a href="/documentation/">Documentation</a></li>
+    <li><a href="/faq/">FAQ</a></li>
+</ul>
+
+</nav>
+
+    </div>
+</div>
+
+
+
+</header>
+
+
+        <div id="main-content">
+
+            <!--[if lte IE 9]>
+<div class="row upgrade-row">
+    <div class="col-lg-12">
+        <div class="upgrade">
+            <i class="upgrade__icon fa fa-warning"></i>
+            <h1 class="upgrade__title h6">Ohnoes!</h1>
+            <p class="upgrade__text">
+                Unfortunately, certain parts of this site may not display correctly in your version of Internet Explorer!<br>
+                If possible, you should consider <a href="http://browsehappy.com/">upgrading your browser</a>.
+            </p>
+        </div>
+    </div>
+</div>
+<!-- <![endif]-->
+
+
+            
+
+            <div class="row top-xs center-sm center-md center-lg site-wrapper">
+                
+                <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+                
+                    <article class="page">
+
+    
+    <header>
+        <h1 class="page__title">
+            Documentation: Data Storage
+        </h1>
+    </header>
+    <hr class="divider">
+    
+
+    <div style="width:100%; position: relative; top:-30px;"><ul class="menu">
+    <li><a href="/documentation/">Main</a></li>
+    <li><a href="/documentation/setup.html">Setup</a></li>
+    <li><a href="/documentation/data_storage.html">Data Storage</a></li>
+    <li><a href="/documentation/app_analysis.html">Binary Analysis</a></li>
+    <li><a href="/documentation/ipc.html">IPC</a></li>
+    <li><a href="/documentation/tools.html">Tools</a></li>
+</ul>
+</div>
+
+
+<hr class="divider" style="position: relative; top:-30px;">
+
+
+<h2>Data Storage</h2>
+
+<p>The first tab of idb&rsquo;s interface provides an easy way to analyze data stored in common file types. At the moment,
+this includes plist files, SQLite databases, and HTTP request caches (<code>Cache.db</code>). The functionality provided by idb
+for each of the file types is similar: You can automatically search the entire app directory for the specific file
+type, list the results including their <code>DataProtection</code> class (encryption!), and view the files by simply
+double-clicking a result entry. Click the &ldquo;Refresh&rdquo; button at the bottom to retrieve the list.</p>
+
+<p>For iOS 8+, Each storage related tab displays the &ldquo;Default Data Protection&rdquo; of the app which is set via app entitlements.
+This class defines the default protection class used for files created by the app.  In order to determine the
+ <code>DataProtection</code> class for each file, <code>idb</code> uses a small helper utility which is available at:
+  <a href="https://github.com/dmayer/protectionclassviewer">https://github.com/dmayer/protectionclassviewer</a></p>
+
+<h3>plist Files</h3>
+
+<p>Plist files are used  by most iOS application for structured data storage. Typically they are accessed via iOS&rsquo;s
+<code>NSUserDefaults</code> which automatically  persists the data on the file system in the form of <code>.plist</code> files (XML or binary).</p>
+
+<p><img src="/images/doc/idb_plist_files.png" alt="Listing Plist Files" /></p>
+
+<h3>SQLite Databases</h3>
+
+<p>SQLite support has been part of the iOS SDK since early on. SQLite databases are stored on the file system
+ (generally unencrypted) and can be queried using a limited set of SQL.</p>
+
+<p><img src="/images/doc/idb_sqlite_files.png" alt="Listing SQLite Files" /></p>
+
+<h3>Cache.db Files</h3>
+
+<p>The automatic request and response caching performed by <code>NSURLConnection</code> can disclose sensitive data on the file
+system. Specifically, it stores request and response data in a <code>Cache.db</code> file, an unencrypted sqlite database.</p>
+
+<p><img src="/images/doc/idb_cachedb_files.png" alt="Listing Cache.db Files" /></p>
+
+<h2>File System Browser</h2>
+
+<p>The file system browser provides an easy to use interface for browsing the app&rsquo;s sandbox. All directories and files
+are listed in a familiar tree and list structure. The details pane at the bottom displays file permissions and the
+<code>DataProtection</code> class which applies to the file. This way one can easily verify that sensitive files are properly
+protected. Moreover, double-clicking on any file will automatically download and open it on the idb host with the
+application that is associated with the file extension. At the bottom of this tab is a section for displaying the
+&ldquo;Default Data Protection&rdquo; of the app, the default encryption class of files created by this app.</p>
+
+<p><img src="/images/doc/idb_fs_browser.png" width="800" alt="File System Browser" /></p>
+
+<h3>Git + Rsync</h3>
+
+<p>In order to get a full mirror of the current application sandbox (and the data directory on iOS 8+), the Git+Rsync
+function can be used. It uses rsync to create an exact mirror of the remote file system on the idb host. In addition,
+the entire directory structure is checked into a dedicated git repository. When performing subsequent syncs using
+Git+Rsync, new revisions are created in the git repo and thus changes in the application directory can be tracked. The
+directory where the git repository is held can easily be changed in the user interface. This can, e.g.,  be used to
+compare or keep track of installations on different devices.</p>
+
+<ul>
+<li>Git+Rsync: Performs a sync and checks a new revision into git.</li>
+<li>Open Folder: Opens the local mirror with the most recent revision checked out.</li>
+<li>Open gitk: Opens gitk to explore the git repo.</li>
+</ul>
+
+
+<p><img src="/images/doc/idb_fs_browser_open.png" width="800" alt="Open Sync Folder" /></p>
+
+<p><img src="/images/doc/idb_fs_browser_gitk.png" width="800" alt="Open gitk" /></p>
+
+<h2>iOS Keychain</h2>
+
+<p>idb provides a convenient way for dumping the content of the iOS Keychain. Navigate to the &ldquo;Keychain&rdquo; tab and click
+ the <code>Dump Keychain</code> button to extract and display all keychain entries. Under the hood idb uses the <code>keychain_dump</code>
+utility which is part of the <a href="https://code.google.com/p/iphone-dataprotection/">iphone-dataprotection</a> forensics
+tools.</p>
+
+<p><strong>Stay Tuned:</strong> A new tool that allows editing and deletion of keychain entries is in the works and will be integrated
+over the next few weeks.</p>
+
+<p><img src="/images/doc/idb_keychain.png" width="800" alt="iOS keychain" /></p>
+
+
+</article>
+
+                </div>
+
+                
+            </div>
+        </div>
+
+        
+
+    
+    
+
+
+
+
+<footer class="footer">
+    <div class="row middle-xs">
+        
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <p class="footer__copyright">
+</p>
+
+        </div>
+        
+        
+    </div>
+</footer>
+
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="//crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>
+<script defer src="/javascripts/octopress.js"></script>
+
+
+
+
+
+
+
+
+    </body>
+
+</html>
