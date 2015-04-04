@@ -11,20 +11,34 @@ module Idb
       @tabs = Hash.new
 
       @text = KeychainTextWidget.new self
-      @tabs[:text] = addTab(@text, "Text Data")
+      @tabs[:text] = addTab(@text, "Data")
 
       @binary = KeychainBinaryWidget.new self
-      @tabs[:binary] = addTab(@binary, "Binary VData")
+      @tabs[:binary] = addTab(@binary, "Hexdump")
 
-      @gena = KeychainTextWidget.new self
-      @tabs[:gena] = addTab(@gena, "gena")
+      @plist = KeychainTextWidget.new self
+      @tabs[:plist] = addTab(@plist, "View Plist")
 
     end
 
 
-    def set_gena text
-      @gena.clear
-      @gena.set_data text
+    def set_plist text
+      xml = "Not a plist file."
+      if text.start_with? "bplist"
+        begin
+          file = Tempfile.new('plist')
+          file.write text
+          file.close
+          parsed = PlistUtil.new file.path
+          xml = parsed.get_xml
+        rescue
+          xml = "Data could not be parsed as Plist."
+        end
+      end
+
+      @plist.clear
+      @plist.set_data  xml
+      file.unlink unless file.nil?
     end
 
     def set_data text
@@ -32,7 +46,7 @@ module Idb
       @text.set_data text
     end
 
-    def set_vdata text
+    def set_hexdata text
       @binary.clear
       @binary.set_data text
     end

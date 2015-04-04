@@ -125,11 +125,6 @@ module Idb
     end
 
 
-    def dump_keychain
-      $log.info "Dumping keychain using keychain_editor..."
-      @ops.execute "#{keychain_editor_path} --dump"
-    end
-
 
 
 
