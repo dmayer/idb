@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    idb (2.7)
+    idb (2.7.1)
       awesome_print
       coderay
       ffi
@@ -23,7 +23,7 @@ GEM
     addressable (2.3.8)
     awesome_print (1.6.1)
     coderay (1.1.0)
-    ffi (1.9.6)
+    ffi (1.9.8)
     git (1.2.9.1)
     haml (4.0.6)
       tilt
