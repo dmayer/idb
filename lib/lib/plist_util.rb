@@ -28,6 +28,13 @@ module Idb
       extract_url_handlers
     end
 
+    def get_xml
+        doc = Nokogiri::XML(File.open(@plist_file)) do |config|
+          config.nonet.noblanks
+        end
+      doc.to_xml(:indent => 2)
+    end
+
     def dump
       doc = Nokogiri::XML(File.open(@plist_file)) do |config|
         config.nonet.noblanks

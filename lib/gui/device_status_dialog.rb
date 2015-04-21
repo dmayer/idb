@@ -21,8 +21,8 @@ module Idb
       setFixedHeight(sizeHint().height());
     end
 
-    def mark_keychain_dump_installed
-      @keychain_dump_label.text = @keychain_dump_label.text + "<br>found: #{$device.keychain_dump_path}"
+    def mark_keychain_editor_installed
+      @keychain_editor_label.text = @keychain_editor_label.text + "<br>found: #{$device.keychain_editor_path}"
       @layout.addWidget installed_check_mark, 6, 1
       setFixedHeight(sizeHint().height());
     end
@@ -202,24 +202,24 @@ module Idb
 
     end
 
-    def keychaindumper_section
-      @keychain_dump_label = Qt::Label.new "<b>keychain_dump</b><br>(dumps the keychain into a plist file.<br>https://code.google.com/p/iphone-dataprotection/)"
-      @layout.addWidget @keychain_dump_label, 6, 0
+    def keychaineditor_section
+      @keychain_editor_label = Qt::Label.new "<b>keychain_editor</b><br>(provides keychain edit functionality.<br>by Nitin Jami)"
+      @layout.addWidget @keychain_editor_label, 6, 0
 
-      if $device.keychain_dump_installed?
-        mark_keychain_dump_installed
+      if $device.keychain_editor_installed?
+        mark_keychain_editor_installed
       else
-        @install_keychain_dump = Qt::PushButton.new "Install"
-        @install_keychain_dump.connect(SIGNAL(:released)) {
-          $device.install_keychain_dump
-          if $device.keychain_dump_installed?
-            @install_keychain_dump.hide
-            mark_keychain_dump_installed
+        @install_keychain_editor = Qt::PushButton.new "Install"
+        @install_keychain_editor.connect(SIGNAL(:released)) {
+          $device.install_keychain_editor
+          if $device.keychain_editor_installed?
+            @install_keychain_editor.hide
+            mark_keychain_editor_installed
           end
         }
 
 
-        @layout.addWidget @install_keychain_dump, 6, 1
+        @layout.addWidget @install_keychain_editor, 6, 1
 
       end
     end
@@ -295,7 +295,7 @@ module Idb
       dumpdecrypted_section
       pbwatcher_section
       pcviewer_section
-      keychaindumper_section
+      keychaineditor_section
       rsync_section
       cycript_section
 

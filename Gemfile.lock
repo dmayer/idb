@@ -8,6 +8,7 @@ PATH
       git
       hexdump
       htmlentities
+      json
       launchy
       log4r
       net-sftp
@@ -29,6 +30,7 @@ GEM
       tilt
     hexdump (0.2.3)
     htmlentities (4.3.3)
+    json (1.8.2)
     launchy (2.4.3)
       addressable (~> 2.3)
     libxml-ruby (2.8.0)

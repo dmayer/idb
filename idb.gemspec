@@ -35,4 +35,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'log4r'
   spec.add_runtime_dependency 'git'
   spec.add_runtime_dependency 'hexdump'
+  spec.add_runtime_dependency 'json'
 end

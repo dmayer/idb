@@ -4,6 +4,7 @@ require_relative 'abstract_device'
 require_relative 'ssh_port_forwarder'
 require_relative 'device_ca_interface'
 require_relative 'usb_muxd_wrapper'
+require 'json'
 
 module Idb
   class Device < AbstractDevice
@@ -25,7 +26,7 @@ module Idb
       @device_app_paths[:open] = ["/usr/bin/open"]
       @device_app_paths[:openurl] = ["/usr/bin/uiopen", "/usr/bin/openurl",  "/usr/bin/openURL"]
       @device_app_paths[:aptget] = ["/usr/bin/apt-get",  "/usr/bin/aptitude"]
-      @device_app_paths[:keychaindump] = [ "/var/root/keychain_dump"]
+      @device_app_paths[:keychaineditor] = [ "/var/root/keychaineditor"]
       @device_app_paths[:pcviewer] = ["/var/root/protectionclassviewer"]
       @device_app_paths[:pbwatcher] = ["/var/root/pbwatcher"]
       @device_app_paths[:dumpdecrypted_armv7] = ["/var/root/dumpdecrypted_armv7.dylib"]
@@ -124,18 +125,6 @@ module Idb
     end
 
 
-    def dump_keychain
-      device_store_path = "/var/root/genp.plist"
-      local_dir = "#{$tmp_path}/device/"
-      local_path = "#{local_dir}/genp.plist"
-      FileUtils.mkdir_p local_dir unless Dir.exist? local_dir
-
-      $log.info "Dumping keychain..."
-      @ops.execute "#{keychain_dump_path}"
-      $log.info "Downloading dumped keychain..."
-      @ops.download device_store_path, local_path
-    end
-
 
 
 
@@ -232,11 +221,11 @@ module Idb
       $log.info "'dumpdecrypted' installed successfully."
     end
 
-    def install_keychain_dump
-      if File.exist? "#{File.dirname(File.expand_path(__FILE__))}/../utils/keychain_dump/keychain_dump"
-        upload_keychain_dump
+    def install_keychain_editor
+      if File.exist? "#{File.dirname(File.expand_path(__FILE__))}/../utils/keychain_editor/keychaineditor"
+        upload_keychain_editor
       else
-        $log.error "keychain_dump not found at '#{File.dirname(File.expand_path(__FILE__))}/../utils/keychain_dump/keychain_dump'."
+        $log.error "keychain_editor not found at '#{File.dirname(File.expand_path(__FILE__))}/../utils/keychain_editor/keychaineditor'."
         false
       end
     end
@@ -272,15 +261,15 @@ module Idb
       end
     end
 
-    def upload_keychain_dump
+    def upload_keychain_editor
       begin
-        $log.info "Uploading keychain_dump..."
-        @ops.upload "#{File.dirname(File.expand_path(__FILE__))}/../utils/keychain_dump/keychain_dump", "/var/root/keychain_dump"
-        @ops.chmod "/var/root/keychain_dump", 0744
-        $log.info "'keychain_dump' installed successfully."
+        $log.info "Uploading keychain_editor..."
+        @ops.upload "#{File.dirname(File.expand_path(__FILE__))}/../utils/keychain_editor/keychaineditor", "/var/root/keychaineditor"
+        @ops.chmod "/var/root/keychaineditor", 0744
+        $log.info "'keychain_editor' installed successfully."
   #      true
   #    rescue
-        $log.error "Exception encountered when uploading keychain_dump"
+        $log.error "Exception encountered when uploading keychain_editor"
   #      false
       end
     end
@@ -360,7 +349,7 @@ module Idb
     end
 
     def configured?
-      apt_get_installed? and open_installed? and openurl_installed? and dumpdecrypted_installed? and pbwatcher_installed? and pcviewer_installed? and keychain_dump_installed? and rsync_installed? and cycript_installed?
+      apt_get_installed? and open_installed? and openurl_installed? and dumpdecrypted_installed? and pbwatcher_installed? and pcviewer_installed? and keychain_editor_installed? and rsync_installed? and cycript_installed?
     end
 
 
@@ -368,8 +357,8 @@ module Idb
       is_installed? :cycript
     end
 
-    def keychain_dump_installed?
-      is_installed? :keychaindump
+    def keychain_editor_installed?
+      is_installed? :keychaineditor
     end
 
     def pcviewer_installed?
@@ -405,8 +394,8 @@ module Idb
       is_installed? :clutch
     end
 
-    def keychain_dump_path
-      path_for :keychaindump
+    def keychain_editor_path
+      path_for :keychaineditor
     end
 
 
