@@ -9,13 +9,14 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Documentation: Data Storage - </title>
+        <title>New: Keychain Editor - </title>
         <meta name="author" content="idb">
         
-        <meta name="description" content="Documentation: Data Storage Main Setup Data Storage Binary Analysis IPC Tools Data Storage The first tab of idb&rsquo;s interface provides an easy &hellip;">
+        <meta name="description" content="New: Keychain Editor Apr 20th, 2015 For a while now, idb had the ability to dump the keychain of a jailbroken iDevice. So far, idb
+has been using &hellip;">
         
         <meta name="viewport" content="width=device-width">
-        <link rel="canonical" href="http://www.idbtool.com/documentation/data_storage.html">
+        <link rel="canonical" href="http://www.idbtool.com/blog/2015/04/20/new-keychain-editor">
 
         <link href='http://fonts.googleapis.com/css?family=Droid+Serif:400,400italic' rel='stylesheet' type='text/css'>
         <link href="http://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet" type="text/css">
@@ -82,105 +83,103 @@
 
             <div class="row top-xs center-sm center-md center-lg site-wrapper">
                 
-                <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+                <div class="col-xs-12 col-lg-10">
                 
-                    <article class="page">
-
+                    <article class="article article--single">
+    <header class="article__header">
     
-    <header>
-        <h1 class="page__title">
-            Documentation: Data Storage
-        </h1>
-    </header>
-    <hr class="divider">
+        <h1 class="article__title">New: Keychain Editor</h1>
     
 
-    <div style="width:100%; position: relative; top:-30px;"><ul class="doc_menu">
-    <li><a href="/documentation/">Main</a></li>
-    <li><a href="/documentation/setup.html">Setup</a></li>
-    <li><a href="/documentation/data_storage.html">Data Storage</a></li>
-    <li><a href="/documentation/app_analysis.html">Binary Analysis</a></li>
-    <li><a href="/documentation/ipc.html">IPC</a></li>
-    <li><a href="/documentation/tools.html">Tools</a></li>
-</ul>
-</div>
+    
+        <div class="article__meta clearfix">
+            
 
 
-<hr class="divider" style="position: relative; top:-30px;">
 
 
-<h2>Data Storage</h2>
 
-<p>The first tab of idb&rsquo;s interface provides an easy way to analyze data stored in common file types. At the moment,
-this includes plist files, SQLite databases, and HTTP request caches (<code>Cache.db</code>). The functionality provided by idb
-for each of the file types is similar: You can automatically search the entire app directory for the specific file
-type, list the results including their <code>DataProtection</code> class (encryption!), and view the files by simply
-double-clicking a result entry. Click the &ldquo;Refresh&rdquo; button at the bottom to retrieve the list.</p>
 
-<p>For iOS 8+, Each storage related tab displays the &ldquo;Default Data Protection&rdquo; of the app which is set via app entitlements.
-This class defines the default protection class used for files created by the app.  In order to determine the
- <code>DataProtection</code> class for each file, <code>idb</code> uses a small helper utility which is available at:
-  <a href="https://github.com/dmayer/protectionclassviewer">https://github.com/dmayer/protectionclassviewer</a></p>
+    <time class="article__date pull-left" datetime="2015-04-20T16:40:01-05:00" pubdate><i class="fa fa-calendar"></i> Apr 20th, 2015</time>
 
-<h3>plist Files</h3>
 
-<p>Plist files are used  by most iOS application for structured data storage. Typically they are accessed via iOS&rsquo;s
-<code>NSUserDefaults</code> which automatically  persists the data on the file system in the form of <code>.plist</code> files (XML or binary).</p>
 
-<p><img src="/images/doc/idb_plist_files.png" alt="Listing Plist Files" /></p>
 
-<h3>SQLite Databases</h3>
+            
 
-<p>SQLite support has been part of the iOS SDK since early on. SQLite databases are stored on the file system
- (generally unencrypted) and can be queried using a limited set of SQL.</p>
 
-<p><img src="/images/doc/idb_sqlite_files.png" alt="Listing SQLite Files" /></p>
+            
+        </div>
+    
+</header>
 
-<h3>Cache.db Files</h3>
 
-<p>The automatic request and response caching performed by <code>NSURLConnection</code> can disclose sensitive data on the file
-system. Specifically, it stores request and response data in a <code>Cache.db</code> file, an unencrypted sqlite database.</p>
 
-<p><img src="/images/doc/idb_cachedb_files.png" alt="Listing Cache.db Files" /></p>
 
-<h2>File System Browser</h2>
+    <p>For a while now, idb had the ability to dump the keychain of a jailbroken iDevice. So far, idb
+has been using the <code>keychain_dump</code> utility which is part of the
+<a href="https://code.google.com/p/iphone-dataprotection/">iphone-dataprotection</a> forensics tools to
+accomplish this. However, this tool has some major limitations in that it does not support
+the new data protection classes introduced in recent iOS versions, lacks support
+for Keychain ACLs, and is a pure &lsquo;dump&rsquo; utility without editing capabilities.</p>
 
-<p>The file system browser provides an easy to use interface for browsing the app&rsquo;s sandbox. All directories and files
-are listed in a familiar tree and list structure. The details pane at the bottom displays file permissions and the
-<code>DataProtection</code> class which applies to the file. This way one can easily verify that sensitive files are properly
-protected. Moreover, double-clicking on any file will automatically download and open it on the idb host with the
-application that is associated with the file extension. At the bottom of this tab is a section for displaying the
-&ldquo;Default Data Protection&rdquo; of the app, the default encryption class of files created by this app.</p>
+<p>To address these shortcomings, Nitin Jami, a coworker of mine at <a href="http://www.intrepidusgroup.com">Intrepidus Group</a> (part of the
+<a href="http://www.nccgroup.trust">NCC Group</a> along with <a href="http://www.matasano.com">Matasano</a> and <a href="http://www.isecpartners.com">iSEC Partners</a>, implemented a
+<a href="https://github.com/NitinJami/keychaineditor">full-featured keychain editor</a>. To our knowledge, this is the first public tool which provides a convenient way for
+modifying the iOS keychain. The keychain editor provides a simple command
+line interface to interact with the iOS keychain and is ideal for scripting or when using automated
+tools. For more manual interaction and exploration, the tool has been integrated into the most recent version of idb
+for convenient access. Read on for all of the new features and screenshots.</p>
 
-<p><img src="/images/doc/idb_fs_browser.png" width="800" alt="File System Browser" /></p>
+<p>To update to the newest version 1.8, simply run</p>
 
-<h3>Git + Rsync</h3>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem update idb</span></code></pre></td></tr></table></div></figure>
 
-<p>In order to get a full mirror of the current application sandbox (and the data directory on iOS 8+), the Git+Rsync
-function can be used. It uses rsync to create an exact mirror of the remote file system on the idb host. In addition,
-the entire directory structure is checked into a dedicated git repository. When performing subsequent syncs using
-Git+Rsync, new revisions are created in the git repo and thus changes in the application directory can be tracked. The
-directory where the git repository is held can easily be changed in the user interface. This can, e.g.,  be used to
-compare or keep track of installations on different devices.</p>
+
+
+
+<!-- more -->
+
+
+<h2>Supported Features</h2>
 
 <ul>
-<li>Git+Rsync: Performs a sync and checks a new revision into git.</li>
-<li>Open Folder: Opens the local mirror with the most recent revision checked out.</li>
-<li>Open gitk: Opens gitk to explore the git repo.</li>
+<li>Dumping of the entire keychain including the following data:
+
+<ul>
+<li>Entitlement Groups</li>
+<li>Account</li>
+<li>Service</li>
+<li>Protection class</li>
+<li>User Presence</li>
+<li>Creation and modification date</li>
+</ul>
+</li>
+<li>Support for &ldquo;user presence&rdquo; where a user has to use TouchID or enter their passcode to unlock a
+keychain item.</li>
+<li>Dump each entry as
+
+<ul>
+<li>String</li>
+<li>Hex</li>
+<li>Parsed as plist when appropriate</li>
+</ul>
+</li>
+<li>Editing entries (binary and string-based)</li>
+<li>Deleting keychain entries</li>
 </ul>
 
 
-<p><img src="/images/doc/idb_fs_browser_open.png" width="800" alt="Open Sync Folder" /></p>
+<p>This is the first release of these features and there are likely bugs. Please report any issues using the
+ <a href="//github.com/dmayer/idb/">Github Issue Tracker</a> for idb.</p>
 
-<p><img src="/images/doc/idb_fs_browser_gitk.png" width="800" alt="Open gitk" /></p>
-
-<h2>iOS Keychain</h2>
-
-<p>idb provides a convenient way for dumping, editing, and deleting the content of the iOS Keychain.
-Below is an overview screenshot of the keychain tab followed by a more detailed description of the different
-keychain features.</p>
+<h2>The New Features in Detail</h2>
 
 <p><img src="/images/doc/idb_keychain.png" width="800" alt="Keychain" /></p>
+
+<p>Above is an overview screenshot of the new keychain tab and below is an excerpt from
+the <a href="/documentation/data_storage.html">updated documentation</a> explaining the new features.</p>
 
 <h3>Dump the Keychain</h3>
 
@@ -235,7 +234,16 @@ the new Base64 data into idb and hit save.</p>
 <img src="/images/doc/idb_keychain_edit_base64.png" width="400" alt="Edit keychain item" /></p>
 
 
+
 </article>
+
+
+<section id="disqus">
+    <h1 class="disqus__title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+
 
                 </div>
 
@@ -271,8 +279,8 @@ the new Base64 data into idb and hit save.</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://www.idbtool.com/documentation/data_storage.html';
-        var disqus_url = 'http://www.idbtool.com/documentation/data_storage.html';
+        var disqus_identifier = 'http://www.idbtool.com/blog/2015/04/20/new-keychain-editor/';
+        var disqus_url = 'http://www.idbtool.com/blog/2015/04/20/new-keychain-editor/';
         var disqus_script = 'embed.js';
       
     (function () {
@@ -332,8 +340,8 @@ the new Base64 data into idb and hit save.</p>
     
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://www.idbtool.com/documentation/data_storage.html';
-        var disqus_url = 'http://www.idbtool.com/documentation/data_storage.html';
+        var disqus_identifier = 'http://www.idbtool.com/blog/2015/04/20/new-keychain-editor/';
+        var disqus_url = 'http://www.idbtool.com/blog/2015/04/20/new-keychain-editor/';
         var disqus_script = 'embed.js';
     
     (function () {

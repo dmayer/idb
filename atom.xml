@@ -4,7 +4,7 @@
     <title><![CDATA[]]></title>
     <link href="http://www.idbtool.com/atom.xml" rel="self"/>
     <link href="http://www.idbtool.com/"/>
-    <updated>2015-04-04T17:51:26-05:00</updated>
+    <updated>2015-04-23T13:59:36-05:00</updated>
     <id>http://www.idbtool.com/</id>
     <author>
         <name><![CDATA[idb]]></name>
@@ -12,6 +12,130 @@
     </author>
     <generator uri="http://octopress.org/">Octopress</generator>
 
+    
+    <entry>
+        <title type="html"><![CDATA[New: Keychain Editor]]></title>
+        <link href="http://www.idbtool.com/blog/2015/04/20/new-keychain-editor/"/>
+        <updated>2015-04-20T16:40:01-05:00</updated>
+        <id>http://www.idbtool.com/blog/2015/04/20/new-keychain-editor</id>
+        <content type="html"><![CDATA[<p>For a while now, idb had the ability to dump the keychain of a jailbroken iDevice. So far, idb
+has been using the <code>keychain_dump</code> utility which is part of the
+<a href="https://code.google.com/p/iphone-dataprotection/">iphone-dataprotection</a> forensics tools to
+accomplish this. However, this tool has some major limitations in that it does not support
+the new data protection classes introduced in recent iOS versions, lacks support
+for Keychain ACLs, and is a pure &lsquo;dump&rsquo; utility without editing capabilities.</p>
+
+<p>To address these shortcomings, Nitin Jami, a coworker of mine at <a href="http://www.intrepidusgroup.com">Intrepidus Group</a> (part of the
+<a href="http://www.nccgroup.trust">NCC Group</a> along with <a href="http://www.matasano.com">Matasano</a> and <a href="http://www.isecpartners.com">iSEC Partners</a>, implemented a
+<a href="https://github.com/NitinJami/keychaineditor">full-featured keychain editor</a>. To our knowledge, this is the first public tool which provides a convenient way for
+modifying the iOS keychain. The keychain editor provides a simple command
+line interface to interact with the iOS keychain and is ideal for scripting or when using automated
+tools. For more manual interaction and exploration, the tool has been integrated into the most recent version of idb
+for convenient access. Read on for all of the new features and screenshots.</p>
+
+<p>To update to the newest version 1.8, simply run</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem update idb</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!-- more -->
+
+
+<h2>Supported Features</h2>
+
+<ul>
+<li>Dumping of the entire keychain including the following data:
+
+<ul>
+<li>Entitlement Groups</li>
+<li>Account</li>
+<li>Service</li>
+<li>Protection class</li>
+<li>User Presence</li>
+<li>Creation and modification date</li>
+</ul>
+</li>
+<li>Support for &ldquo;user presence&rdquo; where a user has to use TouchID or enter their passcode to unlock a
+keychain item.</li>
+<li>Dump each entry as
+
+<ul>
+<li>String</li>
+<li>Hex</li>
+<li>Parsed as plist when appropriate</li>
+</ul>
+</li>
+<li>Editing entries (binary and string-based)</li>
+<li>Deleting keychain entries</li>
+</ul>
+
+
+<p>This is the first release of these features and there are likely bugs. Please report any issues using the
+ <a href="//github.com/dmayer/idb/">Github Issue Tracker</a> for idb.</p>
+
+<h2>The New Features in Detail</h2>
+
+<p><img src="http://www.idbtool.com/images/doc/idb_keychain.png" width="800" alt="Keychain" /></p>
+
+<p>Above is an overview screenshot of the new keychain tab and below is an excerpt from
+the <a href="http://www.idbtool.com/documentation/data_storage.html">updated documentation</a> explaining the new features.</p>
+
+<h3>Dump the Keychain</h3>
+
+<p>Dumping the keychain works by simply clicking the &ldquo;Dump Keychain&rdquo; button in idb. The returned data includes
+Entitlement Groups, Account, Service, Protection class, User Presence requirement, create and modification date.
+User presence is a new feature in iOS
+which requires a user to authenticate either via TouchID or by entering their passcode in order to access a keychain
+item. Note that there is no known way for bypassing this check since data is in fact encrypted
+ under the passcode and this processing happens in hardware through the Secure Enclave.</p>
+
+<p><img src="http://www.idbtool.com/images/doc/idb_keychain_dump.png" width="800" alt="dump of the keychain" /></p>
+
+<h3>View Keychain Entries</h3>
+
+<p>When selecting an entry in the table shown above, the data can be viewed as text, hexdump, or parsed as XML in
+the case of binary plist data.</p>
+
+<h4>Text View</h4>
+
+<p><img src="http://www.idbtool.com/images/doc/idb_keychain_text.png" width="800" alt="Dump of the keychain" /></p>
+
+<h4>Hexdump View</h4>
+
+<p><img src="http://www.idbtool.com/images/doc/idb_keychain_hex.png" width="800" alt="Dump of the keychain" /></p>
+
+<h4>Parsed Binary Plist View</h4>
+
+<p>There is a decent number of applications that store binary plist data inside the keychain and it can be rather
+  painful to read it in its string presentation. This screen attempts to detect if a keychain item consists of
+  a binary plist, converts it to a regular (xml) plist, and displays the data.</p>
+
+<p><img src="http://www.idbtool.com/images/doc/idb_keychain_plist.png" width="800" alt="Dump of the keychain" /></p>
+
+<h3>Deletion</h3>
+
+<p>Deleting a keychain item as simple as it sounds: simply select the entry and click the &ldquo;Delete&rdquo; button.</p>
+
+<p><img src="http://www.idbtool.com/images/doc/idb_keychain_delete.png" width="800" alt="Delete keychain item" /></p>
+
+<h3>Editing</h3>
+
+<p>For editing keychain items idb goes with a simple yet flexible approach. After selecting a keychain item,
+one can display its content either as plain text, or as Base64 encoded data. The plain text version
+allows quick editing of text-based keychain entries while the Base64 version can be used to edit binary
+data. Implementing a proper binary/hex editor inside of idb did not seem like a reasonable effort. Instead, by
+providing the
+data in Base64 format any external editor can be used to modify the data. After editing, simply paste
+the new Base64 data into idb and hit save.</p>
+
+<p><img src="http://www.idbtool.com/images/doc/idb_keychain_edit.png" width="800" alt="Edit keychain item" />
+<img src="http://www.idbtool.com/images/doc/idb_keychain_edit_text.png" width="400" alt="Edit keychain item" />
+<img src="http://www.idbtool.com/images/doc/idb_keychain_edit_base64.png" width="400" alt="Edit keychain item" /></p>
+]]></content>
+    </entry>
     
     <entry>
         <title type="html"><![CDATA[New: Entitlements and Default Protection Class]]></title>

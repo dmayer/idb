@@ -12,7 +12,8 @@
         <title></title>
         <meta name="author" content="idb">
         
-        <meta name="description" content="New: Entitlements and Default Protection Class Feb 26th, 2015 The new version of idb now lists iOS app entitlements including the default data &hellip;">
+        <meta name="description" content="New: Keychain Editor Apr 20th, 2015 For a while now, idb had the ability to dump the keychain of a jailbroken iDevice. So far, idb
+has been using &hellip;">
         
         <meta name="viewport" content="width=device-width">
         <link rel="canonical" href="http://www.idbtool.com/blog">
@@ -85,6 +86,72 @@
                 <div class="col-xs-12 col-sm-10 col-md-8 col-lg-8">
                 
                         
+    
+        
+        <article class="article article--index">
+            <header class="article__header">
+    
+        <h1 class="h2 article__title">
+            <a href="/blog/2015/04/20/new-keychain-editor/">New: Keychain Editor</a>
+        </h1>
+    
+
+    
+        <div class="article__meta clearfix">
+            
+
+
+
+
+
+
+    <time class="article__date pull-left" datetime="2015-04-20T16:40:01-05:00" pubdate><i class="fa fa-calendar"></i> Apr 20th, 2015</time>
+
+
+
+
+            
+
+
+            
+        </div>
+    
+</header>
+
+
+
+
+    <div class="article__content clearfix">
+        <p>For a while now, idb had the ability to dump the keychain of a jailbroken iDevice. So far, idb
+has been using the <code>keychain_dump</code> utility which is part of the
+<a href="https://code.google.com/p/iphone-dataprotection/">iphone-dataprotection</a> forensics tools to
+accomplish this. However, this tool has some major limitations in that it does not support
+the new data protection classes introduced in recent iOS versions, lacks support
+for Keychain ACLs, and is a pure &lsquo;dump&rsquo; utility without editing capabilities.</p>
+
+<p>To address these shortcomings, Nitin Jami, a coworker of mine at <a href="http://www.intrepidusgroup.com">Intrepidus Group</a> (part of the
+<a href="http://www.nccgroup.trust">NCC Group</a> along with <a href="http://www.matasano.com">Matasano</a> and <a href="http://www.isecpartners.com">iSEC Partners</a>, implemented a
+<a href="https://github.com/NitinJami/keychaineditor">full-featured keychain editor</a>. To our knowledge, this is the first public tool which provides a convenient way for
+modifying the iOS keychain. The keychain editor provides a simple command
+line interface to interact with the iOS keychain and is ideal for scripting or when using automated
+tools. For more manual interaction and exploration, the tool has been integrated into the most recent version of idb
+for convenient access. Read on for all of the new features and screenshots.</p>
+
+<p>To update to the newest version 1.8, simply run</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem update idb</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+
+        <a class="btn pull-right" href="/blog/2015/04/20/new-keychain-editor/">Read on &rarr;</a>
+    </div>
+
+
+        </article>
+        <hr>
     
         
         <article class="article article--index">
@@ -518,6 +585,10 @@ The more notable ones are:</p>
     <ul class="divided">
         
         <li class="post">
+            <a href="/blog/2015/04/20/new-keychain-editor/">New: Keychain Editor</a>
+        </li>
+        
+        <li class="post">
             <a href="/blog/2015/02/26/new-entitlements-and-default-protection-class/">New: Entitlements and Default Protection Class</a>
         </li>
         
@@ -531,10 +602,6 @@ The more notable ones are:</p>
         
         <li class="post">
             <a href="/blog/2014/10/01/new-location-for-configuration-file/">New Location for Configuration File</a>
-        </li>
-        
-        <li class="post">
-            <a href="/blog/2014/04/14/talk-at-source-boston-2014/">Updated Talk at SOURCE Boston 2014</a>
         </li>
         
     </ul>
