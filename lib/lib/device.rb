@@ -330,8 +330,9 @@ module Idb
     end
 
     def open_url url
-      $log.info "Executing: #{openurl_path} #{url}"
-      @ops.execute "#{openurl_path} #{url}"
+      command = "#{openurl_path} \"#{url.gsub('&','\&')}\""
+      $log.info "Executing: #{command}"
+      @ops.execute  command
     end
 
     def ca_interface

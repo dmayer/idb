@@ -1,7 +1,7 @@
 # encoding: utf-8
 require 'yaml'
 
-YAML::ENGINE.yamler='psych'
+#YAML::ENGINE.yamler='psych'
 
 module Idb
   class Settings
