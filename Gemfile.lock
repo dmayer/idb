@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    idb (2.8)
+    idb (2.8.1)
       awesome_print
       coderay
       ffi
@@ -59,3 +59,6 @@ DEPENDENCIES
   bundler (~> 1.6)
   idb!
   rake
+
+BUNDLED WITH
+   1.10.6
