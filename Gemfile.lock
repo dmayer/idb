@@ -59,6 +59,3 @@ DEPENDENCIES
   bundler (~> 1.6)
   idb!
   rake
-
-BUNDLED WITH
-   1.10.6
