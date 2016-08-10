@@ -16,15 +16,18 @@ module Idb
       @app_dir = "#{$device.apps_dir}/#{@uuid}"
       parse_info_plist
 
-      if $device.ios_version == 8
-        mapping_file = "/var/mobile/Library/MobileInstallation/LastLaunchServicesMap.plist"
+      if $device.ios_version >= 8
+        if $device.ios_version == 8
+          mapping_file = "/var/mobile/Library/MobileInstallation/LastLaunchServicesMap.plist"
+        else
+          mapping_file = "/private/var/installd/Library/MobileInstallation/LastLaunchServicesMap.plist"
+        end
         local_mapping_file =  cache_file mapping_file
         @services_map = IOS8LastLaunchServicesMapWrapper.new local_mapping_file
-
         @data_dir = @services_map.data_path_by_bundle_id @info_plist.bundle_identifier
         @keychain_access_groups = @services_map.keychain_access_groups_by_bundle_id @info_plist.bundle_identifier
 
-       else
+      else
         @data_dir = @app_dir
       end
 
@@ -164,8 +167,8 @@ module Idb
     end
 
     def data_directory
-      if $device.ios_version != 8
-        "[iOS 8 specific]"
+      if $device.ios_version < 8
+        "[iOS 8+ specific]"
       else
         @data_dir
       end
