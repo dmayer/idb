@@ -66,8 +66,15 @@ module Idb
       @apps_dir_ios_8 = '/private/var/mobile/Containers/Bundle/Application'
       @data_dir_ios_8 = '/private/var/mobile/Containers/Data/Application'
 
+      @apps_dir_ios_9 = '/private/var/containers/Bundle/Application'
+      @data_dir_ios_9 = @data_dir_ios_8
 
-      if @ops.directory? @apps_dir_ios_8
+      if @ops.directory? @apps_dir_ios_9
+        @ios_version = 9
+        @apps_dir = @apps_dir_ios_9
+        @data_dir = @data_dir_ios_9
+
+      elsif @ops.directory? @apps_dir_ios_8
         @ios_version = 8
         @apps_dir = @apps_dir_ios_8
         @data_dir = @data_dir_ios_8
