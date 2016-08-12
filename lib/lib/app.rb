@@ -51,29 +51,58 @@ module Idb
     end
 
     def decrypt_binary!
-      unless $device.dumpdecrypted_installed?
-        $log.error "dumpdecrypted not installed."
+      unless $device.clutch_installed?
+        $log.error "Clutch not installed."
         return false
       end
-
-      dylib = "dumpdecrypted_#{$device.arch}.dylib"
+      
 
       $log.info "Running '#{binary_path}'"
       full_remote_path = binary_path
       decrypted_path = "/var/root/#{File.basename full_remote_path}.decrypted"
+      
 
+      # Decrypt with Clutch first
+      clutch_working_dir = "/private/var/mobile/Documents/Dumped"
+      clutch_zip = "#{clutch_working_dir}/#{bundle_id()}*.ipa"
       $device.ops.execute "cd /var/root/"
-      $device.ops.execute "DYLD_INSERT_LIBRARIES=dumpdecrypted_armv7.dylib \"#{full_remote_path}\""
+      $log.info "Clearing Clutch working directory..."
+      $device.ops.execute "rm -r #{clutch_working_dir}/*" 
+      $log.info "Running Clutch..."
+      # BUG: For some reason this request hangs on 9.3.3, but the request from cli works fine
+      $device.ops.execute "#{$device.clutch_path} -d \"#{bundle_id()}\""
+      $log.info "Unzipping Clutch IPA..."
+      $device.ops.execute "unzip #{clutch_zip} -d #{clutch_working_dir}"
+      $log.info "Grabbing decrypted app binary..."
+      $device.ops.execute "mv #{clutch_working_dir}/Payload/#{bundle_name()}.app/#{bundle_name()} #{decrypted_path}"
+      $log.info "Clearing Clutch working directory..."
+      $device.ops.execute "rm -r #{clutch_working_dir}/*"
+      $log.info "Clearing Clutch working directory..."
+
       $log.info "Checking if decrypted file #{decrypted_path} was created..."
       if not $device.ops.file_exists? decrypted_path
-        $log.error "Decryption failed. Trying armv6 build for iOS 6 and earlier..."
-        $device.ops.execute "DYLD_INSERT_LIBRARIES=dumpdecrypted_armv6.dylib \"#{full_remote_path}\""
-        $log.info "Checking if decrypted file #{decrypted_path} was created..."
-      end
+        $log.error "Decryption failed. Trying using dumpdecrypted..."
+        
+        unless $device.dumpdecrypted_installed?
+          $log.error "dumpdecrypted not installed."
+          return false
+        end
 
-      if not $device.ops.file_exists? decrypted_path
-        $log.error "Decryption failed. File may not be encrypted."
-        return
+        dylib = "dumpdecrypted_#{$device.arch}.dylib"
+
+        $device.ops.execute "cd /var/root/"
+        $device.ops.execute "DYLD_INSERT_LIBRARIES=dumpdecrypted_armv7.dylib \"#{full_remote_path}\""
+        $log.info "Checking if decrypted file #{decrypted_path} was created..."
+        if not $device.ops.file_exists? decrypted_path
+          $log.error "Decryption failed. Trying armv6 build for iOS 6 and earlier..."
+          $device.ops.execute "DYLD_INSERT_LIBRARIES=dumpdecrypted_armv6.dylib \"#{full_remote_path}\""
+          $log.info "Checking if decrypted file #{decrypted_path} was created..."
+        end
+
+        if not $device.ops.file_exists? decrypted_path
+          $log.error "Decryption failed. File may not be encrypted."
+          return
+        end
       end
 
       $log.info "Decrypted file found. Downloading..."
