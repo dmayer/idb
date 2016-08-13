@@ -65,20 +65,29 @@ module Idb
       # Decrypt with Clutch first
       clutch_working_dir = "/private/var/mobile/Documents/Dumped"
       clutch_zip = "#{clutch_working_dir}/#{bundle_id()}*.ipa"
+      
       $device.ops.execute "cd /var/root/"
       $log.info "Clearing Clutch working directory..."
       $device.ops.execute "rm -r #{clutch_working_dir}/*" 
       $log.info "Running Clutch..."
-      # BUG: For some reason this request hangs on 9.3.3, but the request from cli works fine
-      $device.ops.execute "#{$device.clutch_path} -d \"#{bundle_id()}\""
+      #puts "rm -r #{clutch_working_dir}/* && #{$device.clutch_path} -d \"#{bundle_id()}\" && unzip \"#{clutch_zip}\" -d #{clutch_working_dir} && mv \"#{clutch_working_dir}/Payload/#{binary_name}.app/#{binary_name}\" \"#{decrypted_path}\" && rm -r #{clutch_working_dir}/*" 
+
+      # NOTE: For some reason this request hangs on 9.3.3, but the request from cli works fine
+      require 'timeout'
+      begin
+        Timeout::timeout 60 do
+          $device.ops.execute "#{$device.clutch_path} -d \"#{bundle_id()}\""
+        end
+      rescue Timeout::Error
+        $log.info "Clutch execution over SSH has timed out (though may have completed successfully)..."
+      end
       $log.info "Unzipping Clutch IPA..."
-      $device.ops.execute "unzip #{clutch_zip} -d #{clutch_working_dir}"
+      $device.ops.execute "unzip \"#{clutch_zip}\" -d #{clutch_working_dir}"
       $log.info "Grabbing decrypted app binary..."
-      $device.ops.execute "mv #{clutch_working_dir}/Payload/#{bundle_name()}.app/#{bundle_name()} #{decrypted_path}"
+      $device.ops.execute "mv \"#{clutch_working_dir}/Payload/#{binary_name}.app/#{binary_name}\" \"#{decrypted_path}\""
       $log.info "Clearing Clutch working directory..."
       $device.ops.execute "rm -r #{clutch_working_dir}/*"
-      $log.info "Clearing Clutch working directory..."
-
+      
       $log.info "Checking if decrypted file #{decrypted_path} was created..."
       if not $device.ops.file_exists? decrypted_path
         $log.error "Decryption failed. Trying using dumpdecrypted..."
