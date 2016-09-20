@@ -87,7 +87,9 @@ module Idb
       pie_flag = 0x00200000
       @raw_load_output = `#{@otool_path} -h '#{@binary}'`
 
+
       mach_hashes = hashify_otool_output(@raw_load_output)
+      $log.info "Mach Hashes: #{mach_hashes}"
 
       # extract the Position Independent Executable (PIE) flag from the flags
       # value.

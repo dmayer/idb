@@ -66,6 +66,3 @@ DEPENDENCIES
   idb!
   pry
   rake
-
-BUNDLED WITH
-   1.13.1
