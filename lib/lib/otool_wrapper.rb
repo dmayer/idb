@@ -58,6 +58,25 @@ module Idb
     end
 
 
+    def hashify_otool_output(otool_output)
+      # otool output may contain multiple mach headers
+      mach_headers = otool_output.split("Mach header\n").map(&:strip)
+
+      # The newest otool version no longer echos the path of the binary being
+      # inspected. Here we reject that line if it shows up in the output of
+      # otool as well as any blank lines
+      mach_headers.reject!{|line| line == "" or line.include?(@binary)}
+
+      # convert otool output to a hash
+      mach_headers.map do |mach_header|
+        mach_hash = {}
+        headers, values = mach_header.split("\n").map(&:split)
+        headers.each_with_index do |header, index|
+          mach_hash[header] = values[index]
+        end
+        mach_hash
+      end
+    end
 
 
     def parse_header
@@ -68,19 +87,17 @@ module Idb
       pie_flag = 0x00200000
       @raw_load_output = `#{@otool_path} -h '#{@binary}'`
 
-      # fourth row contains values. then split them up.
-      vals = @raw_load_output.split("\n")[3].split(" ")
+      mach_hashes = hashify_otool_output(@raw_load_output)
 
-      #7th field contains the flags
-      flags = vals[7].to_i(16)
-
-      if flags & pie_flag == pie_flag
-        @pie = true
-      else
-        @pie = false
+      # extract the Position Independent Executable (PIE) flag from the flags
+      # value.
+      mach_hashes.each do |mach_hash|
+        if (mach_hash["flags"].to_i(16) & pie_flag) == pie_flag
+          @pie = true
+        else
+          @pie = false
+        end
       end
-
-
     end
 
     def parse_load_commands
@@ -108,9 +125,5 @@ module Idb
         end
       }
     end
-
-
-
-
   end
 end
