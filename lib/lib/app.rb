@@ -16,15 +16,18 @@ module Idb
       @app_dir = "#{$device.apps_dir}/#{@uuid}"
       parse_info_plist
 
-      if $device.ios_version == 8
-        mapping_file = "/var/mobile/Library/MobileInstallation/LastLaunchServicesMap.plist"
+      if $device.ios_version >= 8
+        if $device.ios_version == 8
+          mapping_file = "/var/mobile/Library/MobileInstallation/LastLaunchServicesMap.plist"
+        else
+          mapping_file = "/private/var/installd/Library/MobileInstallation/LastLaunchServicesMap.plist"
+        end
         local_mapping_file =  cache_file mapping_file
         @services_map = IOS8LastLaunchServicesMapWrapper.new local_mapping_file
-
         @data_dir = @services_map.data_path_by_bundle_id @info_plist.bundle_identifier
         @keychain_access_groups = @services_map.keychain_access_groups_by_bundle_id @info_plist.bundle_identifier
 
-       else
+      else
         @data_dir = @app_dir
       end
 
@@ -48,29 +51,67 @@ module Idb
     end
 
     def decrypt_binary!
-      unless $device.dumpdecrypted_installed?
-        $log.error "dumpdecrypted not installed."
+      unless $device.clutch_installed?
+        $log.error "Clutch not installed."
         return false
       end
-
-      dylib = "dumpdecrypted_#{$device.arch}.dylib"
+      
 
       $log.info "Running '#{binary_path}'"
       full_remote_path = binary_path
       decrypted_path = "/var/root/#{File.basename full_remote_path}.decrypted"
+      
 
+      # Decrypt with Clutch first
+      clutch_working_dir = "/private/var/mobile/Documents/Dumped"
+      clutch_zip = "#{clutch_working_dir}/#{bundle_id()}*.ipa"
+      
       $device.ops.execute "cd /var/root/"
-      $device.ops.execute "DYLD_INSERT_LIBRARIES=dumpdecrypted_armv7.dylib \"#{full_remote_path}\""
+      $log.info "Clearing Clutch working directory..."
+      $device.ops.execute "rm -r #{clutch_working_dir}/*" 
+      $log.info "Running Clutch..."
+      #puts "rm -r #{clutch_working_dir}/* && #{$device.clutch_path} -d \"#{bundle_id()}\" && unzip \"#{clutch_zip}\" -d #{clutch_working_dir} && mv \"#{clutch_working_dir}/Payload/#{binary_name}.app/#{binary_name}\" \"#{decrypted_path}\" && rm -r #{clutch_working_dir}/*" 
+
+      # NOTE: For some reason this request hangs on 9.3.3, but the request from cli works fine
+      require 'timeout'
+      begin
+        Timeout::timeout 60 do
+          $device.ops.execute "#{$device.clutch_path} -d \"#{bundle_id()}\""
+        end
+      rescue Timeout::Error
+        $log.info "Clutch execution over SSH has timed out (though may have completed successfully)..."
+      end
+      $log.info "Unzipping Clutch IPA..."
+      $device.ops.execute "unzip \"#{clutch_zip}\" -d #{clutch_working_dir}"
+      $log.info "Grabbing decrypted app binary..."
+      $device.ops.execute "mv \"#{clutch_working_dir}/Payload/#{binary_name}.app/#{binary_name}\" \"#{decrypted_path}\""
+      $log.info "Clearing Clutch working directory..."
+      $device.ops.execute "rm -r #{clutch_working_dir}/*"
+      
       $log.info "Checking if decrypted file #{decrypted_path} was created..."
       if not $device.ops.file_exists? decrypted_path
-        $log.error "Decryption failed. Trying armv6 build for iOS 6 and earlier..."
-        $device.ops.execute "DYLD_INSERT_LIBRARIES=dumpdecrypted_armv6.dylib \"#{full_remote_path}\""
-        $log.info "Checking if decrypted file #{decrypted_path} was created..."
-      end
+        $log.error "Decryption failed. Trying using dumpdecrypted..."
+        
+        unless $device.dumpdecrypted_installed?
+          $log.error "dumpdecrypted not installed."
+          return false
+        end
 
-      if not $device.ops.file_exists? decrypted_path
-        $log.error "Decryption failed. File may not be encrypted."
-        return
+        dylib = "dumpdecrypted_#{$device.arch}.dylib"
+
+        $device.ops.execute "cd /var/root/"
+        $device.ops.execute "DYLD_INSERT_LIBRARIES=dumpdecrypted_armv7.dylib \"#{full_remote_path}\""
+        $log.info "Checking if decrypted file #{decrypted_path} was created..."
+        if not $device.ops.file_exists? decrypted_path
+          $log.error "Decryption failed. Trying armv6 build for iOS 6 and earlier..."
+          $device.ops.execute "DYLD_INSERT_LIBRARIES=dumpdecrypted_armv6.dylib \"#{full_remote_path}\""
+          $log.info "Checking if decrypted file #{decrypted_path} was created..."
+        end
+
+        if not $device.ops.file_exists? decrypted_path
+          $log.error "Decryption failed. File may not be encrypted."
+          return
+        end
       end
 
       $log.info "Decrypted file found. Downloading..."
@@ -164,8 +205,8 @@ module Idb
     end
 
     def data_directory
-      if $device.ios_version != 8
-        "[iOS 8 specific]"
+      if $device.ios_version < 8
+        "[iOS 8+ specific]"
       else
         @data_dir
       end

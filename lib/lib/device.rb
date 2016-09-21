@@ -31,7 +31,7 @@ module Idb
       @device_app_paths[:pbwatcher] = ["/var/root/pbwatcher"]
       @device_app_paths[:dumpdecrypted_armv7] = ["/var/root/dumpdecrypted_armv7.dylib"]
       @device_app_paths[:dumpdecrypted_armv6] = ["/var/root/dumpdecrypted_armv6.dylib"]
-      @device_app_paths[:clutch] = ["/usr/bin/Clutch"]
+      @device_app_paths[:clutch] = ["/var/root/Clutch"]
 
       if $settings['device_connection_mode'] == "ssh"
         $log.debug "Connecting via SSH"
@@ -66,8 +66,15 @@ module Idb
       @apps_dir_ios_8 = '/private/var/mobile/Containers/Bundle/Application'
       @data_dir_ios_8 = '/private/var/mobile/Containers/Data/Application'
 
+      @apps_dir_ios_9 = '/private/var/containers/Bundle/Application'
+      @data_dir_ios_9 = @data_dir_ios_8
 
-      if @ops.directory? @apps_dir_ios_8
+      if @ops.directory? @apps_dir_ios_9
+        @ios_version = 9
+        @apps_dir = @apps_dir_ios_9
+        @data_dir = @data_dir_ios_9
+
+      elsif @ops.directory? @apps_dir_ios_8
         @ios_version = 8
         @apps_dir = @apps_dir_ios_8
         @data_dir = @data_dir_ios_8
@@ -287,7 +294,7 @@ module Idb
     end
 
     def setup_clutch_sources
-      @ops.execute("echo “deb http://cydia.iphonecake.com ./“ > /etc/apt/sources.list.d/idb_clutch.list")
+      @ops.execute("echo \"deb http://cydia.iphonecake.com ./\" > /etc/apt/sources.list.d/idb_clutch.list")
     end
 
     def install_from_cydia package
@@ -295,7 +302,8 @@ module Idb
         $log.info "Updating package repo..."
         @ops.execute("#{apt_get_path} -y update")
         $log.info "Installing #{package}..."
-        @ops.execute("#{apt_get_path} -y install #{package}")
+        # TODO: is force-yes secure? It is needed cuz clutch repo is unauthenticated
+        @ops.execute("#{apt_get_path} -y --force-yes install #{package}")
         return true
       else
         $log.error "apt-get or aptitude not found on the device"
@@ -308,7 +316,10 @@ module Idb
     end
 
     def install_clutch
-      install_from_cydia "com.iphonecake.clutch"
+      install_from_cydia "com.iphonecake.clutch2"
+      # NOTE: For some reason this binary will fail if run from default /usr/bin partition on iOS 9.3.3
+      # Must be copied to root home directory
+      @ops.execute("cp /usr/bin/Clutch2 /var/root/Clutch")
     end
 
     def install_rsync
@@ -350,7 +361,7 @@ module Idb
     end
 
     def configured?
-      apt_get_installed? and open_installed? and openurl_installed? and dumpdecrypted_installed? and pbwatcher_installed? and pcviewer_installed? and keychain_editor_installed? and rsync_installed? and cycript_installed?
+      apt_get_installed? and open_installed? and openurl_installed? and dumpdecrypted_installed? and pbwatcher_installed? and pcviewer_installed? and keychain_editor_installed? and rsync_installed? and cycript_installed? and clutch_installed?
     end
 
 

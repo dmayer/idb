@@ -53,7 +53,7 @@ module Idb
       @layout.addWidget @rsync, 0,4
       @rsync.connect(SIGNAL :released) {
         @manager.start_new_revision
-        if $device.ios_version == 8
+        if $device.ios_version >= 8
           @manager.sync_dir $selected_app.app_dir, "app_bundle"
           @manager.sync_dir $selected_app.data_dir, "data_bundle"
         else
@@ -328,7 +328,7 @@ module Idb
 
       @controls.update_start
 
-      if $device.ios_version == 8
+      if $device.ios_version >= 8
         start_ios_8
       else
         start_ios_pre8
