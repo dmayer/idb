@@ -5,7 +5,6 @@ require_relative 'ssh_port_forwarder'
 require_relative 'device_ca_interface'
 require_relative 'usb_muxd_wrapper'
 require 'json'
-require 'pry'
 
 module Idb
   class Device < AbstractDevice
