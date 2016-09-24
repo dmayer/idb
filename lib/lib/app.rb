@@ -51,67 +51,39 @@ module Idb
     end
 
     def decrypt_binary!
-      unless $device.clutch_installed?
-        $log.error "Clutch not installed."
-        return false
-      end
-      
-
       $log.info "Running '#{binary_path}'"
       full_remote_path = binary_path
-      decrypted_path = "/var/root/#{File.basename full_remote_path}.decrypted"
-      
+      $log.error "Decryption failed. Trying using dumpdecrypted..."
 
-      # Decrypt with Clutch first
-      clutch_working_dir = "/private/var/mobile/Documents/Dumped"
-      clutch_zip = "#{clutch_working_dir}/#{bundle_id()}*.ipa"
-      
-      $device.ops.execute "cd /var/root/"
-      $log.info "Clearing Clutch working directory..."
-      $device.ops.execute "rm -r #{clutch_working_dir}/*" 
-      $log.info "Running Clutch..."
-      #puts "rm -r #{clutch_working_dir}/* && #{$device.clutch_path} -d \"#{bundle_id()}\" && unzip \"#{clutch_zip}\" -d #{clutch_working_dir} && mv \"#{clutch_working_dir}/Payload/#{binary_name}.app/#{binary_name}\" \"#{decrypted_path}\" && rm -r #{clutch_working_dir}/*" 
-
-      # NOTE: For some reason this request hangs on 9.3.3, but the request from cli works fine
-      require 'timeout'
-      begin
-        Timeout::timeout 60 do
-          $device.ops.execute "#{$device.clutch_path} -d \"#{bundle_id()}\""
-        end
-      rescue Timeout::Error
-        $log.info "Clutch execution over SSH has timed out (though may have completed successfully)..."
+      unless $device.dumpdecrypted_installed?
+        $log.error "dumpdecrypted not installed."
+        return false
       end
-      $log.info "Unzipping Clutch IPA..."
-      $device.ops.execute "unzip \"#{clutch_zip}\" -d #{clutch_working_dir}"
-      $log.info "Grabbing decrypted app binary..."
-      $device.ops.execute "mv \"#{clutch_working_dir}/Payload/#{binary_name}.app/#{binary_name}\" \"#{decrypted_path}\""
-      $log.info "Clearing Clutch working directory..."
-      $device.ops.execute "rm -r #{clutch_working_dir}/*"
-      
+
+      dylib_path = $device.path_for("dumpdecrypted_#{$device.arch}".to_sym)
+
+      # If the ios version is less than 9 then we execute dumpdecrypted as
+      # root. iOS 9 requires dumpdecrypted to be run as the mobile user.
+      if $device.ios_version < 9
+        #TODO: Is this the best way to do this?
+        decrypted_path = "/var/root/#{File.basename full_remote_path}.decrypted"
+        $device.ops.execute "DYLD_INSERT_LIBRARIES=#{dylib_path} \"#{full_remote_path}\""
+      else
+        #TODO: Is this the best way to do this?
+        decrypted_path = "/var/mobile/#{File.basename full_remote_path}.decrypted"
+        $device.ops.execute "DYLD_INSERT_LIBRARIES=#{dylib_path} \"#{full_remote_path}\"", { as_user: "mobile" }
+      end
+
       $log.info "Checking if decrypted file #{decrypted_path} was created..."
       if not $device.ops.file_exists? decrypted_path
-        $log.error "Decryption failed. Trying using dumpdecrypted..."
-        
-        unless $device.dumpdecrypted_installed?
-          $log.error "dumpdecrypted not installed."
-          return false
-        end
-
-        dylib = "dumpdecrypted_#{$device.arch}.dylib"
-
-        $device.ops.execute "cd /var/root/"
-        $device.ops.execute "DYLD_INSERT_LIBRARIES=dumpdecrypted_armv7.dylib \"#{full_remote_path}\""
+        $log.error "Decryption failed. Trying armv6 build for iOS 6 and earlier..."
+        $device.ops.execute "DYLD_INSERT_LIBRARIES=dumpdecrypted_armv6.dylib \"#{full_remote_path}\""
         $log.info "Checking if decrypted file #{decrypted_path} was created..."
-        if not $device.ops.file_exists? decrypted_path
-          $log.error "Decryption failed. Trying armv6 build for iOS 6 and earlier..."
-          $device.ops.execute "DYLD_INSERT_LIBRARIES=dumpdecrypted_armv6.dylib \"#{full_remote_path}\""
-          $log.info "Checking if decrypted file #{decrypted_path} was created..."
-        end
+      end
 
-        if not $device.ops.file_exists? decrypted_path
-          $log.error "Decryption failed. File may not be encrypted."
-          return
-        end
+      if not $device.ops.file_exists? decrypted_path
+        $log.error "Decryption failed. File may not be encrypted."
+        return
       end
 
       $log.info "Decrypted file found. Downloading..."

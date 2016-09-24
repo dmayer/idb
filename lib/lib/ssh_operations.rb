@@ -36,8 +36,18 @@ module Idb
     end
 
 
-    def execute(command)
-      @ssh.exec! command
+    def execute(command, opts={})
+      if opts[:as_user]
+        command = "su - #{ opts[:as_user] } -c \"#{command}\""
+      end
+
+      if opts[:non_blocking]
+        $log.debug "Executing non-blocking SSH command: #{command}"
+        @ssh.exec command
+      else
+        $log.debug "Executing blocking SSH command: #{command}"
+        @ssh.exec! command
+      end
     end
 
     def chmod file, permissions

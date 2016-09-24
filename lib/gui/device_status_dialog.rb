@@ -15,12 +15,6 @@ module Idb
       setFixedHeight(sizeHint().height());
     end
 
-    def mark_clutch_installed
-      @clutch_label.text = @clutch_label.text + "<br>found: #{$device.clutch_path}"
-      @layout.addWidget installed_check_mark, 9, 1
-      setFixedHeight(sizeHint().height());
-    end
-
     def mark_keychain_editor_installed
       @keychain_editor_label.text = @keychain_editor_label.text + "<br>found: #{$device.keychain_editor_path}"
       @layout.addWidget installed_check_mark, 6, 1
@@ -275,32 +269,6 @@ module Idb
       end
     end
 
-    def clutch_section
-      @clutch_label = Qt::Label.new "<b>Clutch</b><br>(Decrypt app binaries on the device).<br>Developed and maintained by KJCracks https://github.com/KJCracks/Clutch"
-      @layout.addWidget @clutch_label, 9, 0
-
-      if $device.clutch_installed?
-        mark_clutch_installed
-      else
-        @install_clutch = Qt::PushButton.new "Install"
-        @install_clutch.connect(SIGNAL(:released)) {
-          $device.setup_clutch_sources
-          $device.install_clutch
-          if $device.clutch_installed?
-            @install_clutch.hide
-            mark_clutch_installed
-          else
-            error = Qt::MessageBox.new
-            error.setInformativeText("clutch could not be installed. Please make sure Cydia has finished all tasks and is closed on the device.")
-            error.setIcon(Qt::MessageBox::Critical)
-            error.exec
-          end
-        }
-        @layout.addWidget @install_clutch, 9, 1
-      end
-    end
-
-
     def initialize *args
       super *args
       @layout = Qt::GridLayout.new
@@ -323,7 +291,6 @@ module Idb
       keychaineditor_section
       rsync_section
       cycript_section
-      clutch_section
 
 
       setFixedHeight(sizeHint().height());
