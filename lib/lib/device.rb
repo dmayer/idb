@@ -10,9 +10,7 @@ module Idb
   class Device < AbstractDevice
     attr_accessor :usb_ssh_port, :mode, :tool_port, :ios_version
 
-    def initialize username, password, hostname, port
-
-
+    def initialize(username, password, hostname, port)
       @username = username
       @password = password
       @hostname = hostname
@@ -20,13 +18,13 @@ module Idb
 
       @app = nil
 
-      @device_app_paths = Hash.new
-      @device_app_paths[:cycript] = [ "/usr/bin/cycript" ]
-      @device_app_paths[:rsync] = [ "/usr/bin/rsync" ]
+      @device_app_paths = {}
+      @device_app_paths[:cycript] = ["/usr/bin/cycript"]
+      @device_app_paths[:rsync] = ["/usr/bin/rsync"]
       @device_app_paths[:open] = ["/usr/bin/open"]
-      @device_app_paths[:openurl] = ["/usr/bin/uiopen", "/usr/bin/openurl",  "/usr/bin/openURL"]
-      @device_app_paths[:aptget] = ["/usr/bin/apt-get",  "/usr/bin/aptitude"]
-      @device_app_paths[:keychaineditor] = [ "/var/root/keychaineditor"]
+      @device_app_paths[:openurl] = ["/usr/bin/uiopen", "/usr/bin/openurl", "/usr/bin/openURL"]
+      @device_app_paths[:aptget] = ["/usr/bin/apt-get", "/usr/bin/aptitude"]
+      @device_app_paths[:keychaineditor] = ["/var/root/keychaineditor"]
       @device_app_paths[:pcviewer] = ["/var/root/protectionclassviewer"]
       @device_app_paths[:pbwatcher] = ["/var/root/pbwatcher"]
       @device_app_paths[:dumpdecrypted_armv7] = ["/usr/lib/dumpdecrypted_armv7.dylib"]
@@ -45,9 +43,6 @@ module Idb
 
         @usbmuxd.proxy proxy_port, $settings['ssh_port']
         sleep 1
-
-
-
 
         @ops = SSHOperations.new username, password, 'localhost', proxy_port
 
@@ -95,7 +90,6 @@ module Idb
       @ops.ssh
     end
 
-
     def disconnect
       @ops.disconnect
     end
@@ -109,7 +103,7 @@ module Idb
     end
 
     def start_port_forwarding
-      @port_forward_pid = Process.spawn("#{RbConfig.ruby} #{File.dirname(File.expand_path(__FILE__))}/../helper/ssh_port_forwarder.rb"  )
+      @port_forward_pid = Process.spawn("#{RbConfig.ruby} #{File.dirname(File.expand_path(__FILE__))}/../helper/ssh_port_forwarder.rb")
     end
 
     def restart_port_forwarding
@@ -118,7 +112,7 @@ module Idb
       start_port_forwarding
     end
 
-    def protection_class file
+    def protection_class(file)
       @ops.execute "#{pcviewer_path} '#{file}'"
     end
 
@@ -126,11 +120,11 @@ module Idb
       false
     end
 
-    def app_launch app
+    def app_launch(app)
       @ops.launch_app(open_path, app.bundle_id)
     end
 
-    def is_installed? tool
+    def is_installed?(tool)
       $log.info "Checking if #{tool} is installed..."
       if path_for(tool).nil?
         $log.warn "#{tool} not found."
@@ -141,15 +135,12 @@ module Idb
       end
     end
 
-    def path_for tool
-      @device_app_paths[tool].each { |x|
-        if @ops.file_exists? x
-          return x
-        end
-      }
-      return nil
+    def path_for(tool)
+      @device_app_paths[tool].each do |device_app_path|
+        return device_app_path if @ops.file_exists? device_app_path
+      end
+      nil
     end
-
 
     def install_dumpdecrypted
       upload_dumpdecrypted
@@ -159,7 +150,9 @@ module Idb
     end
 
     def install_dumpdecrypted_old
-      unless File.exist? "utils/dumpdecrypted/dumpdecrypted.dylib"
+      if File.exist? "utils/dumpdecrypted/dumpdecrypted.dylib"
+        upload_dumpdecryted
+      else
         puts "[**] Warning: dumpdecrypted not compiled."
         puts "[**] Due to licensing issue we cannot ship the compiled library with this tool."
         puts "[**] Attempting compilation (requires a valid iOS SDK installation)..."
@@ -172,11 +165,8 @@ module Idb
           puts "[**] Error: Compilation failed."
           puts "[**] Change into the utils/dumpdecrypted directory, adjust the makefile, and compile."
         end
-      else
-        upload_dumpdecryted
       end
     end
-
 
     def compile_dumpdecrypted
       base_dir = '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer'
@@ -184,7 +174,6 @@ module Idb
         puts "[**] Error, iOS Platform tools not found at #{base_dir}"
         return
       end
-
 
       bin_dir = "#{base_dir}/usr/bin"
       sdk_dir = Dir.glob("#{base_dir}/SDKs/iPhoneOS*.sdk/").first
@@ -199,8 +188,6 @@ module Idb
         puts "[**] XCode 5 does not ship with llvm-gcc anymore."
         return
       end
-
-
 
       params = ["-arch armv7", # adjust if necessary
                 "-wimplicit",
@@ -218,7 +205,6 @@ module Idb
       end
     end
 
-
     def upload_dumpdecrypted
       $log.info "Uploading dumpdecrypted library..."
       @ops.upload("#{Idb.root}/lib/utils/dumpdecrypted/dumpdecrypted_armv6.dylib", @device_app_paths[:dumpdecrypted_armv6].first)
@@ -234,6 +220,7 @@ module Idb
         false
       end
     end
+
     def install_pcviewer
       if File.exist? "#{File.dirname(File.expand_path(__FILE__))}/../utils/pcviewer/protectionclassviewer"
         upload_pcviewer
@@ -242,7 +229,6 @@ module Idb
         false
       end
     end
-
 
     def install_pbwatcher
       if File.exist? "#{File.dirname(File.expand_path(__FILE__))}/../utils/pbwatcher/pbwatcher"
@@ -254,46 +240,33 @@ module Idb
     end
 
     def upload_pcviewer
-      begin
-        $log.info "Uploading pcviewer..."
-        @ops.upload "#{File.dirname(File.expand_path(__FILE__))}/../utils/pcviewer/protectionclassviewer", "/var/root/protectionclassviewer"
-        @ops.chmod "/var/root/protectionclassviewer", 0744
-        $log.info "'pcviewer' installed successfully."
-  #      true
-  #    rescue
-        $log.error "Exception encountered when uploading pcviewer"
-  #      false
-      end
+      $log.info "Uploading pcviewer..."
+      @ops.upload "#{File.dirname(File.expand_path(__FILE__))}/../utils/pcviewer/protectionclassviewer", "/var/root/protectionclassviewer"
+      @ops.chmod "/var/root/protectionclassviewer", 0o744
+      $log.info "'pcviewer' installed successfully."
     end
 
     def upload_keychain_editor
-      begin
-        $log.info "Uploading keychain_editor..."
-        @ops.upload "#{File.dirname(File.expand_path(__FILE__))}/../utils/keychain_editor/keychaineditor", "/var/root/keychaineditor"
-        @ops.chmod "/var/root/keychaineditor", 0744
-        $log.info "'keychain_editor' installed successfully."
-  #      true
-  #    rescue
-        $log.error "Exception encountered when uploading keychain_editor"
-  #      false
-      end
+      $log.info "Uploading keychain_editor..."
+      @ops.upload "#{File.dirname(File.expand_path(__FILE__))}/../utils/keychain_editor/keychaineditor", "/var/root/keychaineditor"
+      @ops.chmod "/var/root/keychaineditor", 0o744
+      $log.info "'keychain_editor' installed successfully."
     end
+
     def upload_pbwatcher
-      # TODO What's happening here?
-      begin
-        $log.info "Uploading pbwatcher..."
-        @ops.upload "#{File.dirname(File.expand_path(__FILE__))}/../utils/pbwatcher/pbwatcher", "/var/root/pbwatcher"
-        @ops.chmod "/var/root/pbwatcher", 0744
-        $log.info "'pbwatcher' installed successfully."
-  #      true
-  #    rescue
-        $log.error "Exception encountered when uploading pbwatcher"
-  #      false
-      end
+      # TODO: What's happening here?
+
+      $log.info "Uploading pbwatcher..."
+      @ops.upload "#{File.dirname(File.expand_path(__FILE__))}/../utils/pbwatcher/pbwatcher", "/var/root/pbwatcher"
+      @ops.chmod "/var/root/pbwatcher", 0o744
+      $log.info "'pbwatcher' installed successfully."
+      #      true
+      #    rescue
+      $log.error "Exception encountered when uploading pbwatcher"
+      #      false
     end
 
-
-    def install_from_cydia package
+    def install_from_cydia(package)
       if apt_get_installed?
         $log.info "Updating package repo..."
         @ops.execute("#{apt_get_path} -y update")
@@ -325,13 +298,11 @@ module Idb
       Process.kill("INT", @port_forward_pid)
       $log.info "Stopping any SSH via USB forwarding"
 
-      if $settings['device_connection_mode'] != "ssh"
-        @usbmuxd.stop_all
-      end
+      @usbmuxd.stop_all if $settings['device_connection_mode'] != "ssh"
     end
 
-    def open_url url
-      command = "#{openurl_path} \"#{url.gsub('&','\&')}\""
+    def open_url(url)
+      command = "#{openurl_path} \"#{url.gsub('&', '\&')}\""
       $log.info "Executing: #{command}"
       @ops.execute  command
     end
@@ -340,28 +311,26 @@ module Idb
       DeviceCAInterface.new self
     end
 
-    def kill_by_name process_name
+    def kill_by_name(process_name)
       @ops.execute "killall -9 #{process_name}"
     end
 
     def device_id
-
       $log.error "Not implemented"
       nil
     end
 
     def configured?
-      apt_get_installed? and
-         open_installed? and
-         openurl_installed? and
-         dumpdecrypted_installed? and
-         pbwatcher_installed? and
-         pcviewer_installed? and
-         keychain_editor_installed? and
-         rsync_installed? and
-         cycript_installed?
+      apt_get_installed? &&
+        open_installed? &&
+        openurl_installed? &&
+        dumpdecrypted_installed? &&
+        pbwatcher_installed? &&
+        pcviewer_installed? &&
+        keychain_editor_installed? &&
+        rsync_installed? &&
+        cycript_installed?
     end
-
 
     def cycript_installed?
       is_installed? :cycript
@@ -380,9 +349,8 @@ module Idb
     end
 
     def dumpdecrypted_installed?
-      is_installed? :dumpdecrypted_armv6 and is_installed? :dumpdecrypted_armv7
+      is_installed?(:dumpdecrypted_armv6) && is_installed?(:dumpdecrypted_armv7)
     end
-
 
     def rsync_installed?
       is_installed? :rsync
@@ -405,14 +373,12 @@ module Idb
     end
 
     def pcviewer_path
-      path_for  :pcviewer
+      path_for :pcviewer
     end
-
 
     def pbwatcher_path
       path_for :pbwatcher
     end
-
 
     def dumpdecrypted_path
       path_for :dumpdecrypted_armv7
@@ -426,16 +392,13 @@ module Idb
       path_for :rsync
     end
 
-
     def open_path
       path_for :open
     end
 
-
     def openurl_path
       path_for :openurl
     end
-
 
     def apt_get_path
       path_for :aptget
@@ -444,6 +407,5 @@ module Idb
     def cycript_path
       path_for :cycript
     end
-
   end
 end
