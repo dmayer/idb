@@ -22,7 +22,9 @@ module Idb
       @device_app_paths[:cycript] = ["/usr/bin/cycript"]
       @device_app_paths[:rsync] = ["/usr/bin/rsync"]
       @device_app_paths[:open] = ["/usr/bin/open"]
-      @device_app_paths[:openurl] = ["/usr/bin/uiopen", "/usr/bin/openurl", "/usr/bin/openURL"]
+      @device_app_paths[:openurl] = ["/usr/bin/uiopen",
+                                     "/usr/bin/openurl",
+                                     "/usr/bin/openURL"]
       @device_app_paths[:aptget] = ["/usr/bin/apt-get", "/usr/bin/aptitude"]
       @device_app_paths[:keychaineditor] = ["/var/root/keychaineditor"]
       @device_app_paths[:pcviewer] = ["/var/root/protectionclassviewer"]
@@ -103,7 +105,8 @@ module Idb
     end
 
     def start_port_forwarding
-      @port_forward_pid = Process.spawn("#{RbConfig.ruby} #{File.dirname(File.expand_path(__FILE__))}/../helper/ssh_port_forwarder.rb")
+      command = "#{RbConfig.ruby} #{Idb.root}/lib/helper/ssh_port_forwarder.rb"
+      @port_forward_pid = Process.spawn(command)
     end
 
     def restart_port_forwarding
@@ -207,63 +210,65 @@ module Idb
 
     def upload_dumpdecrypted
       $log.info "Uploading dumpdecrypted library..."
-      @ops.upload("#{Idb.root}/lib/utils/dumpdecrypted/dumpdecrypted_armv6.dylib", @device_app_paths[:dumpdecrypted_armv6].first)
-      @ops.upload("#{Idb.root}/lib/utils/dumpdecrypted/dumpdecrypted_armv7.dylib", @device_app_paths[:dumpdecrypted_armv7].first)
+      @ops.upload("#{Idb.root}/lib/utils/dumpdecrypted/dumpdecrypted_armv6.dylib",
+                  @device_app_paths[:dumpdecrypted_armv6].first)
+      @ops.upload("#{Idb.root}/lib/utils/dumpdecrypted/dumpdecrypted_armv7.dylib",
+                  @device_app_paths[:dumpdecrypted_armv7].first)
       $log.info "'dumpdecrypted' installed successfully."
     end
 
     def install_keychain_editor
-      if File.exist? "#{File.dirname(File.expand_path(__FILE__))}/../utils/keychain_editor/keychaineditor"
+      keychaineditor_path = "#{Idb.root}/lib/utils/keychain_editor/keychaineditor"
+      if File.exist? keychaineditor_path
         upload_keychain_editor
       else
-        $log.error "keychain_editor not found at '#{File.dirname(File.expand_path(__FILE__))}/../utils/keychain_editor/keychaineditor'."
+        $log.error "keychain_editor not found at '#{keychaineditor_path}'."
         false
       end
     end
 
     def install_pcviewer
-      if File.exist? "#{File.dirname(File.expand_path(__FILE__))}/../utils/pcviewer/protectionclassviewer"
+      pcviewer_path = "#{Idb.root}/lib/utils/pcviewer/protectionclassviewer"
+      if File.exist? pcviewer_path
         upload_pcviewer
       else
-        $log.error "protectionclassviewer not found at '#{File.dirname(File.expand_path(__FILE__))}/../utils/pcviewer/protectionclassviewer'."
+        $log.error "protectionclassviewer not found at '#{pcviewer_path}'."
         false
       end
     end
 
     def install_pbwatcher
-      if File.exist? "#{File.dirname(File.expand_path(__FILE__))}/../utils/pbwatcher/pbwatcher"
+      pbwatcher_path = "#{Idb.root}/lib/utils/pbwatcher/pbwatcher"
+      if File.exist? pbwatcher_path
         upload_pbwatcher
       else
-        $log.error "pbwatcher not found at '#{File.dirname(File.expand_path(__FILE__))}/../utils/pbwatcher/pbwatcher'."
+        $log.error "pbwatcher not found at '#{pbwatcher_path}'."
         false
       end
     end
 
     def upload_pcviewer
+      local_pcviewer_path = "#{Idb.root}/lib/utils/pcviewer/protectionclassviewer"
       $log.info "Uploading pcviewer..."
-      @ops.upload "#{File.dirname(File.expand_path(__FILE__))}/../utils/pcviewer/protectionclassviewer", "/var/root/protectionclassviewer"
-      @ops.chmod "/var/root/protectionclassviewer", 0o744
+      @ops.upload local_pcviewer_path, "/var/root/protectionclassviewer"
+      @ops.chmod "/var/root/protectionclassviewer", 0744
       $log.info "'pcviewer' installed successfully."
     end
 
     def upload_keychain_editor
+      local_keychaineditor_path = "#{Idb.root}/lib/utils/keychain_editor/keychaineditor"
       $log.info "Uploading keychain_editor..."
-      @ops.upload "#{File.dirname(File.expand_path(__FILE__))}/../utils/keychain_editor/keychaineditor", "/var/root/keychaineditor"
-      @ops.chmod "/var/root/keychaineditor", 0o744
+      @ops.upload local_keychaineditor_path, "/var/root/keychaineditor"
+      @ops.chmod "/var/root/keychaineditor", 0744
       $log.info "'keychain_editor' installed successfully."
     end
 
     def upload_pbwatcher
-      # TODO: What's happening here?
-
+      local_pbwatcher_path = "#{Idb.root}/lib/utils/pbwatcher/pbwatcher"
       $log.info "Uploading pbwatcher..."
-      @ops.upload "#{File.dirname(File.expand_path(__FILE__))}/../utils/pbwatcher/pbwatcher", "/var/root/pbwatcher"
-      @ops.chmod "/var/root/pbwatcher", 0o744
+      @ops.upload local_pbwatcher_path, "/var/root/pbwatcher"
+      @ops.chmod "/var/root/pbwatcher", 0744
       $log.info "'pbwatcher' installed successfully."
-      #      true
-      #    rescue
-      $log.error "Exception encountered when uploading pbwatcher"
-      #      false
     end
 
     def install_from_cydia(package)

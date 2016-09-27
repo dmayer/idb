@@ -9,3 +9,9 @@
 
 StringLiterals:
   Enabled: false
+
+Style/GlobalVars:
+  AllowedVariables: [$log, $settings]
+
+Style/NumericLiteralPrefix:
+  Enabled: false
