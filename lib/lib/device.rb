@@ -152,62 +152,6 @@ module Idb
       @ops.chmod dumpdecrypted_path_armv6, 0755
     end
 
-    def install_dumpdecrypted_old
-      if File.exist? "utils/dumpdecrypted/dumpdecrypted.dylib"
-        upload_dumpdecryted
-      else
-        puts "[**] Warning: dumpdecrypted not compiled."
-        puts "[**] Due to licensing issue we cannot ship the compiled library with this tool."
-        puts "[**] Attempting compilation (requires a valid iOS SDK installation)..."
-        compile_dumpdecrypted
-
-        if File.exist? "utils/dumpdecrypted/dumpdecrypted.dylib"
-          puts "[**] Compilation successful."
-          upload_dumpdecryted
-        else
-          puts "[**] Error: Compilation failed."
-          puts "[**] Change into the utils/dumpdecrypted directory, adjust the makefile, and compile."
-        end
-      end
-    end
-
-    def compile_dumpdecrypted
-      base_dir = '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer'
-      unless Dir.exist? base_dir
-        puts "[**] Error, iOS Platform tools not found at #{base_dir}"
-        return
-      end
-
-      bin_dir = "#{base_dir}/usr/bin"
-      sdk_dir = Dir.glob("#{base_dir}/SDKs/iPhoneOS*.sdk/").first
-      puts "[*] Found SDK dir: #{sdk_dir}"
-
-      library_name = "dumpdecrypted.dylib"
-      gcc = "#{bin_dir}/gcc"
-
-      unless File.exist? gcc
-        puts "[**] Error: gcc not found at #{gcc}"
-        puts "[**] Ensure that the Command Line Utilities are installed in XCode 4."
-        puts "[**] XCode 5 does not ship with llvm-gcc anymore."
-        return
-      end
-
-      params = ["-arch armv7", # adjust if necessary
-                "-wimplicit",
-                "-isysroot #{sdk_dir}",
-                "-F#{sdk_dir}System/Library/Frameworks",
-                "-F#{sdk_dir}System/Library/PrivateFrameworks",
-                "-dynamiclib",
-                "-o #{library_name}"].join(' ')
-
-      compile_cmd = "#{gcc} #{params} dumpdecrypted.c"
-      puts "Running #{compile_cmd}"
-
-      Dir.chdir("utils/dumpdecrypted") do
-        `#{compile_cmd}`
-      end
-    end
-
     def upload_dumpdecrypted
       $log.info "Uploading dumpdecrypted library..."
       @ops.upload("#{Idb.root}/lib/utils/dumpdecrypted/dumpdecrypted_armv6.dylib",
