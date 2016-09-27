@@ -15,12 +15,6 @@ module Idb
       setFixedHeight(sizeHint().height());
     end
 
-    def mark_clutch_installed
-      @clutch_label.text = @clutch_label.text + "<br>found: #{$device.clutch_path}"
-      @layout.addWidget installed_check_mark, 8, 1
-      setFixedHeight(sizeHint().height());
-    end
-
     def mark_keychain_editor_installed
       @keychain_editor_label.text = @keychain_editor_label.text + "<br>found: #{$device.keychain_editor_path}"
       @layout.addWidget installed_check_mark, 6, 1
@@ -275,7 +269,6 @@ module Idb
       end
     end
 
-
     def initialize *args
       super *args
       @layout = Qt::GridLayout.new
@@ -287,7 +280,7 @@ module Idb
         reject()
       }
       #TODO: prevent closing
-      @layout.addWidget @close_button, 9, 2
+      @layout.addWidget @close_button, 10, 2
 
       apt_get_section
       open_section
