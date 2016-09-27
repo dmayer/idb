@@ -7,8 +7,7 @@ module Idb
   class App
     attr_accessor :uuid, :app_dir, :binary, :cache_dir, :data_dir, :services_map
 
-
-    def initialize uuid
+    def initialize(uuid)
       @uuid = uuid
       @cache_dir = "#{$tmp_path}/#{uuid}"
       FileUtils.mkdir_p @cache_dir  unless Dir.exist? @cache_dir
@@ -22,7 +21,7 @@ module Idb
         else
           mapping_file = "/private/var/installd/Library/MobileInstallation/LastLaunchServicesMap.plist"
         end
-        local_mapping_file =  cache_file mapping_file
+        local_mapping_file = cache_file mapping_file
         @services_map = IOS8LastLaunchServicesMapWrapper.new local_mapping_file
         @data_dir = @services_map.data_path_by_bundle_id @info_plist.bundle_identifier
         @keychain_access_groups = @services_map.keychain_access_groups_by_bundle_id @info_plist.bundle_identifier
@@ -30,8 +29,6 @@ module Idb
       else
         @data_dir = @app_dir
       end
-
-
     end
 
     def analyze
@@ -65,23 +62,23 @@ module Idb
       # If the ios version is less than 9 then we execute dumpdecrypted as
       # root. iOS 9 requires dumpdecrypted to be run as the mobile user.
       if $device.ios_version < 9
-        #TODO: Is this the best way to do this?
+        # TODO: Is this the best way to do this?
         decrypted_path = "/var/root/#{File.basename full_remote_path}.decrypted"
         $device.ops.execute "DYLD_INSERT_LIBRARIES=#{dylib_path} \"#{full_remote_path}\""
       else
-        #TODO: Is this the best way to do this?
+        # TODO: Is this the best way to do this?
         decrypted_path = "/var/mobile/#{File.basename full_remote_path}.decrypted"
-        $device.ops.execute "DYLD_INSERT_LIBRARIES=#{dylib_path} \"#{full_remote_path}\"", { as_user: "mobile" }
+        $device.ops.execute "DYLD_INSERT_LIBRARIES=#{dylib_path} \"#{full_remote_path}\"", as_user: "mobile"
       end
 
       $log.info "Checking if decrypted file #{decrypted_path} was created..."
-      if not $device.ops.file_exists? decrypted_path
+      unless $device.ops.file_exists? decrypted_path
         $log.error "Decryption failed. Trying armv6 build for iOS 6 and earlier..."
         $device.ops.execute "DYLD_INSERT_LIBRARIES=dumpdecrypted_armv6.dylib \"#{full_remote_path}\""
         $log.info "Checking if decrypted file #{decrypted_path} was created..."
       end
 
-      if not $device.ops.file_exists? decrypted_path
+      unless $device.ops.file_exists? decrypted_path
         $log.error "Decryption failed. File may not be encrypted."
         return
       end
@@ -95,29 +92,23 @@ module Idb
 
       $log.info "Decrypted binary downloaded to #{@local_decrypted_binary}"
       @local_decrypted_binary
-
     end
 
-    def get_raw_plist_value val
-      begin
-        @info_plist.plist_data[val]
-      rescue
-        "[error]"
-      end
+    def get_raw_plist_value(val)
+      @info_plist.plist_data[val]
+    rescue
+      "[error]"
     end
-
 
     def find_icon
       # lets try the easy way first...
       icon_name = get_raw_plist_value('CFBundleIconFile')
-      if not icon_name.nil?
-        return icon_name
-      end
+      return icon_name unless icon_name.nil?
 
       # lets try iphone icons
       icon_name = get_raw_plist_value('CFBundleIcons')
       unless icon_name.nil?
-        if not icon_name["CFBundlePrimaryIcon"].nil? and not icon_name["CFBundlePrimaryIcon"]["CFBundleIconFiles"].nil?
+        if !icon_name["CFBundlePrimaryIcon"].nil? && !icon_name["CFBundlePrimaryIcon"]["CFBundleIconFiles"].nil?
           return icon_name["CFBundlePrimaryIcon"]["CFBundleIconFiles"].sort.last
         end
       end
@@ -125,7 +116,7 @@ module Idb
       # lets try ipad icons
       icon_name = get_raw_plist_value('CFBundleIcons~ipad')
       unless icon_name.nil?
-        if not icon_name["CFBundlePrimaryIcon"].nil? and not icon_name["CFBundlePrimaryIcon"]["CFBundleIconFiles"].nil?
+        if !icon_name["CFBundlePrimaryIcon"].nil? && !icon_name["CFBundlePrimaryIcon"]["CFBundleIconFiles"].nil?
           return icon_name["CFBundlePrimaryIcon"]["CFBundleIconFiles"].sort.last
         end
       end
@@ -135,7 +126,7 @@ module Idb
       app_dir = Shellwords.escape(@app_dir)
       icon_name = find_icon
 
-      unless (icon_name[-4,4] == ".png")
+      unless icon_name[-4, 4] == ".png"
         $log.debug "Appending extension to #{icon_name}"
         icon_name += "*.png"
         $log.debug "Now: #{icon_name}"
@@ -143,12 +134,12 @@ module Idb
 
       icon_file = $device.ops.execute("ls #{app_dir}/*app/#{icon_name}").split("\n").first.strip
 
-      if not $device.ops.file_exists? icon_file
+      unless $device.ops.file_exists? icon_file
         $log.warn "Icon not found: #{icon_file}"
         return nil
       end
       $log.info "Icon found at #{icon_file}"
-      return icon_file
+      icon_file
     end
 
     def get_icon_file
@@ -159,8 +150,6 @@ module Idb
         new_local_path = "#{local_path}.png"
         CGBI.from_file(local_path).to_png_file(new_local_path)
         new_local_path
-      else
-        nil
       end
     end
 
@@ -197,42 +186,38 @@ module Idb
     end
 
     def bundle_id
-      begin
-        @info_plist.bundle_identifier.to_s
-      rescue
-        "[error]"
-      end
+      @info_plist.bundle_identifier.to_s
+    rescue
+      "[error]"
     end
 
     def launch
-        $device.app_launch self
+      $device.app_launch self
     end
 
     def binary_path
       $log.info "Locating application binary..."
-      dirs = $device.ops.dir_glob("#{@app_dir}/","**")
-      dirs.select! { |f|
+      dirs = $device.ops.dir_glob("#{@app_dir}/", "**")
+      dirs.select! do |f|
         $device.ops.file_exists? "#{f}/#{binary_name}"
-      }
+      end
 
       "#{dirs.first}/#{binary_name}"
     end
 
     def binary_name
-      begin
-        @info_plist.binary_name
-      rescue
-        "[error]"
-      end
+      @info_plist.binary_name
+    rescue
+      "[error]"
     end
 
     def sync_app_dir
-      `#{rsync} avc -e ssh TKTK #{} `
+      `#{rsync} avc -e ssh TKTK #{}`
     end
 
-    def find_files_by_pattern pattern
+    def find_files_by_pattern(pattern)
       app_dir_files = $device.ops.dir_glob(@app_dir, pattern)
-      data_dir_files = Array.new
+      data_dir_files = []
 
       if app_dir != data_dir
         data_dir_files = $device.ops.dir_glob(@data_dir, pattern)
@@ -260,12 +245,11 @@ module Idb
     end
 
     def cache_dir
-     "#{$tmp_path}/#{@uuid}/"
+      "#{$tmp_path}/#{@uuid}/"
     end
 
-
-    def cache_file f
-      relative_file = f.sub(@app_dir,'')
+    def cache_file(f)
+      relative_file = f.sub(@app_dir, '')
       relative_dir = File.dirname relative_file
       cache_dir = "#{$tmp_path}/#{@uuid}/#{relative_dir}"
       FileUtils.mkdir_p(cache_dir) unless Dir.exist?(cache_dir)
@@ -277,6 +261,7 @@ module Idb
         return nil
       end
     end
+
     private
 
     def parse_info_plist
@@ -298,24 +283,21 @@ module Idb
         $log.debug "Backtrace: #{ex.backtrace.join("\n")}."
         return
       end
-
     end
-
-
 
     def info_plist_path
       app_dir = Shellwords.escape(@app_dir)
       plist_file = $device.ops.execute("ls #{app_dir}/*app/Info.plist").strip
 
       # the following works but is terribly slow.
-      #plist_file = (@if.ops.dir_glob "#{@app_dir}/","*app/Info.plist").first
+      # plist_file = (@if.ops.dir_glob "#{@app_dir}/","*app/Info.plist").first
 
-      if not $device.ops.file_exists? plist_file
+      unless $device.ops.file_exists? plist_file
         $log.error "Info.plist not found."
         return nil
       end
       $log.info "Info.plist found at #{plist_file}"
-      return plist_file
+      plist_file
     end
   end
 end
