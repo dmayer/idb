@@ -24,71 +24,64 @@ module Idb
   $height = 768
 
   class Idb < Qt::MainWindow
+    def initialize
+      super
 
-      def initialize
-        super
+      # initialize log
+      $log = Log4r::Logger.new 'idb'
+      outputter = Log4r::Outputter.stdout
+      outputter.formatter =  Log4r::PatternFormatter.new(:pattern => "[%l] %d :: %c ::  %m")
 
+      $log.outputters = [ outputter ]
 
-        # initialize log
-        $log = Log4r::Logger.new 'idb'
-        outputter = Log4r::Outputter.stdout
-        outputter.formatter =  Log4r::PatternFormatter.new(:pattern => "[%l] %d :: %c ::  %m")
-
-        $log.outputters = [ outputter ]
-
-        if RUBY_VERSION.start_with? "2.0"
-          error = Qt::MessageBox.new
-          error.setInformativeText("You are using ruby 2.0 which does not work well with QT bindings: custom signals don't work. It is very likely that idb will not function as intended. Consider using ruby 1.9 or 2.1 instead.")
-          error.setIcon(Qt::MessageBox::Critical)
-          error.exec
-        end
-
-
-
-        # enable threading. See https://github.com/ryanmelt/qtbindings/issues/63
-        @thread_fix = QtThreadFix.new
-        settings_path = File.dirname(ENV['HOME'] + "/.idb/config/")
-        $tmp_path = ENV['HOME'] + "/.idb/tmp/"
-        puts $tmp_path
-        unless File.directory?(settings_path)
-          $log.info "Creating settings directory: #{settings_path}"
-          FileUtils.mkdir_p(settings_path)
-        end
-
-        settings_filename = "settings.yml"
-        $settings = Settings.new "#{settings_path}/#{settings_filename}"
-
-        setWindowTitle "idb"
-        Qt::CoreApplication::setApplicationName("idb")
-        setWindowIconText('idb')
-        init_ui
-
-  #      size = Qt::Size.new($width, $height)
-  #      size = size.expandedTo(self.minimumSizeHint())
-  #      resize(size)
-  #        resize $width, $height
-
-  #      center
-
-        self.showMaximized()
-        self.raise
-        self.activateWindow
-
+      if RUBY_VERSION.start_with? "2.0"
+        error = Qt::MessageBox.new
+        error.setInformativeText("You are using ruby 2.0 which does not work well with QT bindings: custom signals don't work. It is very likely that idb will not function as intended. Consider using ruby 1.9 or 2.1 instead.")
+        error.setIcon(Qt::MessageBox::Critical)
+        error.exec
       end
 
-     def self.execute_in_main_thread(blocking = false, sleep_period = 0.001)
-      if Thread.current != Thread.main
-        complete = false
-        QtThreadFix.ruby_thread_queue << lambda {|| yield; complete = true}
-        if blocking
-          until complete
-            sleep(sleep_period)
-          end
-        end
-      else
-        yield
+      # enable threading. See https://github.com/ryanmelt/qtbindings/issues/63
+      @thread_fix = QtThreadFix.new
+      settings_path = File.dirname(ENV['HOME'] + "/.idb/config/")
+      $tmp_path = ENV['HOME'] + "/.idb/tmp/"
+      puts $tmp_path
+      unless File.directory?(settings_path)
+        $log.info "Creating settings directory: #{settings_path}"
+        FileUtils.mkdir_p(settings_path)
       end
+
+      settings_filename = "settings.yml"
+      $settings = Settings.new "#{settings_path}/#{settings_filename}"
+
+      setWindowTitle "idb"
+      Qt::CoreApplication::setApplicationName("idb")
+      setWindowIconText('idb')
+      init_ui
+
+      self.showMaximized()
+      self.raise
+      self.activateWindow
+
     end
+
+    def self.root
+      File.expand_path('../..',__FILE__)
+    end
+
+  def self.execute_in_main_thread(blocking = false, sleep_period = 0.001)
+    if Thread.current != Thread.main
+      complete = false
+      QtThreadFix.ruby_thread_queue << lambda {|| yield; complete = true}
+      if blocking
+        until complete
+          sleep(sleep_period)
+        end
+      end
+    else
+      yield
+    end
+  end
 
       def init_ui
         # setup central widget and grid layout
@@ -290,6 +283,4 @@ module Idb
 
     end
   end
-
-
 end

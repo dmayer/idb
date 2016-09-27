@@ -44,7 +44,7 @@ module Idb
     end
 
     def refresh_app_list
-      if $device.ios_version == 8
+      if $device.ios_version >= 8
         box = Qt::MessageBox.new 1, "Refreshing...", "Refreshing uicache to ensure app information is up-to-date. This may take a few seconds."
         box.setStandardButtons(0)
         box.show

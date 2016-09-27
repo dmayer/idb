@@ -29,9 +29,8 @@ module Idb
       @device_app_paths[:keychaineditor] = [ "/var/root/keychaineditor"]
       @device_app_paths[:pcviewer] = ["/var/root/protectionclassviewer"]
       @device_app_paths[:pbwatcher] = ["/var/root/pbwatcher"]
-      @device_app_paths[:dumpdecrypted_armv7] = ["/var/root/dumpdecrypted_armv7.dylib"]
-      @device_app_paths[:dumpdecrypted_armv6] = ["/var/root/dumpdecrypted_armv6.dylib"]
-      @device_app_paths[:clutch] = ["/usr/bin/Clutch"]
+      @device_app_paths[:dumpdecrypted_armv7] = ["/usr/lib/dumpdecrypted_armv7.dylib"]
+      @device_app_paths[:dumpdecrypted_armv6] = ["/usr/lib/dumpdecrypted_armv6.dylib"]
 
       if $settings['device_connection_mode'] == "ssh"
         $log.debug "Connecting via SSH"
@@ -66,8 +65,15 @@ module Idb
       @apps_dir_ios_8 = '/private/var/mobile/Containers/Bundle/Application'
       @data_dir_ios_8 = '/private/var/mobile/Containers/Data/Application'
 
+      @apps_dir_ios_9 = '/private/var/containers/Bundle/Application'
+      @data_dir_ios_9 = @data_dir_ios_8
 
-      if @ops.directory? @apps_dir_ios_8
+      if @ops.directory? @apps_dir_ios_9
+        @ios_version = 9
+        @apps_dir = @apps_dir_ios_9
+        @data_dir = @data_dir_ios_9
+
+      elsif @ops.directory? @apps_dir_ios_8
         @ios_version = 8
         @apps_dir = @apps_dir_ios_8
         @data_dir = @data_dir_ios_8
@@ -124,10 +130,6 @@ module Idb
       @ops.launch_app(open_path, app.bundle_id)
     end
 
-
-
-
-
     def is_installed? tool
       $log.info "Checking if #{tool} is installed..."
       if path_for(tool).nil?
@@ -151,6 +153,9 @@ module Idb
 
     def install_dumpdecrypted
       upload_dumpdecrypted
+      # Change permissions as this needs to be run as the mobile user
+      @ops.chmod dumpdecrypted_path, 0755
+      @ops.chmod dumpdecrypted_path_armv6, 0755
     end
 
     def install_dumpdecrypted_old
@@ -216,8 +221,8 @@ module Idb
 
     def upload_dumpdecrypted
       $log.info "Uploading dumpdecrypted library..."
-      @ops.upload("#{File.dirname(File.expand_path(__FILE__))}/../utils/dumpdecrypted/dumpdecrypted_armv6.dylib","/var/root/dumpdecrypted_armv6.dylib")
-      @ops.upload("#{File.dirname(File.expand_path(__FILE__))}/../utils/dumpdecrypted/dumpdecrypted_armv7.dylib","/var/root/dumpdecrypted_armv7.dylib")
+      @ops.upload("#{Idb.root}/lib/utils/dumpdecrypted/dumpdecrypted_armv6.dylib", @device_app_paths[:dumpdecrypted_armv6].first)
+      @ops.upload("#{Idb.root}/lib/utils/dumpdecrypted/dumpdecrypted_armv7.dylib", @device_app_paths[:dumpdecrypted_armv7].first)
       $log.info "'dumpdecrypted' installed successfully."
     end
 
@@ -274,6 +279,7 @@ module Idb
       end
     end
     def upload_pbwatcher
+      # TODO What's happening here?
       begin
         $log.info "Uploading pbwatcher..."
         @ops.upload "#{File.dirname(File.expand_path(__FILE__))}/../utils/pbwatcher/pbwatcher", "/var/root/pbwatcher"
@@ -286,16 +292,15 @@ module Idb
       end
     end
 
-    def setup_clutch_sources
-      @ops.execute("echo “deb http://cydia.iphonecake.com ./“ > /etc/apt/sources.list.d/idb_clutch.list")
-    end
 
     def install_from_cydia package
       if apt_get_installed?
         $log.info "Updating package repo..."
         @ops.execute("#{apt_get_path} -y update")
         $log.info "Installing #{package}..."
+
         @ops.execute("#{apt_get_path} -y install #{package}")
+
         return true
       else
         $log.error "apt-get or aptitude not found on the device"
@@ -305,10 +310,6 @@ module Idb
 
     def install_open
       install_from_cydia "com.conradkramer.open"
-    end
-
-    def install_clutch
-      install_from_cydia "com.iphonecake.clutch"
     end
 
     def install_rsync
@@ -350,7 +351,15 @@ module Idb
     end
 
     def configured?
-      apt_get_installed? and open_installed? and openurl_installed? and dumpdecrypted_installed? and pbwatcher_installed? and pcviewer_installed? and keychain_editor_installed? and rsync_installed? and cycript_installed?
+      apt_get_installed? and
+         open_installed? and
+         openurl_installed? and
+         dumpdecrypted_installed? and
+         pbwatcher_installed? and
+         pcviewer_installed? and
+         keychain_editor_installed? and
+         rsync_installed? and
+         cycript_installed?
     end
 
 
@@ -391,15 +400,9 @@ module Idb
       is_installed? :aptget
     end
 
-    def clutch_installed?
-      is_installed? :clutch
-    end
-
     def keychain_editor_path
       path_for :keychaineditor
     end
-
-
 
     def pcviewer_path
       path_for  :pcviewer
@@ -413,6 +416,10 @@ module Idb
 
     def dumpdecrypted_path
       path_for :dumpdecrypted_armv7
+    end
+
+    def dumpdecrypted_path_armv6
+      path_for :dumpdecrypted_armv6
     end
 
     def rsync_path
@@ -432,10 +439,6 @@ module Idb
 
     def apt_get_path
       path_for :aptget
-    end
-
-    def clutch_path
-      path_for :clutch
     end
 
     def cycript_path

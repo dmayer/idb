@@ -16,15 +16,18 @@ module Idb
       @app_dir = "#{$device.apps_dir}/#{@uuid}"
       parse_info_plist
 
-      if $device.ios_version == 8
-        mapping_file = "/var/mobile/Library/MobileInstallation/LastLaunchServicesMap.plist"
+      if $device.ios_version >= 8
+        if $device.ios_version == 8
+          mapping_file = "/var/mobile/Library/MobileInstallation/LastLaunchServicesMap.plist"
+        else
+          mapping_file = "/private/var/installd/Library/MobileInstallation/LastLaunchServicesMap.plist"
+        end
         local_mapping_file =  cache_file mapping_file
         @services_map = IOS8LastLaunchServicesMapWrapper.new local_mapping_file
-
         @data_dir = @services_map.data_path_by_bundle_id @info_plist.bundle_identifier
         @keychain_access_groups = @services_map.keychain_access_groups_by_bundle_id @info_plist.bundle_identifier
 
-       else
+      else
         @data_dir = @app_dir
       end
 
@@ -48,19 +51,29 @@ module Idb
     end
 
     def decrypt_binary!
+      $log.info "Running '#{binary_path}'"
+      full_remote_path = binary_path
+      $log.error "Decryption failed. Trying using dumpdecrypted..."
+
       unless $device.dumpdecrypted_installed?
         $log.error "dumpdecrypted not installed."
         return false
       end
 
-      dylib = "dumpdecrypted_#{$device.arch}.dylib"
+      dylib_path = $device.path_for("dumpdecrypted_#{$device.arch}".to_sym)
 
-      $log.info "Running '#{binary_path}'"
-      full_remote_path = binary_path
-      decrypted_path = "/var/root/#{File.basename full_remote_path}.decrypted"
+      # If the ios version is less than 9 then we execute dumpdecrypted as
+      # root. iOS 9 requires dumpdecrypted to be run as the mobile user.
+      if $device.ios_version < 9
+        #TODO: Is this the best way to do this?
+        decrypted_path = "/var/root/#{File.basename full_remote_path}.decrypted"
+        $device.ops.execute "DYLD_INSERT_LIBRARIES=#{dylib_path} \"#{full_remote_path}\""
+      else
+        #TODO: Is this the best way to do this?
+        decrypted_path = "/var/mobile/#{File.basename full_remote_path}.decrypted"
+        $device.ops.execute "DYLD_INSERT_LIBRARIES=#{dylib_path} \"#{full_remote_path}\"", { as_user: "mobile" }
+      end
 
-      $device.ops.execute "cd /var/root/"
-      $device.ops.execute "DYLD_INSERT_LIBRARIES=dumpdecrypted_armv7.dylib \"#{full_remote_path}\""
       $log.info "Checking if decrypted file #{decrypted_path} was created..."
       if not $device.ops.file_exists? decrypted_path
         $log.error "Decryption failed. Trying armv6 build for iOS 6 and earlier..."
@@ -164,8 +177,8 @@ module Idb
     end
 
     def data_directory
-      if $device.ios_version != 8
-        "[iOS 8 specific]"
+      if $device.ios_version < 8
+        "[iOS 8+ specific]"
       else
         @data_dir
       end
