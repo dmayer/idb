@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    idb (2.8.5)
+    idb (2.9.0)
       awesome_print
       coderay
       ffi
@@ -42,7 +42,7 @@ GEM
     net-sftp (2.1.2)
       net-ssh (>= 2.6.5)
     net-ssh (3.0.1)
-    nokogiri (1.6.7.1)
+    nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
     plist4r (1.2.2)
       haml
@@ -66,3 +66,6 @@ DEPENDENCIES
   idb!
   pry
   rake
+
+BUNDLED WITH
+   1.12.5
