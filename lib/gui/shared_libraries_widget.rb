@@ -24,7 +24,7 @@ module Idb
       def refresh
         @list.clear
         if not $selected_app.binary.nil?
-          shared_lib = $selected_app.binary.get_shared_libraries
+          shared_lib = $selected_app.binary.shared_libraries
           if shared_lib.nil?
             item = Qt::ListWidgetItem.new
             item.setText "Error: otool required"

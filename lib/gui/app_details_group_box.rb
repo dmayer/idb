@@ -168,11 +168,11 @@ module Idb
       @analyze_binary_button.connect(SIGNAL(:released)) do |_x|
         # TODO: progress bar
         $selected_app.analyze
-        @vals['encryption_enabled'].setText($selected_app.binary.is_encrypted?.to_s)
-        @vals['cryptid'].setText($selected_app.binary.get_cryptid.to_s)
-        @vals['pie'].setText($selected_app.binary.is_pie?.to_s)
-        @vals['canaries'].setText($selected_app.binary.is_stack_protected?.to_s)
-        @vals['arc'].setText($selected_app.binary.uses_arc?.to_s)
+        @vals['encryption_enabled'].setText($selected_app.binary.encrypted?.to_s)
+        @vals['cryptid'].setText($selected_app.binary.cryptid.to_s)
+        @vals['pie'].setText($selected_app.binary.pie?.to_s)
+        @vals['canaries'].setText($selected_app.binary.stack_protected?.to_s)
+        @vals['arc'].setText($selected_app.binary.arc?.to_s)
         emit binary_analyzed
       end
       @layout.addWidget @analyze_binary_button, 0, 0, 1, 2

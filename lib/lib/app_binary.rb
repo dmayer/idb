@@ -3,55 +3,44 @@ require_relative 'app'
 
 module Idb
   class AppBinary
-
-    def initialize app_binary
+    attr_writer :decrypted_path
+    def initialize(app_binary)
       @otool = OtoolWrapper.new app_binary
     end
 
-    def get_shared_libraries
+    def shared_libraries
       @otool.shared_libraries
     end
 
-    def setDecryptedPath path
-      @decrypted_path = path
-    end
-
-    def is_pie?
+    def pie?
       @otool.pie
     end
 
-
-    def is_stack_protected?
+    def stack_protected?
       @otool.canaries
     end
 
-    def uses_arc?
+    def arc?
       @otool.arc
     end
 
-    def is_encrypted?
+    def encrypted?
       encrypted = false
-      if @otool.load_commands.nil?
-        return "Error"
-      end
-      @otool.load_commands.each {|key, val|
-        if val['cmd'].strip.start_with?('LC_ENCRYPTION_INFO') and val['cryptid'].strip == 1.to_s
+      return "Error" if @otool.load_commands.nil?
+      @otool.load_commands.each do |_key, val|
+        if val['cmd'].strip.start_with?('LC_ENCRYPTION_INFO') && (val['cryptid'].strip == 1.to_s)
           encrypted =  true
         end
-      }
-      return encrypted
+      end
+      encrypted
     end
 
-    def get_cryptid
-      if @otool.load_commands.nil?
-        return "Error"
+    def cryptid
+      return "Error" if @otool.load_commands.nil?
+      @otool.load_commands.each do |_key, val|
+        return val['cryptid'] if val['cmd'] == 'LC_ENCRYPTION_INFO'
       end
-      @otool.load_commands.each {|key, val|
-        if val['cmd'] == 'LC_ENCRYPTION_INFO'
-          return val['cryptid']
-        end
-      }
-      return nil
+      nil
     end
   end
 end
