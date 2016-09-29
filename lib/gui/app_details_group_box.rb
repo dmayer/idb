@@ -7,7 +7,7 @@ module Idb
     signals "show_device_status()"
 
     def initialize(args)
-      super *args
+      super(*args)
 
       # details on selected app
       @layout = Qt::GridLayout.new
@@ -18,14 +18,14 @@ module Idb
       @vals = {}
       @cur_row = 1
 
-      addDetail 'bundle_id', 'Bundle ID'
-      addDetail 'bundle_name', 'Bundle Name'
-      addDetail 'uuid', 'UUID'
-      addDetail 'url_handlers', 'URL Handlers'
-      addDetail 'platform_version', 'Platform Version'
-      addDetail 'sdk_version', 'SDK Version'
-      addDetail 'minimum_os_version', 'Minimum OS'
-      addDetail 'data_dir', 'Data Directory'
+      add_detail 'bundle_id', 'Bundle ID'
+      add_detail 'bundle_name', 'Bundle Name'
+      add_detail 'uuid', 'UUID'
+      add_detail 'url_handlers', 'URL Handlers'
+      add_detail 'platform_version', 'Platform Version'
+      add_detail 'sdk_version', 'SDK Version'
+      add_detail 'minimum_os_version', 'Minimum OS'
+      add_detail 'data_dir', 'Data Directory'
 
       @launch_app = Qt::PushButton.new "Launch App"
       @launch_app.setEnabled(false)
@@ -33,8 +33,9 @@ module Idb
         if $device.open_installed?
           $selected_app.launch
         else
+          msg = "'open' not found on the device. Please visit the status dialog and install it."
           error = Qt::MessageBox.new self
-          error.setInformativeText("'open' not found on the device. Please visit the status dialog and install it.")
+          error.setInformativeText(msg)
           error.setIcon(Qt::MessageBox::Critical)
           error.setMinimumWidth(500)
           error.exec
@@ -65,7 +66,8 @@ module Idb
       @vals['platform_version'].setText($selected_app.platform_version)
       @vals['sdk_version'].setText($selected_app.sdk_version)
       @vals['minimum_os_version'].setText($selected_app.minimum_os_version)
-      @vals['data_dir'].setText($selected_app.data_directory.sub("/private/var/mobile/Containers/Data/Application", ""))
+      path_to_slice = "/private/var/mobile/Containers/Data/Application"
+      @vals['data_dir'].setText($selected_app.data_directory.slice!(path_to_slice))
       @launch_app.setEnabled(true)
       @open_folder.setEnabled(true)
     end
@@ -84,7 +86,7 @@ module Idb
       @open_folder.setEnabled(false)
     end
 
-    def addDetail(id, label)
+    def add_detail(id, label)
       @labels[id] = Qt::Label.new "<b>#{label}</b>", self, 0
       @vals[id] = Qt::Label.new "", self, 0
       @layout.addWidget @labels[id], @cur_row, 0
@@ -95,7 +97,7 @@ module Idb
 
   class AppEntitlementsGroupBox < Qt::GroupBox
     def initialize(args)
-      super *args
+      super(*args)
 
       # details on selected app
 
@@ -107,7 +109,7 @@ module Idb
       @vals = {}
       clear
 
-      addDetail 'application-identifier', 'Application Identifier'
+      add_detail 'application-identifier', 'Application Identifier'
       @vals['application-identifier'].setText("[No Application Selected]")
     end
 
@@ -131,16 +133,16 @@ module Idb
 
     def app_changed
       if $device.ios_version < 8
-        addDetail 'application-identifier', 'Only available for iOS 8+'
+        add_detail 'application-identifier', 'Only available for iOS 8+'
       else
         $selected_app.services_map.entitlements_by_bundle_id($selected_app.bundle_id).each do |x|
-          addDetail x[0].to_s, x[0].to_s
+          add_detail x[0].to_s, x[0].to_s
           @vals[x[0].to_s].setText(x[1].to_s)
         end
       end
     end
 
-    def addDetail(id, label)
+    def add_detail(id, label)
       @labels[id] = Qt::Label.new "<b>#{label}</b>", self, 0
       @vals[id] = Qt::Label.new "", self, 0
       @layout.addWidget @labels[id], @cur_row, 0
@@ -153,7 +155,7 @@ module Idb
     signals "binary_analyzed()"
 
     def initialize(args)
-      super *args
+      super(*args)
 
       # details on selected app
       @layout = Qt::GridLayout.new
@@ -179,16 +181,16 @@ module Idb
       @vals = {}
       @cur_row = 1
 
-      addDetail 'encryption_enabled', 'Encryption?'
-      addDetail 'cryptid', 'Cryptid'
-      addDetail 'pie', 'PIE'
-      addDetail 'canaries', 'Stack Canaries'
-      addDetail 'arc', 'ARC'
+      add_detail 'encryption_enabled', 'Encryption?'
+      add_detail 'cryptid', 'Cryptid'
+      add_detail 'pie', 'PIE'
+      add_detail 'canaries', 'Stack Canaries'
+      add_detail 'arc', 'ARC'
 
       clear
     end
 
-    def addDetail(id, label)
+    def add_detail(id, label)
       @labels[id] = Qt::Label.new "<b>#{label}</b>", self, 0
       @vals[id] = Qt::Label.new "", self, 0
       @layout.addWidget @labels[id], @cur_row, 0
