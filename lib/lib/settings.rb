@@ -1,22 +1,18 @@
 # encoding: utf-8
 require 'yaml'
 
-#YAML::ENGINE.yamler='psych'
+# YAML::ENGINE.yamler='psych'
 
 module Idb
   class Settings
-
-    def initialize file_name
+    def initialize(file_name)
       @file_name = file_name
       if file_name.nil?
-        @data = Hash.new
+        @data = {}
       else
-        if not self.load
-          @data = Hash.new
-        end
+        @data = {} unless load
       end
     end
-
 
     def load
       if File.exist? @file_name
@@ -26,7 +22,7 @@ module Idb
         true
       else
         $log.warn "No configuration found, generating default."
-        @data = Hash.new
+        @data = {}
         @data["ssh_host"] = "localhost"
         @data["ssh_port"] = 22
         @data["ssh_username"] = "root"
@@ -42,26 +38,27 @@ module Idb
 
     def store
       $log.info "Storing new configuration at #{@file_name}."
-      conf_file = File.open(@file_name,"w")
+      conf_file = File.open(@file_name, "w")
       conf_file.puts(@data.to_yaml)
       conf_file.close
     end
 
     private
+
     def method_missing(method, *args, &block)
       m = method.to_s
-      if @data.has_key?(m)
-        return @data[m]
-      elsif @data.has_key?(m.to_sym)
-        return @data[m.to_sym]
-      end
+
+      return @data[m] if @data.key?(m)
+      return @data[m.to_sym] if @data.key?(m.to_sym)
       begin
         @data.send(method, *args, &block)
       rescue
-        nil
+        super
       end
     end
 
-
+    def respond_to_missing?(method_name, include_private = false)
+      @data.key?(method_name) || @data.key?(method_name.to_sym) || super
+    end
   end
 end
