@@ -236,7 +236,7 @@ module Idb
         x = @menu_devices.addSeparator
         x.setText("Simulators")
 
-        Simulator.get_simulators.each { |s|
+        Simulator.simulators.each { |s|
           action = @menu_devices.addAction s
           @sim_group.addAction action
           action.setCheckable(true)
