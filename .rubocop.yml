@@ -11,7 +11,7 @@ StringLiterals:
   Enabled: false
 
 Style/GlobalVars:
-  AllowedVariables: [$log, $settings]
+  Enabled: false
 
 Style/NumericLiteralPrefix:
   Enabled: false
