@@ -3,14 +3,11 @@ require_relative 'binary_strings_widget'
 require_relative 'weak_class_dump_widget'
 
 module Idb
-
   class AppBinaryTabWidget < Qt::TabWidget
+    def initialize(*args)
+      super(*args)
 
-
-    def initialize *args
-      super *args
-
-      @tabs = Hash.new
+      @tabs = {}
 
       @shared_libs = SharedLibrariesWidget.new self
       @tabs[:@shared_libs] = addTab(@shared_libs, "Shared Libraries")
@@ -20,14 +17,10 @@ module Idb
 
       @weak_class_dump = WeakClassDumpWidget.new self
       @tabs[:weak_class_dump] = addTab(@weak_class_dump, "Weak Class Dump")
-
-
     end
 
     def clear
-      @tabs.each { |tab|
-        tab.clear
-      }
+      @tabs.each(&:clear)
     end
 
     def refresh_current_tab
@@ -37,9 +30,9 @@ module Idb
     def refresh
     end
 
-    def enableTabs
+    def enable_tabs
       @shared_libs.setEnabled(true)
-      setTabEnabled(@tabs[:@shared_libs],true)
+      setTabEnabled(@tabs[:@shared_libs], true)
     end
   end
 end

@@ -11,7 +11,20 @@ StringLiterals:
   Enabled: false
 
 Style/GlobalVars:
-  AllowedVariables: [$log, $settings]
+  Enabled: false
 
 Style/NumericLiteralPrefix:
   Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+MethodLength:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 99
+
+Metrics/AbcSize:
+  Exclude:
+  - 'lib/gui/*'
