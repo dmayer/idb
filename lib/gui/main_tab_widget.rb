@@ -73,11 +73,6 @@ module Idb
       @keychain.setEnabled(false)
       @tabs[:keychain] = addTab(@keychain, "Keychain")
 
-  #    @cycript = CycriptConsoleWidget.new self
-  #    @cycript.setEnabled(false)
-  #    @tabs[:cycript] = addTab(@cycript, "Cycript")
-  #    setTabToolTip(@tabs[:cycript],"Cycript needs proper terminal emulation. At the moment this tab is not very useful and disabled.")
-
       @pasteboard = PasteboardMonitorWidget.new self
       @pasteboard.setEnabled(false)
       @tabs[:pasteboard] = addTab(@pasteboard, "Pasteboard")
