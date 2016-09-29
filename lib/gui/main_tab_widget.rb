@@ -2,8 +2,6 @@ require_relative 'local_storage_tab_widget'
 require_relative 'url_handler_widget'
 require_relative 'app_binary_tab_widget'
 require_relative 'log_widget'
-require_relative 'snoop_it_tab_widget'
-require_relative 'cycript_console_widget'
 require_relative 'pasteboard_monitor_widget'
 require_relative 'fs_viewer_tab_widget'
 require_relative 'keychain_widget'
@@ -60,11 +58,6 @@ module Idb
       @tools.setEnabled(false)
       @tabs[:tools] = addTab(@tools, "Tools")
 
-  #    @isnoop = SnoopItTabWidget.new self
-  #    @isnoop.setEnabled(false)
-  #    @tabs[:isnoop] = addTab(@isnoop, "Snoop-It")
-  #    setTabToolTip(@tabs[:isnoop],"The performance of the snoop-it integration is not good enough to enable the tab yet.  If people would find it useful, let me know and I'll put time into it.")
-
       @log = LogWidget.new self
       @log.setEnabled(false)
       @tabs[:log] = addTab(@log, "Log")
@@ -95,10 +88,6 @@ module Idb
       @app_binary.enable_tabs
     end
 
-    def enableCycript
-  #    @cycript.setEnabled(true)
-  #    setTabEnabled(@tabs[:cycript], true)
-    end
 
     def enableLocalStorage
       @local_storage.setEnabled(true)
@@ -134,7 +123,6 @@ module Idb
 
 
     def enableDeviceFunctions
-      enableCycript
       enableLog
       enablePasteboard
       enableKeychain
@@ -146,8 +134,6 @@ module Idb
       setTabEnabled(@tabs[:app_binary],false)
       setTabEnabled(@tabs[:url_handlers],false)
       setTabEnabled(@tabs[:pasteboard],false)
-  #    setTabEnabled(@tabs[:cycript],false)
-  #    setTabEnabled(@tabs[:isnoop],false)
       setTabEnabled(@tabs[:fs_viewer],false)
       setTabEnabled(@tabs[:keychain],false)
       setTabEnabled(@tabs[:tools],false)
