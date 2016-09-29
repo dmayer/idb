@@ -15,3 +15,6 @@ Style/GlobalVars:
 
 Style/NumericLiteralPrefix:
   Enabled: false
+
+Style/Documentation:
+  Enabled: false
