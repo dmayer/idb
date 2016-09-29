@@ -18,3 +18,13 @@ Style/NumericLiteralPrefix:
 
 Style/Documentation:
   Enabled: false
+
+MethodLength:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 99
+
+Metrics/AbcSize:
+  Exclude:
+  - 'lib/gui/*'
