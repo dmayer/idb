@@ -97,7 +97,7 @@ module Idb
     def enableAppBinary
       @app_binary.setEnabled(true)
       setTabEnabled(@tabs[:app_binary], true)
-      @app_binary.enableTabs
+      @app_binary.enable_tabs
     end
 
     def enableCycript
