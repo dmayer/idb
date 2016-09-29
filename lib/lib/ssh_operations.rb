@@ -6,28 +6,27 @@ module Idb
   class SSHOperations
     attr_accessor :ssh
 
-    def initialize username, password, hostname, port
+    def initialize(username, password, hostname, port)
       @hostname = hostname
       @username = username
       @password = password
       @port = port
-
       $log.info "Establishing SSH Session for #{username}@#{hostname}:#{port}"
+      connnect
+    end
 
-      begin
-        @ssh = Net::SSH.start hostname, username, :password => password, :port => port
+    def connect
+      @ssh = Net::SSH.start hostname, username, password: password, port: port
 
-        # initiali:wze sftp connection and wait until it is open
-        $log.info 'Establishing SFTP Session...'
-        @sftp = Net::SFTP::Session.new @ssh
-        @sftp.loop { @sftp.opening? }
-      rescue Exception => ex
-        $log.error ex.message
-        error = Qt::MessageBox.new
-        error.setInformativeText("SSH connection could not be established: #{ex.message}")
-        error.setIcon(Qt::MessageBox::Critical)
-        error.exec
-      end
+      # initialize sftp connection and wait until it is open
+      $log.info 'Establishing SFTP Session...'
+      @sftp = Net::SFTP::Session.new @ssh
+      @sftp.loop { @sftp.opening? }
+    rescue StandardError => ex
+      error = Qt::MessageBox.new
+      error.setInformativeText("SSH connection could not be established: #{ex.message}")
+      error.setIcon(Qt::MessageBox::Critical)
+      error.exec
     end
 
     def disconnect
@@ -35,11 +34,8 @@ module Idb
       @ssh.close
     end
 
-
-    def execute(command, opts={})
-      if opts[:as_user]
-        command = "su - #{ opts[:as_user] } -c \"#{command}\""
-      end
+    def execute(command, opts = {})
+      command = "su - #{opts[:as_user]} -c \"#{command}\"" if opts[:as_user]
 
       if opts[:non_blocking]
         $log.debug "Executing non-blocking SSH command: #{command}"
@@ -50,17 +46,15 @@ module Idb
       end
     end
 
-    def chmod file, permissions
-      @sftp.setstat(file, :permissions => permissions)
+    def chmod(file, permissions)
+      @sftp.setstat(file, permissions: permissions)
     end
 
     def download_recursive(remote_path, local_path)
-      begin
-        @sftp.download! remote_path, local_path, :recursive => true
-      rescue
-        $log.error "Failed to download #{remote_path}."
-        return false
-      end
+      @sftp.download! remote_path, local_path, recursive: true
+    rescue
+      $log.error "Failed to download #{remote_path}."
+      return false
     end
 
     def download(remote_path, local_path = nil)
@@ -71,76 +65,66 @@ module Idb
           @sftp.download! remote_path, local_path
         end
       rescue
-        puts "Error downloading file."
+        $log.error "Error downloading file."
         return false
       end
-      return true
-
+      true
     end
 
     def upload(local_path, remote_path)
       @sftp.upload! local_path, remote_path
     end
 
-    def list_dir dir
-      @sftp.dir.entries(dir).map {|x| x.name}
+    def list_dir(dir)
+      @sftp.dir.entries(dir).map(&:name)
     end
 
-    def list_dir_full dir
+    def list_dir_full(dir)
       @sftp.dir.entries(dir)
     end
 
-
-    def file_exists? path
-      begin
-        @sftp.stat!(path)
-        return true
-      rescue
-        return false
-      end
-
+    def file_exists?(path)
+      @sftp.stat!(path)
+      return true
+    rescue
+      return false
     end
 
-    def launch path
+    def launch(path)
       @ssh.exec path
     end
 
-    def dir_glob path, pattern
-      @sftp.dir.glob(path,pattern).map {|x| "#{path}/#{x.name}"}
+    def dir_glob(path, pattern)
+      @sftp.dir.glob(path, pattern).map { |x| "#{path}/#{x.name}" }
     end
 
-    def mkdir path
+    def mkdir(path)
       @sftp.mkdir path
     end
 
-    def directory? path
-      begin
-        @sftp.stat!(path).directory?
-      rescue
-        nil
-      end
+    def directory?(path)
+      @sftp.stat!(path).directory?
+    rescue
+      nil
     end
 
-    def file? path
-      begin
-        @sftp.stat!(path).file?
-      rescue
-        false
-      end
+    def file?(path)
+      @sftp.stat!(path).file?
+    rescue
+      false
     end
 
-    def mtime path
+    def mtime(path)
       Time.new @sftp.stat!(path).mtime
     end
 
-    def open path
+    def open(path)
       Launchy.open path
     end
 
-    def launch_app command, app
+    def launch_app(command, app)
       puts "#{command} \"#{app}\""
-      self.execute("#{command} \"#{app}\"")
+      execute("#{command} \"#{app}\"")
     end
-
   end
 end
