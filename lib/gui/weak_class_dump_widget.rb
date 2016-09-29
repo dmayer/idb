@@ -73,7 +73,7 @@ module Idb
 
     def refresh_header_list
         @header_list.clear
-        @weak_class_dump_wrapper.get_header_files.each { |x|
+        @weak_class_dump_wrapper.header_files.each { |x|
           @header_list.addItem x
         }
     end
