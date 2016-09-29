@@ -3,29 +3,25 @@ module Idb
     attr_accessor :apps_dir
     attr_accessor :ops
 
-
-    def get_app_uuids
-      if not @ops.file_exists? @apps_dir
+    def app_uuids
+      unless @ops.file_exists? @apps_dir
         puts "Application directory #{@apps_dir} not found."
         raise "Application directory #{@apps_dir} not found."
       end
 
       puts '[*] Retrieving list of applications...'
 
-      dirs =  @ops.list_dir "#{@apps_dir}"
-      dirs.select! { |x| x != "." and x != ".." }
+      dirs = @ops.list_dir @apps_dir.to_s
+      dirs.select! { |x| (x != ".") && (x != "..") }
 
-      if dirs.length == 0
+      if dirs.length.zero?
         puts "No applications found in #{@apps_dir}."
         raise "No applications found in #{@apps_dir}."
       end
-      return dirs
+      dirs
     end
 
     def close
-
     end
-
-
   end
 end
