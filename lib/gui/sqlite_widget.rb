@@ -1,5 +1,3 @@
-require_relative '../lib/console_launcher'
-
 module Idb
   class SqliteWidget  < Qt::Widget
 
@@ -31,7 +29,7 @@ module Idb
             end
           end
 
-          x = ConsoleLauncher.new
+          #x = ConsoleLauncher.new
           #TODO: find sqlite binary
           #http://www.ruby-doc.org/stdlib-2.0.0/libdoc/mkmf/rdoc/MakeMakefile.html#method-i-find_executable
           #x.run "/usr/bin/sqlite3 #{Dir.getwd}/#{$selected_app.cache_file item.full_path}"
