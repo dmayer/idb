@@ -53,7 +53,7 @@ module Idb
       end
 
       begin
-        app_uuids = $device.get_app_uuids
+        app_uuids = $device.app_uuids
       rescue StandardError
         error = Qt::MessageBox.new
         msg = "Unable to get list of applications. Ensure that " \

@@ -5,12 +5,10 @@ require_relative 'ca_interface'
 
 module Idb
   class SimulatorCAInterface < CAInterface
-
-    def initialize sim_path
+    def initialize(sim_path)
       @sim_path = sim_path
       @store_path = "/Library/Keychains/TrustStore.sqlite3"
       @db_path = @sim_path + @store_path
     end
-
   end
 end

@@ -96,7 +96,7 @@ module Idb
       @model.setHorizontalHeaderItem(1, Qt::StandardItem.new("Expiry"))
       @model.setHorizontalHeaderItem(2, Qt::StandardItem.new("Issuer"))
 
-      @if.get_certs.each do |cert|
+      @if.certs.each do |cert|
         row = []
         item = CertificateItem.new(cert.subject.to_a.map { |x| "#{x[0]}: #{x[1]}" }.join("\n"))
         item.certificate = cert
