@@ -1,13 +1,12 @@
 require_relative '../lib/app'
 
 module Idb
-
   class AppDetailsGroupBox < Qt::GroupBox
     attr_accessor :uuid, :bundle_id, :vals, :icon
     signals "app_changed()"
     signals "show_device_status()"
 
-    def initialize args
+    def initialize(args)
       super *args
 
       # details on selected app
@@ -15,9 +14,8 @@ module Idb
       setLayout(@layout)
       setTitle "App Details"
 
-
-      @labels = Hash.new
-      @vals = Hash.new
+      @labels = {}
+      @vals = {}
       @cur_row = 1
 
       addDetail 'bundle_id', 'Bundle ID'
@@ -31,7 +29,7 @@ module Idb
 
       @launch_app = Qt::PushButton.new "Launch App"
       @launch_app.setEnabled(false)
-      @launch_app.connect(SIGNAL(:released)) {
+      @launch_app.connect(SIGNAL(:released)) do
         if $device.open_installed?
           $selected_app.launch
         else
@@ -40,25 +38,23 @@ module Idb
           error.setIcon(Qt::MessageBox::Critical)
           error.setMinimumWidth(500)
           error.exec
-          emit show_device_status()
+          emit show_device_status
         end
-      }
+      end
 
       @layout.addWidget @launch_app, @cur_row, 0, 1, 2
 
-      @cur_row+=1
+      @cur_row += 1
 
       @open_folder = Qt::PushButton.new "Open Local Temp Folder"
       @open_folder.setEnabled(false)
       @layout.addWidget @open_folder, @cur_row, 0, 1, 2
 
-      @open_folder.connect(SIGNAL :released) {
+      @open_folder.connect(SIGNAL(:released)) do
         Launchy.open $selected_app.cache_dir
-
-      }
+      end
 
       clear
-
     end
 
     def app_changed
@@ -69,12 +65,9 @@ module Idb
       @vals['platform_version'].setText($selected_app.platform_version)
       @vals['sdk_version'].setText($selected_app.sdk_version)
       @vals['minimum_os_version'].setText($selected_app.minimum_os_version)
-      @vals['data_dir'].setText($selected_app.data_directory.sub("/private/var/mobile/Containers/Data/Application",""))
+      @vals['data_dir'].setText($selected_app.data_directory.sub("/private/var/mobile/Containers/Data/Application", ""))
       @launch_app.setEnabled(true)
       @open_folder.setEnabled(true)
-
-
-
     end
 
     def clear
@@ -89,26 +82,19 @@ module Idb
       @vals['data_dir'].setText("[No Application Selected]")
       @launch_app.setEnabled(false)
       @open_folder.setEnabled(false)
-
     end
 
-
-
-
-
-    def addDetail id, label
-      @labels[id] = Qt::Label.new  "<b>#{label}</b>", self, 0
-      @vals[id] = Qt::Label.new  "", self, 0
+    def addDetail(id, label)
+      @labels[id] = Qt::Label.new "<b>#{label}</b>", self, 0
+      @vals[id] = Qt::Label.new "", self, 0
       @layout.addWidget @labels[id], @cur_row, 0
       @layout.addWidget @vals[id], @cur_row, 1
       @cur_row += 1
     end
-
   end
 
-
   class AppEntitlementsGroupBox < Qt::GroupBox
-    def initialize args
+    def initialize(args)
       super *args
 
       # details on selected app
@@ -117,8 +103,8 @@ module Idb
       setLayout(@layout)
       setTitle "App Entitlements"
 
-      @labels = Hash.new
-      @vals = Hash.new
+      @labels = {}
+      @vals = {}
       clear
 
       addDetail 'application-identifier', 'Application Identifier'
@@ -126,54 +112,47 @@ module Idb
     end
 
     def clear
-      @labels.each { |x|
+      @labels.each do |x|
         @layout.removeWidget x[1]
         x[1].destroy
         x[1].dispose
-      }
+      end
 
-      @vals.each { |x|
+      @vals.each do |x|
         @layout.removeWidget x[1]
         x[1].destroy
         x[1].dispose
-      }
+      end
 
-      @labels = Hash.new
-      @vals = Hash.new
+      @labels = {}
+      @vals = {}
       @cur_row = 1
-
-
-
     end
 
     def app_changed
       if $device.ios_version < 8
         addDetail 'application-identifier', 'Only available for iOS 8+'
       else
-        $selected_app.services_map.entitlements_by_bundle_id($selected_app.bundle_id).each { |x|
+        $selected_app.services_map.entitlements_by_bundle_id($selected_app.bundle_id).each do |x|
           addDetail x[0].to_s, x[0].to_s
           @vals[x[0].to_s].setText(x[1].to_s)
-        }
+        end
       end
-
     end
 
-
-    def addDetail id, label
-      @labels[id] = Qt::Label.new  "<b>#{label}</b>", self, 0
-      @vals[id] = Qt::Label.new  "", self, 0
+    def addDetail(id, label)
+      @labels[id] = Qt::Label.new "<b>#{label}</b>", self, 0
+      @vals[id] = Qt::Label.new "", self, 0
       @layout.addWidget @labels[id], @cur_row, 0
       @layout.addWidget @vals[id], @cur_row, 1
       @cur_row += 1
     end
   end
 
-
-
   class AppBinaryGroupBox < Qt::GroupBox
     signals "binary_analyzed()"
 
-    def initialize args
+    def initialize(args)
       super *args
 
       # details on selected app
@@ -181,24 +160,23 @@ module Idb
       setLayout(@layout)
       setTitle "App Binary"
 
-
       # analyze binary
       @analyze_binary_button = Qt::PushButton.new "Analyze Binary..."
       @analyze_binary_button.setEnabled(false)
-      @analyze_binary_button.connect(SIGNAL(:released)) { |x|
-        #TODO progress bar
+      @analyze_binary_button.connect(SIGNAL(:released)) do |_x|
+        # TODO: progress bar
         $selected_app.analyze
         @vals['encryption_enabled'].setText($selected_app.binary.is_encrypted?.to_s)
         @vals['cryptid'].setText($selected_app.binary.get_cryptid.to_s)
         @vals['pie'].setText($selected_app.binary.is_pie?.to_s)
         @vals['canaries'].setText($selected_app.binary.is_stack_protected?.to_s)
         @vals['arc'].setText($selected_app.binary.uses_arc?.to_s)
-        emit binary_analyzed()
-      }
+        emit binary_analyzed
+      end
       @layout.addWidget @analyze_binary_button, 0, 0, 1, 2
 
-      @labels = Hash.new
-      @vals = Hash.new
+      @labels = {}
+      @vals = {}
       @cur_row = 1
 
       addDetail 'encryption_enabled', 'Encryption?'
@@ -208,13 +186,11 @@ module Idb
       addDetail 'arc', 'ARC'
 
       clear
-
     end
 
-
-    def addDetail id, label
-      @labels[id] = Qt::Label.new  "<b>#{label}</b>", self, 0
-      @vals[id] = Qt::Label.new  "", self, 0
+    def addDetail(id, label)
+      @labels[id] = Qt::Label.new "<b>#{label}</b>", self, 0
+      @vals[id] = Qt::Label.new "", self, 0
       @layout.addWidget @labels[id], @cur_row, 0
       @layout.addWidget @vals[id], @cur_row, 1
       @cur_row += 1
@@ -236,7 +212,5 @@ module Idb
     def disable_analyze_binary
       @analyze_binary_button.setEnabled(false)
     end
-
-
   end
 end
