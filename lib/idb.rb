@@ -204,8 +204,8 @@ module Idb
                                  $settings.ssh_password,
                                  $settings.ssh_host,
                                  $settings.ssh_port
-          rescue
-
+          rescue StandardError => ex
+            $log.error ex
           end
           unless $device.nil?
             unless $device.configured?
