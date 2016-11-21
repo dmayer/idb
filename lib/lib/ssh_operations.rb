@@ -12,11 +12,11 @@ module Idb
       @password = password
       @port = port
       $log.info "Establishing SSH Session for #{username}@#{hostname}:#{port}"
-      connnect
+      connect
     end
 
     def connect
-      @ssh = Net::SSH.start hostname, username, password: password, port: port
+      @ssh = Net::SSH.start @hostname, @username, password: @password, port: @port
 
       # initialize sftp connection and wait until it is open
       $log.info 'Establishing SFTP Session...'

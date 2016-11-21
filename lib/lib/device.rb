@@ -45,7 +45,7 @@ module Idb
 
         @usbmuxd.proxy proxy_port, $settings['ssh_port']
         sleep 1
-
+        
         @ops = SSHOperations.new username, password, 'localhost', proxy_port
 
         @usb_ssh_port = $settings['manual_ssh_port']
