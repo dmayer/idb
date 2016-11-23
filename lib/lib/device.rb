@@ -9,6 +9,7 @@ require 'json'
 module Idb
   class Device < AbstractDevice
     attr_accessor :usb_ssh_port, :mode, :tool_port, :ios_version
+    attr_reader :data_dir
 
     def initialize(username, password, hostname, port)
       @username = username
@@ -84,6 +85,7 @@ module Idb
         $log.error "Unsupported iOS Version."
         raise
       end
+      $log.info "iOS Version: #{@ios_version} with apps dir: #{@apps_dir} and data dir: #{@data_dir}"
 
       start_port_forwarding
     end

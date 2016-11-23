@@ -5,14 +5,18 @@ require_relative 'ios8_last_launch_services_map_wrapper'
 
 module Idb
   class App
-    attr_accessor :uuid, :app_dir, :binary, :cache_dir, :data_dir, :services_map
+    attr_accessor :uuid, :app_dir, :binary, :cache_dir, :services_map
+    attr_reader :data_dir
 
     def initialize(uuid)
       @uuid = uuid
       @cache_dir = "#{$tmp_path}/#{uuid}"
       FileUtils.mkdir_p @cache_dir  unless Dir.exist? @cache_dir
 
+
       @app_dir = "#{$device.apps_dir}/#{@uuid}"
+      $log.debug "App Dir: #{@app_dir}"
+
       parse_info_plist
 
       if $device.ios_version >= 8
@@ -29,12 +33,15 @@ module Idb
       else
         @data_dir = @app_dir
       end
+#      binding.pry
+      $log.debug "Data Dir: #{@data_dir}"
     end
+
 
     def analyze
       local_binary_path = cache_file binary_path
       @binary = AppBinary.new local_binary_path
-      if @binary.is_encrypted?
+      if @binary.encrypted?
         $log.info "Binary is encrypted. Decrypting for further analysis."
         decrypt_binary!
       else
@@ -86,7 +93,7 @@ module Idb
       $log.info "Decrypted file found. Downloading..."
 
       @local_decrypted_binary = "#{cache_dir}/#{File.basename full_remote_path}.decrypted"
-      @binary.setDecryptedPath @local_decrypted_binary
+      @binary.decrypted_path = @local_decrypted_binary
 
       local_path = $device.ops.download decrypted_path, @local_decrypted_binary
 
@@ -219,7 +226,8 @@ module Idb
       app_dir_files = $device.ops.dir_glob(@app_dir, pattern)
       data_dir_files = []
 
-      if app_dir != data_dir
+      if @app_dir != @data_dir
+        puts "IN DATA DIR: #{@data_dir}"
         data_dir_files = $device.ops.dir_glob(@data_dir, pattern)
       end
       app_dir_files + data_dir_files

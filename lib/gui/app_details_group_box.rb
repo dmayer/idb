@@ -66,8 +66,7 @@ module Idb
       @vals['platform_version'].setText($selected_app.platform_version)
       @vals['sdk_version'].setText($selected_app.sdk_version)
       @vals['minimum_os_version'].setText($selected_app.minimum_os_version)
-      path_to_slice = "/private/var/mobile/Containers/Data/Application"
-      @vals['data_dir'].setText($selected_app.data_directory.slice!(path_to_slice))
+      @vals['data_dir'].setText($selected_app.data_directory.sub($device.data_dir,''))
       @launch_app.setEnabled(true)
       @open_folder.setEnabled(true)
     end
