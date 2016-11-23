@@ -23,6 +23,7 @@ GEM
   specs:
     addressable (2.4.0)
     awesome_print (1.6.1)
+    byebug (9.0.6)
     coderay (1.1.0)
     ffi (1.9.10)
     git (1.2.9.1)
@@ -52,6 +53,9 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    pry-byebug (3.4.0)
+      byebug (~> 9.0)
+      pry (~> 0.10)
     qtbindings (4.8.6.2)
     rake (10.4.2)
     slop (3.6.0)
@@ -65,6 +69,7 @@ DEPENDENCIES
   bundler (~> 1.6)
   idb!
   pry
+  pry-byebug
   rake
 
 BUNDLED WITH
