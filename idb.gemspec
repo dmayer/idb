@@ -32,7 +32,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'coderay'
   spec.add_runtime_dependency 'qtbindings'
   spec.add_runtime_dependency 'awesome_print'
-  spec.add_runtime_dependency 'ffi' # not really used atm.
   spec.add_runtime_dependency 'htmlentities'
   spec.add_runtime_dependency 'log4r'
   spec.add_runtime_dependency 'git'

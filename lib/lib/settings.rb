@@ -30,6 +30,7 @@ module Idb
         @data["manual_ssh_port"] = "2222"
         @data["idb_utility_port"] = "4711"
         @data["device_connection_mode"] = "usb"
+        @data["sqlite_editor"] = ""
         $log.info "Storing new configuration at #{@file_name}"
         store
         load
