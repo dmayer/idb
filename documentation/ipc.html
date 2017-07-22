@@ -1,0 +1,278 @@
+<!doctype html>
+    <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+    <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+    <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+    <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+
+    
+      
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>documentation: IPC - </title>
+        <meta name="author" content="idb">
+        
+        <meta name="description" content="Documentation: IPC Main Setup Data Storage Binary Analysis IPC Tools URL Handlers The URL handler tab provides two main functions. The first tab & &hellip;">
+        
+        <meta name="viewport" content="width=device-width">
+        <link rel="canonical" href="http://www.idbtool.com/documentation/ipc.html">
+
+        <link href='http://fonts.googleapis.com/css?family=Droid+Serif:400,400italic' rel='stylesheet' type='text/css'>
+        <link href="http://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet" type="text/css">
+
+
+        
+        <link href="/favicon.png" rel="icon">
+        <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet">
+        <link href="/atom.xml" rel="alternate" title="" type="application/atom+xml">
+    </head>
+
+
+    <body >
+
+        <header id="header">
+    <a href="https://github.com/dmayer/idb"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/c6625ac1f3ee0a12250227cf83ce904423abf351/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_gray_6d6d6d.png"></a>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-8 col-md-4">
+        <a href="/" class="site-title"></a>
+    </div>
+    <div class="col-xs-12 col-sm-4 col-md-8">
+        <nav>
+    <input type="checkbox" id="toggle">
+    <label for="toggle" class="toggle" data-open="Main Menu" data-close="Close Menu"></label>
+    <ul class="menu">
+    <li><a href="/">Home</a></li>
+    <li><a href="/blog/">Blog</a></li>
+    <li><a href="/features/">Features</a></li>
+    <li><a href="/installation/">Installation</a></li>
+    <li><a href="/documentation/">Documentation</a></li>
+    <li><a href="/faq/">FAQ</a></li>
+</ul>
+
+</nav>
+
+    </div>
+</div>
+
+
+
+</header>
+
+
+        <div id="main-content">
+
+            <!--[if lte IE 9]>
+<div class="row upgrade-row">
+    <div class="col-lg-12">
+        <div class="upgrade">
+            <i class="upgrade__icon fa fa-warning"></i>
+            <h1 class="upgrade__title h6">Ohnoes!</h1>
+            <p class="upgrade__text">
+                Unfortunately, certain parts of this site may not display correctly in your version of Internet Explorer!<br>
+                If possible, you should consider <a href="http://browsehappy.com/">upgrading your browser</a>.
+            </p>
+        </div>
+    </div>
+</div>
+<!-- <![endif]-->
+
+
+            
+
+            <div class="row top-xs center-sm center-md center-lg site-wrapper">
+                
+                <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+                
+                    <article class="page">
+
+    
+    <header>
+        <h1 class="page__title">
+            Documentation: IPC
+        </h1>
+    </header>
+    <hr class="divider">
+    
+
+    <div style="width:100%; position: relative; top:-30px;"><ul class="doc_menu">
+    <li><a href="/documentation/">Main</a></li>
+    <li><a href="/documentation/setup.html">Setup</a></li>
+    <li><a href="/documentation/data_storage.html">Data Storage</a></li>
+    <li><a href="/documentation/app_analysis.html">Binary Analysis</a></li>
+    <li><a href="/documentation/ipc.html">IPC</a></li>
+    <li><a href="/documentation/tools.html">Tools</a></li>
+</ul>
+</div>
+
+
+<hr class="divider" style="position: relative; top:-30px;">
+
+
+<h2>URL Handlers</h2>
+
+<p>The URL handler tab provides two main functions. The first tab &lsquo;URL Schemes&rsquo; can be used to list all URL
+schemes registered by the application. By clicking an entry in the list, it is transferred to the text box
+on the right side. Using that text box any URL handler can be invoked on the device. Simply enter the URL and
+click the &lsquo;Open&rsquo; button. Note that the device needs to be unlocked for the URL handler to trigger correctly.</p>
+
+<p><img src="/images/doc/idb_url.png" alt="Listing Registered URL Schemes" /></p>
+
+<h3>Basic Fuzzer</h3>
+
+<p>Input received via URL schemes is often used in unsafe ways which can lead to vulnerabilities including logic flaws and
+memory corruption. idb includes a basic fuzzer that can be used to fuzz input data via URL schemes. On the &lsquo;Fuzzer&rsquo;
+tab, the list on the upper left holds the list of fuzzz strings. Below, is a text box to specify the fuzz template.
+Use <code>$@$</code> to mark potential injection points. For example, if a valid URL is</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>dvia://configure?input1=hello&input2=woot</span></code></pre></td></tr></table></div></figure>
+
+
+<p>you could specify</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>dvia://configure?input1=$@$&input2=$@$</span></code></pre></td></tr></table></div></figure>
+
+
+<p>as the template to fuzz both of the intended inputs
+(of course you can fuzz any part of the URL you like). For each position, idb will cycle through all the possible fuzz
+inputs and launch the URL handler (which launches the app) and then wait for a few seconds before killing it.
+In order to detect a crash, idb monitors the <code>/var/mobile/Library/Logs/CrashReporter</code> folder for new crash reports
+for the application in question.</p>
+
+<p>The fuzz results re displayed on the right side: for each input, a Boolean value indicates if the app crashed (<code>true</code>)
+or not (<code>false</code>). If a crash occurred, the crash report can be viewed using the XCode Organizer or similar tools.
+Obviously, there is plenty of room for improvements here.</p>
+
+<p><img src="/images/doc/idb_url_fuzzer.png" width="800" alt="Example URL Scheme Fuzzer run" /></p>
+
+<h2>Pasteboard Monitor</h2>
+
+<p>The right-most tab provides a way to monitor the iOS Pasteboard in near real-time. By default, only the main
+(default) pasteboard is monitored. By adding additional pasteboard names to the list on the right side, also private
+pasteboards can be monitored. After clicking the start button, a custom utility will watch for any changes to the iOS
+pasteboards. If a change is detected, the new pasteboard value and the corresponding time stamp are displayed on
+the left side of the tab.</p>
+
+<p><img src="/images/doc/idb_pasteboard.png" width="800" alt="iOS Pasteboard" /></p>
+
+<p>In order to monitor the pasteboard,  <code>idb</code> uses a small helper utility which is available at:
+ <a href="https://github.com/dmayer/pbwatcher">https://github.com/dmayer/pbwatcher</a></p>
+
+
+</article>
+
+                </div>
+
+                
+            </div>
+        </div>
+
+        
+
+    
+    
+
+
+
+
+<footer class="footer">
+    <div class="row middle-xs">
+        
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <p class="footer__copyright">
+</p>
+
+        </div>
+        
+        
+    </div>
+</footer>
+
+        
+
+<script type="text/javascript">
+      var disqus_shortname = 'idbtool';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://www.idbtool.com/documentation/ipc.html';
+        var disqus_url = 'http://www.idbtool.com/documentation/ipc.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+<!-- Piwik -->
+<script type="text/javascript">
+    var _paq = _paq || [];
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+        var u="//stats.cysec.org/";
+        _paq.push(['setTrackerUrl', u+'piwik.php']);
+        _paq.push(['setSiteId', 3]);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+    })();
+</script>
+<noscript><p><img src="//stats.cysec.org/piwik.php?idsite=3" style="border:0;" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+
+
+
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="//crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>
+<script defer src="/javascripts/octopress.js"></script>
+
+
+
+
+<script>
+    var disqus_shortname = 'idbtool';
+    
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://www.idbtool.com/documentation/ipc.html';
+        var disqus_url = 'http://www.idbtool.com/documentation/ipc.html';
+        var disqus_script = 'embed.js';
+    
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+    </body>
+
+</html>

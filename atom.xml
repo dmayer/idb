@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+    <title><![CDATA[]]></title>
+    <link href="http://www.idbtool.com/atom.xml" rel="self"/>
+    <link href="http://www.idbtool.com/"/>
+    <updated>2017-07-22T15:37:46-05:00</updated>
+    <id>http://www.idbtool.com/</id>
+    <author>
+        <name><![CDATA[idb]]></name>
+        
+    </author>
+    <generator uri="http://octopress.org/">Octopress</generator>
+
+    
+    <entry>
+        <title type="html"><![CDATA[New: Keychain Editor]]></title>
+        <link href="http://www.idbtool.com/blog/2015/04/20/new-keychain-editor/"/>
+        <updated>2015-04-20T16:40:01-05:00</updated>
+        <id>http://www.idbtool.com/blog/2015/04/20/new-keychain-editor</id>
+        <content type="html"><![CDATA[<p>For a while now, idb had the ability to dump the keychain of a jailbroken iDevice. So far, idb
+has been using the <code>keychain_dump</code> utility which is part of the
+<a href="https://code.google.com/p/iphone-dataprotection/">iphone-dataprotection</a> forensics tools to
+accomplish this. However, this tool has some major limitations in that it does not support
+the new data protection classes introduced in recent iOS versions, lacks support
+for Keychain ACLs, and is a pure &lsquo;dump&rsquo; utility without editing capabilities.</p>
+
+<p>To address these shortcomings, Nitin Jami, a coworker of mine at <a href="http://www.intrepidusgroup.com">Intrepidus Group</a> (part of the
+<a href="http://www.nccgroup.trust">NCC Group</a> along with <a href="http://www.matasano.com">Matasano</a> and <a href="http://www.isecpartners.com">iSEC Partners</a>), implemented a
+<a href="https://github.com/NitinJami/keychaineditor">full-featured keychain editor</a>. To our knowledge, this is the first public tool which provides a convenient way for
+modifying the iOS keychain. The keychain editor provides a simple command
+line interface to interact with the iOS keychain and is ideal for scripting or when using automated
+tools. For more manual interaction and exploration, the tool has been integrated into the most recent version of idb
+for convenient access. Read on for all of the new features and screenshots.</p>
+
+<p>To update to the newest version 1.8, simply run</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem update idb</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!-- more -->
+
+
+<h2>Supported Features</h2>
+
+<ul>
+<li>Dumping of the entire keychain including the following data:
+
+<ul>
+<li>Entitlement Groups</li>
+<li>Account</li>
+<li>Service</li>
+<li>Protection class</li>
+<li>User Presence</li>
+<li>Creation and modification date</li>
+</ul>
+</li>
+<li>Support for &ldquo;user presence&rdquo; where a user has to use TouchID or enter their passcode to unlock a
+keychain item.</li>
+<li>Dump each entry as
+
+<ul>
+<li>String</li>
+<li>Hex</li>
+<li>Parsed as plist when appropriate</li>
+</ul>
+</li>
+<li>Editing entries (binary and string-based)</li>
+<li>Deleting keychain entries</li>
+</ul>
+
+
+<p>This is the first release of these features and there are likely bugs. Please report any issues using the
+ <a href="//github.com/dmayer/idb/">Github Issue Tracker</a> for idb.</p>
+
+<h2>The New Features in Detail</h2>
+
+<p><img src="http://www.idbtool.com/images/doc/idb_keychain.png" width="800" alt="Keychain" /></p>
+
+<p>Above is an overview screenshot of the new keychain tab and below is an excerpt from
+the <a href="http://www.idbtool.com/documentation/data_storage.html">updated documentation</a> explaining the new features.</p>
+
+<h3>Dump the Keychain</h3>
+
+<p>Dumping the keychain works by simply clicking the &ldquo;Dump Keychain&rdquo; button in idb. The returned data includes
+Entitlement Groups, Account, Service, Protection class, User Presence requirement, create and modification date.
+User presence is a new feature in iOS
+which requires a user to authenticate either via TouchID or by entering their passcode in order to access a keychain
+item. Note that there is no known way for bypassing this check since data is in fact encrypted
+ under the passcode and this processing happens in hardware through the Secure Enclave.</p>
+
+<p><img src="http://www.idbtool.com/images/doc/idb_keychain_dump.png" width="800" alt="dump of the keychain" /></p>
+
+<h3>View Keychain Entries</h3>
+
+<p>When selecting an entry in the table shown above, the data can be viewed as text, hexdump, or parsed as XML in
+the case of binary plist data.</p>
+
+<h4>Text View</h4>
+
+<p><img src="http://www.idbtool.com/images/doc/idb_keychain_text.png" width="800" alt="Dump of the keychain" /></p>
+
+<h4>Hexdump View</h4>
+
+<p><img src="http://www.idbtool.com/images/doc/idb_keychain_hex.png" width="800" alt="Dump of the keychain" /></p>
+
+<h4>Parsed Binary Plist View</h4>
+
+<p>There is a decent number of applications that store binary plist data inside the keychain and it can be rather
+  painful to read it in its string presentation. This screen attempts to detect if a keychain item consists of
+  a binary plist, converts it to a regular (xml) plist, and displays the data.</p>
+
+<p><img src="http://www.idbtool.com/images/doc/idb_keychain_plist.png" width="800" alt="Dump of the keychain" /></p>
+
+<h3>Deletion</h3>
+
+<p>Deleting a keychain item as simple as it sounds: simply select the entry and click the &ldquo;Delete&rdquo; button.</p>
+
+<p><img src="http://www.idbtool.com/images/doc/idb_keychain_delete.png" width="800" alt="Delete keychain item" /></p>
+
+<h3>Editing</h3>
+
+<p>For editing keychain items idb goes with a simple yet flexible approach. After selecting a keychain item,
+one can display its content either as plain text, or as Base64 encoded data. The plain text version
+allows quick editing of text-based keychain entries while the Base64 version can be used to edit binary
+data. Implementing a proper binary/hex editor inside of idb did not seem like a reasonable effort. Instead, by
+providing the
+data in Base64 format any external editor can be used to modify the data. After editing, simply paste
+the new Base64 data into idb and hit save.</p>
+
+<p><img src="http://www.idbtool.com/images/doc/idb_keychain_edit.png" width="800" alt="Edit keychain item" />
+<img src="http://www.idbtool.com/images/doc/idb_keychain_edit_text.png" width="400" alt="Edit keychain item" />
+<img src="http://www.idbtool.com/images/doc/idb_keychain_edit_base64.png" width="400" alt="Edit keychain item" /></p>
+]]></content>
+    </entry>
+    
+    <entry>
+        <title type="html"><![CDATA[New: Entitlements and Default Protection Class]]></title>
+        <link href="http://www.idbtool.com/blog/2015/02/26/new-entitlements-and-default-protection-class/"/>
+        <updated>2015-02-26T11:04:12-06:00</updated>
+        <id>http://www.idbtool.com/blog/2015/02/26/new-entitlements-and-default-protection-class</id>
+        <content type="html"><![CDATA[<p>The new version of idb now lists iOS app entitlements including the default data protection class.</p>
+]]></content>
+    </entry>
+    
+    <entry>
+        <title type="html"><![CDATA[New: iOS 8 Support and UI Improvements]]></title>
+        <link href="http://www.idbtool.com/blog/2014/11/05/new-ios-8-support-and-ui-improvements/"/>
+        <updated>2014-11-05T11:04:35-06:00</updated>
+        <id>http://www.idbtool.com/blog/2014/11/05/new-ios-8-support-and-ui-improvements</id>
+        <content type="html"><![CDATA[<p>The new idb version now has iOS 8+ support and received a face-lift to make the UI more functional.</p>
+
+<p><img src="http://www.idbtool.com/images/2015-04-02-new-ios-8-support-and-ui-improvements/screenshot.png" width="800" alt="UI Improvements" /></p>
+]]></content>
+    </entry>
+    
+    <entry>
+        <title type="html"><![CDATA[Video of Seminar at Toorcon 16]]></title>
+        <link href="http://www.idbtool.com/blog/2014/10/24/video-of-seminar-at-toorcon-16/"/>
+        <updated>2014-10-24T11:53:25-05:00</updated>
+        <id>http://www.idbtool.com/blog/2014/10/24/video-of-seminar-at-toorcon-16</id>
+        <content type="html"><![CDATA[<div class="embed-video-container"><iframe src="//www.youtube.com/embed/jHLxFKPIOj8" allowfullscreen></iframe></div>
+
+]]></content>
+    </entry>
+    
+    <entry>
+        <title type="html"><![CDATA[New Location for Configuration File]]></title>
+        <link href="http://www.idbtool.com/blog/2014/10/01/new-location-for-configuration-file/"/>
+        <updated>2014-10-01T19:49:16-05:00</updated>
+        <id>http://www.idbtool.com/blog/2014/10/01/new-location-for-configuration-file</id>
+        <content type="html"><![CDATA[<p>As of October 2014: idb now stores its configuration and temporary files in <code>~/.idb/</code></p>
+]]></content>
+    </entry>
+    
+    <entry>
+        <title type="html"><![CDATA[Updated Talk at SOURCE Boston 2014]]></title>
+        <link href="http://www.idbtool.com/blog/2014/04/14/talk-at-source-boston-2014/"/>
+        <updated>2014-04-14T11:50:30-05:00</updated>
+        <id>http://www.idbtool.com/blog/2014/04/14/talk-at-source-boston-2014</id>
+        <content type="html"><![CDATA[<p>Last weekend I also spoke at <a href="http://sourceconference.com/boston/">SOURCE Boston</a> about idb and some of the new features. SOURCE is a great conference with excellent talks and an audience size that makes it personal enough to connect and engage with many of the attendees.</p>
+
+<p>Read more about the new idb features and see my updated slide deck after the jump.</p>
+
+<!-- more -->
+
+
+
+
+<script async="true" class="speakerdeck-embed" data-id="8aebc590a30401311a754eb53c3a6292" src="//speakerdeck.com/assets/embed.js"> </script>
+
+
+
+]]></content>
+    </entry>
+    
+    <entry>
+        <title type="html"><![CDATA[New: Classdump, Certificate Installer, Hosts File Editor, Screenshot Utility]]></title>
+        <link href="http://www.idbtool.com/blog/2014/04/13/new-idb-features-classdump/"/>
+        <updated>2014-04-13T19:49:16-05:00</updated>
+        <id>http://www.idbtool.com/blog/2014/04/13/new-idb-features-classdump</id>
+        <content type="html"><![CDATA[<p>During the last weeks I released a few new features as well as stability and usability improvements for <a href="http://github.com/dmayer/idb">idb</a>.
+The more notable ones are:</p>
+
+<ul>
+<li>Integration of <a href="https://github.com/limneos/weak_classdump">weak_classdump</a> by Elias Limneos to dump class and method information in the form of header files.</li>
+<li>Addition of a new <code>/etc/hosts</code> file editor.</li>
+<li>Fixing of the CA certificate installer / manager.</li>
+<li>Adding documentation and increasing visibility for the screenshot utility.</li>
+</ul>
+
+
+<p>All of the features are now documented in the new <a href="http://www.idbtool.com/documentation">Documentation</a>.</p>
+]]></content>
+    </entry>
+    
+    <entry>
+        <title type="html"><![CDATA[ShmooCon 2014 Video Recording]]></title>
+        <link href="http://www.idbtool.com/blog/2014/02/10/shmoocon-2014-video-recording/"/>
+        <updated>2014-02-10T10:35:38-06:00</updated>
+        <id>http://www.idbtool.com/blog/2014/02/10/shmoocon-2014-video-recording</id>
+        <content type="html"><![CDATA[<p>The recording of my ShmooCon talk was now <a href="https://archive.org/details/ShmooCon2014_Introducing_idb_Simplified_Blackbox_iOS_App_Pentesting">posted on archive.org</a>. Below is the Youtube version of the video.</p>
+
+<div class="embed-video-container"><iframe src="//www.youtube.com/embed/y98mYDeSCOc" allowfullscreen></iframe></div>
+
+]]></content>
+    </entry>
+    
+    <entry>
+        <title type="html"><![CDATA[idb - iOS Research / Pentesting Tool]]></title>
+        <link href="http://www.idbtool.com/blog/2014/01/23/idb-ios-research-slash-pentesting-tool/"/>
+        <updated>2014-01-23T19:09:00-06:00</updated>
+        <id>http://www.idbtool.com/blog/2014/01/23/idb-ios-research-slash-pentesting-tool</id>
+        <content type="html"><![CDATA[<p>Last weekend (January 17-19 2014) I gave a talk on blackbox iOS app pentesting at <a href="http://shmoocon.org">ShmooCon 2014</a>
+ in Washington, D.C. The talk covered various common iOS app vulnerabilities, mitigation techniques, and also
+ introduced a new tool called <code>idb</code> and demonstrated how it can be used to test for the discussed vulnerabilities.</p>
+
+<p>Here is the slide deck:</p>
+
+<script async="true" class="speakerdeck-embed" data-id="488ce8e0642301313e7e4a3a480508b9" src="//speakerdeck.com/assets/embed.js"> </script>
+
+
+
+
+<!-- more -->
+
+
+<h2>idb</h2>
+
+<p><code>idb</code> is a tool to simplify some common tasks for iOS pentesting and
+research. It is written in ruby with a Qt GUI frontend and should run on OS X and Linux (with some restrictions).
+  This is the first public release of the tool so bug reports, feature requests, and contributions are more than welcome! The code is available under the MIT license on <a href="//github.com/dmayer/idb">Github</a>:</p>
+
+<p>Read the full list of features after the jump.</p>
+
+<h2>Notable features</h2>
+
+<ul>
+<li>Simplified pentesting setup
+
+<ul>
+<li>Setup port forwarding</li>
+<li>Certificate management</li>
+</ul>
+</li>
+<li>iOS log viewer</li>
+<li>Screen shot utility
+
+<ul>
+<li>Simplifies testing for the creation of backgrounding screenshots</li>
+</ul>
+</li>
+<li>App-related functions
+
+<ul>
+<li> App binary
+
+<ul>
+<li>Download</li>
+<li>List imported libraries</li>
+<li>Check for encrypttion, ASLR, stack canaries</li>
+<li>Decrypt and download an app binary (requires <a href="//github.com/stefanesser/dumpdecrypted">dumpdecrypted</a>)</li>
+</ul>
+</li>
+<li> Launch an app</li>
+<li> View app details such as name, bundleid, and <code>Info.plist</code> file.</li>
+</ul>
+</li>
+<li>Inter-Process Communication
+
+<ul>
+<li> URL Handlers
+
+<ul>
+<li>List URL handlers</li>
+<li>Invoke and fuzz URL handlers</li>
+</ul>
+</li>
+<li> Pasteboard monitor</li>
+</ul>
+</li>
+<li>Analyze local file storage
+
+<ul>
+<li>Search for, download, and view plist files</li>
+<li>Search for, download, and view sqlite databases</li>
+<li>Search for, download, and view local caches  (<code>Cache.db</code>)</li>
+<li>File system browser</li>
+</ul>
+</li>
+<li>Install utilities on iDevices
+
+<ul>
+<li>Install <a href="//github.com/iSECPartners/ios-ssl-kill-switch">iOS SSL killswitch</a></li>
+<li>alpha: Compile and install <a href="//github.com/stefanesser/dumpdecrypted">dumpdecrypted</a></li>
+</ul>
+</li>
+<li>Alpha:
+
+<ul>
+<li>Cycript console</li>
+<li>Snoop-It integration</li>
+</ul>
+</li>
+</ul>
+
+]]></content>
+    </entry>
+    
+</feed>

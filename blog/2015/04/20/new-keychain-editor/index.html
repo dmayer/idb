@@ -1,0 +1,360 @@
+<!doctype html>
+    <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+    <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+    <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+    <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+
+    
+      
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>New: Keychain Editor - </title>
+        <meta name="author" content="idb">
+        
+        <meta name="description" content="New: Keychain Editor Apr 20th, 2015 For a while now, idb had the ability to dump the keychain of a jailbroken iDevice. So far, idb
+has been using &hellip;">
+        
+        <meta name="viewport" content="width=device-width">
+        <link rel="canonical" href="http://www.idbtool.com/blog/2015/04/20/new-keychain-editor">
+
+        <link href='http://fonts.googleapis.com/css?family=Droid+Serif:400,400italic' rel='stylesheet' type='text/css'>
+        <link href="http://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet" type="text/css">
+
+
+        
+        <link href="/favicon.png" rel="icon">
+        <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet">
+        <link href="/atom.xml" rel="alternate" title="" type="application/atom+xml">
+    </head>
+
+
+    <body >
+
+        <header id="header">
+    <a href="https://github.com/dmayer/idb"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/c6625ac1f3ee0a12250227cf83ce904423abf351/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_gray_6d6d6d.png"></a>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-8 col-md-4">
+        <a href="/" class="site-title"></a>
+    </div>
+    <div class="col-xs-12 col-sm-4 col-md-8">
+        <nav>
+    <input type="checkbox" id="toggle">
+    <label for="toggle" class="toggle" data-open="Main Menu" data-close="Close Menu"></label>
+    <ul class="menu">
+    <li><a href="/">Home</a></li>
+    <li><a href="/blog/">Blog</a></li>
+    <li><a href="/features/">Features</a></li>
+    <li><a href="/installation/">Installation</a></li>
+    <li><a href="/documentation/">Documentation</a></li>
+    <li><a href="/faq/">FAQ</a></li>
+</ul>
+
+</nav>
+
+    </div>
+</div>
+
+
+
+</header>
+
+
+        <div id="main-content">
+
+            <!--[if lte IE 9]>
+<div class="row upgrade-row">
+    <div class="col-lg-12">
+        <div class="upgrade">
+            <i class="upgrade__icon fa fa-warning"></i>
+            <h1 class="upgrade__title h6">Ohnoes!</h1>
+            <p class="upgrade__text">
+                Unfortunately, certain parts of this site may not display correctly in your version of Internet Explorer!<br>
+                If possible, you should consider <a href="http://browsehappy.com/">upgrading your browser</a>.
+            </p>
+        </div>
+    </div>
+</div>
+<!-- <![endif]-->
+
+
+            
+
+            <div class="row top-xs center-sm center-md center-lg site-wrapper">
+                
+                <div class="col-xs-12 col-lg-10">
+                
+                    <article class="article article--single">
+    <header class="article__header">
+    
+        <h1 class="article__title">New: Keychain Editor</h1>
+    
+
+    
+        <div class="article__meta clearfix">
+            
+
+
+
+
+
+
+    <time class="article__date pull-left" datetime="2015-04-20T16:40:01-05:00" pubdate><i class="fa fa-calendar"></i> Apr 20th, 2015</time>
+
+
+
+
+            
+
+
+            
+        </div>
+    
+</header>
+
+
+
+
+    <p>For a while now, idb had the ability to dump the keychain of a jailbroken iDevice. So far, idb
+has been using the <code>keychain_dump</code> utility which is part of the
+<a href="https://code.google.com/p/iphone-dataprotection/">iphone-dataprotection</a> forensics tools to
+accomplish this. However, this tool has some major limitations in that it does not support
+the new data protection classes introduced in recent iOS versions, lacks support
+for Keychain ACLs, and is a pure &lsquo;dump&rsquo; utility without editing capabilities.</p>
+
+<p>To address these shortcomings, Nitin Jami, a coworker of mine at <a href="http://www.intrepidusgroup.com">Intrepidus Group</a> (part of the
+<a href="http://www.nccgroup.trust">NCC Group</a> along with <a href="http://www.matasano.com">Matasano</a> and <a href="http://www.isecpartners.com">iSEC Partners</a>), implemented a
+<a href="https://github.com/NitinJami/keychaineditor">full-featured keychain editor</a>. To our knowledge, this is the first public tool which provides a convenient way for
+modifying the iOS keychain. The keychain editor provides a simple command
+line interface to interact with the iOS keychain and is ideal for scripting or when using automated
+tools. For more manual interaction and exploration, the tool has been integrated into the most recent version of idb
+for convenient access. Read on for all of the new features and screenshots.</p>
+
+<p>To update to the newest version 1.8, simply run</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem update idb</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!-- more -->
+
+
+<h2>Supported Features</h2>
+
+<ul>
+<li>Dumping of the entire keychain including the following data:
+
+<ul>
+<li>Entitlement Groups</li>
+<li>Account</li>
+<li>Service</li>
+<li>Protection class</li>
+<li>User Presence</li>
+<li>Creation and modification date</li>
+</ul>
+</li>
+<li>Support for &ldquo;user presence&rdquo; where a user has to use TouchID or enter their passcode to unlock a
+keychain item.</li>
+<li>Dump each entry as
+
+<ul>
+<li>String</li>
+<li>Hex</li>
+<li>Parsed as plist when appropriate</li>
+</ul>
+</li>
+<li>Editing entries (binary and string-based)</li>
+<li>Deleting keychain entries</li>
+</ul>
+
+
+<p>This is the first release of these features and there are likely bugs. Please report any issues using the
+ <a href="//github.com/dmayer/idb/">Github Issue Tracker</a> for idb.</p>
+
+<h2>The New Features in Detail</h2>
+
+<p><img src="/images/doc/idb_keychain.png" width="800" alt="Keychain" /></p>
+
+<p>Above is an overview screenshot of the new keychain tab and below is an excerpt from
+the <a href="/documentation/data_storage.html">updated documentation</a> explaining the new features.</p>
+
+<h3>Dump the Keychain</h3>
+
+<p>Dumping the keychain works by simply clicking the &ldquo;Dump Keychain&rdquo; button in idb. The returned data includes
+Entitlement Groups, Account, Service, Protection class, User Presence requirement, create and modification date.
+User presence is a new feature in iOS
+which requires a user to authenticate either via TouchID or by entering their passcode in order to access a keychain
+item. Note that there is no known way for bypassing this check since data is in fact encrypted
+ under the passcode and this processing happens in hardware through the Secure Enclave.</p>
+
+<p><img src="/images/doc/idb_keychain_dump.png" width="800" alt="dump of the keychain" /></p>
+
+<h3>View Keychain Entries</h3>
+
+<p>When selecting an entry in the table shown above, the data can be viewed as text, hexdump, or parsed as XML in
+the case of binary plist data.</p>
+
+<h4>Text View</h4>
+
+<p><img src="/images/doc/idb_keychain_text.png" width="800" alt="Dump of the keychain" /></p>
+
+<h4>Hexdump View</h4>
+
+<p><img src="/images/doc/idb_keychain_hex.png" width="800" alt="Dump of the keychain" /></p>
+
+<h4>Parsed Binary Plist View</h4>
+
+<p>There is a decent number of applications that store binary plist data inside the keychain and it can be rather
+  painful to read it in its string presentation. This screen attempts to detect if a keychain item consists of
+  a binary plist, converts it to a regular (xml) plist, and displays the data.</p>
+
+<p><img src="/images/doc/idb_keychain_plist.png" width="800" alt="Dump of the keychain" /></p>
+
+<h3>Deletion</h3>
+
+<p>Deleting a keychain item as simple as it sounds: simply select the entry and click the &ldquo;Delete&rdquo; button.</p>
+
+<p><img src="/images/doc/idb_keychain_delete.png" width="800" alt="Delete keychain item" /></p>
+
+<h3>Editing</h3>
+
+<p>For editing keychain items idb goes with a simple yet flexible approach. After selecting a keychain item,
+one can display its content either as plain text, or as Base64 encoded data. The plain text version
+allows quick editing of text-based keychain entries while the Base64 version can be used to edit binary
+data. Implementing a proper binary/hex editor inside of idb did not seem like a reasonable effort. Instead, by
+providing the
+data in Base64 format any external editor can be used to modify the data. After editing, simply paste
+the new Base64 data into idb and hit save.</p>
+
+<p><img src="/images/doc/idb_keychain_edit.png" width="800" alt="Edit keychain item" />
+<img src="/images/doc/idb_keychain_edit_text.png" width="400" alt="Edit keychain item" />
+<img src="/images/doc/idb_keychain_edit_base64.png" width="400" alt="Edit keychain item" /></p>
+
+
+
+</article>
+
+
+<section id="disqus">
+    <h1 class="disqus__title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+
+
+                </div>
+
+                
+            </div>
+        </div>
+
+        
+
+    
+    
+
+
+
+
+<footer class="footer">
+    <div class="row middle-xs">
+        
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <p class="footer__copyright">
+</p>
+
+        </div>
+        
+        
+    </div>
+</footer>
+
+        
+
+<script type="text/javascript">
+      var disqus_shortname = 'idbtool';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://www.idbtool.com/blog/2015/04/20/new-keychain-editor/';
+        var disqus_url = 'http://www.idbtool.com/blog/2015/04/20/new-keychain-editor/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+<!-- Piwik -->
+<script type="text/javascript">
+    var _paq = _paq || [];
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+        var u="//stats.cysec.org/";
+        _paq.push(['setTrackerUrl', u+'piwik.php']);
+        _paq.push(['setSiteId', 3]);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+    })();
+</script>
+<noscript><p><img src="//stats.cysec.org/piwik.php?idsite=3" style="border:0;" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+
+
+
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="//crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>
+<script defer src="/javascripts/octopress.js"></script>
+
+
+
+
+<script>
+    var disqus_shortname = 'idbtool';
+    
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://www.idbtool.com/blog/2015/04/20/new-keychain-editor/';
+        var disqus_url = 'http://www.idbtool.com/blog/2015/04/20/new-keychain-editor/';
+        var disqus_script = 'embed.js';
+    
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+    </body>
+
+</html>

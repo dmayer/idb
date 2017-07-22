@@ -1,0 +1,295 @@
+<!doctype html>
+    <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+    <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+    <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+    <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+
+    
+      
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>documentation: Tools - </title>
+        <meta name="author" content="idb">
+        
+        <meta name="description" content="Documentation: Tools Main Setup Data Storage Binary Analysis IPC Tools Tools This tab groups several miscellaneous tools. Screenshot Utility The &hellip;">
+        
+        <meta name="viewport" content="width=device-width">
+        <link rel="canonical" href="http://www.idbtool.com/documentation/tools.html">
+
+        <link href='http://fonts.googleapis.com/css?family=Droid+Serif:400,400italic' rel='stylesheet' type='text/css'>
+        <link href="http://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet" type="text/css">
+
+
+        
+        <link href="/favicon.png" rel="icon">
+        <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet">
+        <link href="/atom.xml" rel="alternate" title="" type="application/atom+xml">
+    </head>
+
+
+    <body >
+
+        <header id="header">
+    <a href="https://github.com/dmayer/idb"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/c6625ac1f3ee0a12250227cf83ce904423abf351/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_gray_6d6d6d.png"></a>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-8 col-md-4">
+        <a href="/" class="site-title"></a>
+    </div>
+    <div class="col-xs-12 col-sm-4 col-md-8">
+        <nav>
+    <input type="checkbox" id="toggle">
+    <label for="toggle" class="toggle" data-open="Main Menu" data-close="Close Menu"></label>
+    <ul class="menu">
+    <li><a href="/">Home</a></li>
+    <li><a href="/blog/">Blog</a></li>
+    <li><a href="/features/">Features</a></li>
+    <li><a href="/installation/">Installation</a></li>
+    <li><a href="/documentation/">Documentation</a></li>
+    <li><a href="/faq/">FAQ</a></li>
+</ul>
+
+</nav>
+
+    </div>
+</div>
+
+
+
+</header>
+
+
+        <div id="main-content">
+
+            <!--[if lte IE 9]>
+<div class="row upgrade-row">
+    <div class="col-lg-12">
+        <div class="upgrade">
+            <i class="upgrade__icon fa fa-warning"></i>
+            <h1 class="upgrade__title h6">Ohnoes!</h1>
+            <p class="upgrade__text">
+                Unfortunately, certain parts of this site may not display correctly in your version of Internet Explorer!<br>
+                If possible, you should consider <a href="http://browsehappy.com/">upgrading your browser</a>.
+            </p>
+        </div>
+    </div>
+</div>
+<!-- <![endif]-->
+
+
+            
+
+            <div class="row top-xs center-sm center-md center-lg site-wrapper">
+                
+                <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+                
+                    <article class="page">
+
+    
+    <header>
+        <h1 class="page__title">
+            Documentation: Tools
+        </h1>
+    </header>
+    <hr class="divider">
+    
+
+    <div style="width:100%; position: relative; top:-30px;"><ul class="doc_menu">
+    <li><a href="/documentation/">Main</a></li>
+    <li><a href="/documentation/setup.html">Setup</a></li>
+    <li><a href="/documentation/data_storage.html">Data Storage</a></li>
+    <li><a href="/documentation/app_analysis.html">Binary Analysis</a></li>
+    <li><a href="/documentation/ipc.html">IPC</a></li>
+    <li><a href="/documentation/tools.html">Tools</a></li>
+</ul>
+</div>
+
+
+<hr class="divider" style="position: relative; top:-30px;">
+
+
+<h2>Tools</h2>
+
+<p>This tab groups several miscellaneous tools.</p>
+
+<p><img src="/images/doc/idb_tools.png" alt="Tools" /></p>
+
+<h3>Screenshot Utility</h3>
+
+<p>The screen shot utility is a simple wizard that can be used to test whether an app is disclosing sensitive data
+ in the automatic backgrounding screenshots taken by iOS. After starting the wizard, the &ldquo;Launch Application&rdquo; button
+  can be used to launch the app under investigation (make sure the device screen is on and not locked):</p>
+
+<p><img src="/images/doc/idb_screenshot_launch.png" alt="Launch App" /></p>
+
+<p>After clicking &ldquo;Continue&rdquo;, the next screen asks you to background the application by clicking the home button on the
+ device. Once you did, click &ldquo;Continue&rdquo; to see whether a screenshot was found. If it was, idb downloads it and allows
+  you to open it in your default image viewer. If no screenshot is found, a corresponding message is displayed.</p>
+
+<p><img src="/images/doc/idb_screenshot_found.png" alt="Screenshot found" /></p>
+
+<h3>CA Certificate Manager</h3>
+
+<p>Installing new CA certificates on the iDevice can be cumbersome at times. This function aims at making the process
+faster by automatically making the respective certificate accessible to the iDevice.</p>
+
+<p>First, if your iDevice is set up to go through <a href="http://www.portswigger.net/burp/">Burp Suite</a>, clicking
+ &ldquo;Install Burp Cert&rdquo; will automatically launch a URL handler on the device which redirects to <code>http://burp/cert</code> and
+  allows the installation of the Burp CA cert with one click (make sure the device screen is on and not locked).</p>
+
+<p><img src="/images/doc/idb_burp_cert.png" alt="Burp CA Install" /></p>
+
+<p><img src="/images/doc/idb_cert_install_screen.png" alt="iOS Cert Install Dialog" /></p>
+
+<p>Second, for all other certificates, you can use the &ldquo;Certificate Manager&rdquo;.</p>
+
+<p><img src="/images/doc/idb_cert_manager_empty.png" alt="idb cert manager" /></p>
+
+<p>In order to install a new certificate, click on &ldquo;Import&rdquo; and select the desired certificate file. Both PEM and DER
+formats are supported. After selecting the file, idb will internally serve the file on an HTTP server and trigger a
+URL handler on the device in order to install it. After installation, use the &ldquo;Refresh&rdquo; button to update the certificate
+list.</p>
+
+<p><img src="/images/doc/idb_cert_manager.png" alt="idb cert manager" /></p>
+
+<p>Finally, clicking &ldquo;Delete&rdquo;, will remove the file from the iDevice&rsquo;s trust store.</p>
+
+<h3>/etc/hosts File Editor</h3>
+
+<p>The <code>/etc/hosts</code> file editor provides a simple way to modify the host applications connect to. In order to intercept
+traffic for an app, one would typically use a tool such as <a href="http://www.portswigger.net/burp/">Burp Suite</a> and set the
+iOS system proxy to make the app connect to it. However, when the app does not respect proxy settings or communicates
+via non-HTTP protocols, this may fail. In these instances modifying the <code>/etc/hosts</code> may help in pointing the app at a
+running proxy instance which then forwards traffic to the actual server expected by the app.</p>
+
+<p>idb&rsquo;s interface is very simple. The &ldquo;Load&rdquo; button retrieves the current <code>/etc/hosts</code> file from the device and displays
+ it. After making the desired modifications, clicking &ldquo;Save&rdquo; will store the new file on the device.</p>
+
+<p><img src="/images/doc/idb_hosts_file.png" alt="Hosts File Editor" /></p>
+
+<h2>iOS Log</h2>
+
+<p>The Log tab can be used to view the syslog of the iDevice. Besides system messages, it also includes any log
+ statements that apps produce using <code>NSLog</code> which often disclose sensitive data. Internally, the log view uses
+  <code>idevicesyslog</code> which is part of <a href="http://www.libimobiledevice.org/">libmobiledevice</a>. Clicking the <code>start</code> button
+   will launch <code>idevicesyslog</code> and stream severity-highlighted log messages right into idb.</p>
+
+<p><img src="/images/doc/idb_log.png" width="800" alt="iOS Syslog" /></p>
+
+
+</article>
+
+                </div>
+
+                
+            </div>
+        </div>
+
+        
+
+    
+    
+
+
+
+
+<footer class="footer">
+    <div class="row middle-xs">
+        
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <p class="footer__copyright">
+</p>
+
+        </div>
+        
+        
+    </div>
+</footer>
+
+        
+
+<script type="text/javascript">
+      var disqus_shortname = 'idbtool';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://www.idbtool.com/documentation/tools.html';
+        var disqus_url = 'http://www.idbtool.com/documentation/tools.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+<!-- Piwik -->
+<script type="text/javascript">
+    var _paq = _paq || [];
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+        var u="//stats.cysec.org/";
+        _paq.push(['setTrackerUrl', u+'piwik.php']);
+        _paq.push(['setSiteId', 3]);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+    })();
+</script>
+<noscript><p><img src="//stats.cysec.org/piwik.php?idsite=3" style="border:0;" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+
+
+
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="//crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>
+<script defer src="/javascripts/octopress.js"></script>
+
+
+
+
+<script>
+    var disqus_shortname = 'idbtool';
+    
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://www.idbtool.com/documentation/tools.html';
+        var disqus_url = 'http://www.idbtool.com/documentation/tools.html';
+        var disqus_script = 'embed.js';
+    
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+    </body>
+
+</html>

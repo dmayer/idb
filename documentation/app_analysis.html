@@ -1,0 +1,295 @@
+<!doctype html>
+    <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+    <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+    <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+    <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+
+    
+      
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Documentation: App Analysis - </title>
+        <meta name="author" content="idb">
+        
+        <meta name="description" content="Documentation: App Analysis Main Setup Data Storage Binary Analysis IPC Tools Performing an Analysis of the Application Binary In order to enable &hellip;">
+        
+        <meta name="viewport" content="width=device-width">
+        <link rel="canonical" href="http://www.idbtool.com/documentation/app_analysis.html">
+
+        <link href='http://fonts.googleapis.com/css?family=Droid+Serif:400,400italic' rel='stylesheet' type='text/css'>
+        <link href="http://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet" type="text/css">
+
+
+        
+        <link href="/favicon.png" rel="icon">
+        <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet">
+        <link href="/atom.xml" rel="alternate" title="" type="application/atom+xml">
+    </head>
+
+
+    <body >
+
+        <header id="header">
+    <a href="https://github.com/dmayer/idb"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/c6625ac1f3ee0a12250227cf83ce904423abf351/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_gray_6d6d6d.png"></a>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-8 col-md-4">
+        <a href="/" class="site-title"></a>
+    </div>
+    <div class="col-xs-12 col-sm-4 col-md-8">
+        <nav>
+    <input type="checkbox" id="toggle">
+    <label for="toggle" class="toggle" data-open="Main Menu" data-close="Close Menu"></label>
+    <ul class="menu">
+    <li><a href="/">Home</a></li>
+    <li><a href="/blog/">Blog</a></li>
+    <li><a href="/features/">Features</a></li>
+    <li><a href="/installation/">Installation</a></li>
+    <li><a href="/documentation/">Documentation</a></li>
+    <li><a href="/faq/">FAQ</a></li>
+</ul>
+
+</nav>
+
+    </div>
+</div>
+
+
+
+</header>
+
+
+        <div id="main-content">
+
+            <!--[if lte IE 9]>
+<div class="row upgrade-row">
+    <div class="col-lg-12">
+        <div class="upgrade">
+            <i class="upgrade__icon fa fa-warning"></i>
+            <h1 class="upgrade__title h6">Ohnoes!</h1>
+            <p class="upgrade__text">
+                Unfortunately, certain parts of this site may not display correctly in your version of Internet Explorer!<br>
+                If possible, you should consider <a href="http://browsehappy.com/">upgrading your browser</a>.
+            </p>
+        </div>
+    </div>
+</div>
+<!-- <![endif]-->
+
+
+            
+
+            <div class="row top-xs center-sm center-md center-lg site-wrapper">
+                
+                <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+                
+                    <article class="page">
+
+    
+    <header>
+        <h1 class="page__title">
+            Documentation: App Analysis
+        </h1>
+    </header>
+    <hr class="divider">
+    
+
+    <div style="width:100%; position: relative; top:-30px;"><ul class="doc_menu">
+    <li><a href="/documentation/">Main</a></li>
+    <li><a href="/documentation/setup.html">Setup</a></li>
+    <li><a href="/documentation/data_storage.html">Data Storage</a></li>
+    <li><a href="/documentation/app_analysis.html">Binary Analysis</a></li>
+    <li><a href="/documentation/ipc.html">IPC</a></li>
+    <li><a href="/documentation/tools.html">Tools</a></li>
+</ul>
+</div>
+
+
+<hr class="divider" style="position: relative; top:-30px;">
+
+
+<h2>Performing an Analysis of the Application Binary</h2>
+
+<p>In order to enable idb&rsquo;s remaining functions, the  analysis of the application binary has to be triggered by clicking
+the &lsquo;Analyze Binary&rsquo; button. This will download the decrypted application binary and perform some basic analysis to
+extract information such as:</p>
+
+<ul>
+<li><code>Encryption?</code>: Is a segment of the app marked as encrypted.</li>
+<li><code>Cryptid</code>: If so, which cryptid is assigned to that segments.</li>
+<li><code>PIE</code>: Is the application compiled as a Position-Independent Executable (PIE) and thus takes advantage of ASLR.</li>
+<li><code>Stack Canaries</code>: Are stack canaries enabled for the application.</li>
+<li><code>ARC</code>: Does the application use Automatic Reference Counting (ARC).</li>
+</ul>
+
+
+<p>If the application binary is encrypted, idb uses Stefan Esser&rsquo;s
+ <a href="https://github.com/stefanesser/dumpdecrypted">dumpdecryoted</a> to decrypt it before downloading and analyzing it.</p>
+
+<p><img src="/images/doc/idb_empty_binary_details.png" width="400" alt="Application Binary Details" />
+<img src="/images/doc/idb_binary_details.png" width="400" alt="Application Binary Details" /></p>
+
+<h3>Application Binary</h3>
+
+<p>Once &ldquo;Analyze App Binary&rdquo; was clicked and completed, the &ldquo;Application Binary&rdquo; tab becomes fully active.
+It provides three functions: display shared libraries, display strings, and extract class signatures and functions.</p>
+
+<h4>Shared Libraries</h4>
+
+<p>The &ldquo;Shared Libraries&rdquo; tab allows you list all the external libraries the app references. This allows for the easy
+discovery of any suspicious frameworks that may be in use by the app. Internally, idb uses <code>otool</code> to analyze the
+binary. Since idb runs <code>otool</code> on the host, this is an OS X feature only at this point. There are <a href="../issues/12">plans</a>
+for moving the analysis onto the device which will make the feature available for other platforms as well.</p>
+
+<p><img src="/images/doc/idb_shared_libraries.png" width="800" alt="Listing Shared Libraries" /></p>
+
+<h4>Strings</h4>
+
+<p>Application binaries frequently include data of interest such as API keys, credentials, encryption keys, URLs, etc.
+The strings tab extracts all strings in the (decrypted!) application binary and displays them right in the UI.</p>
+
+<p><img src="/images/doc/idb_strings.png" alt="Strings" /></p>
+
+<h4>Class and Method Signature Dumping</h4>
+
+<p>When reversing, instrumenting (e.g., using Cycript or Mobile Substrate), or simply trying to understand an app,
+knowing all of the classes and method signatures of the app is of great help. idb provides a convenient way for
+obtaining these from compiled iOS applications. Under the hood, this function uses <code>cycript</code> and the <code>weak_classdump</code>
+<a href="https://github.com/limneos/weak_classdump">script by Elias Limneos</a>. To use this, simply click the &ldquo;Dump Classes&rdquo;
+button in idb while the device is unlocked.</p>
+
+<p><strong>Note:</strong> Since iOS 8, there seems to be some issue with running weak class-dump. Working on a better solution that
+works across platforms.</p>
+
+<p><img src="/images/doc/idb_classdump.png" alt="Weak Classdump" /></p>
+
+<p>This will launch the app with cycript attached and dump all the class information. Depending on the size of the
+application, this process will take up to several minutes. There is no visual feedback that class information is being
+dumped, but the device will play the &ldquo;locking&rdquo; sound once the dump is complete. In some rare instances the app may
+crash during this process which may lead to an incomplete class dump.</p>
+
+<p><img src="/images/doc/idb_classdump_dumping.png" alt="Please wait" /></p>
+
+<p>At any time during the process the &ldquo;List Results&rdquo; button can be used to retrieve all of the class information that has
+been collected thus far. To gain a full list, you should wait until the execution of <code>weak_classdump</code> is finished.
+The results will look similar to this:</p>
+
+<p><img src="/images/doc/idb_classdump_results.png" alt="Classdump Results " /></p>
+
+
+</article>
+
+                </div>
+
+                
+            </div>
+        </div>
+
+        
+
+    
+    
+
+
+
+
+<footer class="footer">
+    <div class="row middle-xs">
+        
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <p class="footer__copyright">
+</p>
+
+        </div>
+        
+        
+    </div>
+</footer>
+
+        
+
+<script type="text/javascript">
+      var disqus_shortname = 'idbtool';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://www.idbtool.com/documentation/app_analysis.html';
+        var disqus_url = 'http://www.idbtool.com/documentation/app_analysis.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+<!-- Piwik -->
+<script type="text/javascript">
+    var _paq = _paq || [];
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+        var u="//stats.cysec.org/";
+        _paq.push(['setTrackerUrl', u+'piwik.php']);
+        _paq.push(['setSiteId', 3]);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+    })();
+</script>
+<noscript><p><img src="//stats.cysec.org/piwik.php?idsite=3" style="border:0;" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+
+
+
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="//crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>
+<script defer src="/javascripts/octopress.js"></script>
+
+
+
+
+<script>
+    var disqus_shortname = 'idbtool';
+    
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://www.idbtool.com/documentation/app_analysis.html';
+        var disqus_url = 'http://www.idbtool.com/documentation/app_analysis.html';
+        var disqus_script = 'embed.js';
+    
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+    </body>
+
+</html>
