@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    idb (2.9.1)
+    idb (2.9.2)
       awesome_print
       coderay
       git
