@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
     <title><![CDATA[]]></title>
-    <link href="http://www.idbtool.com/atom.xml" rel="self"/>
-    <link href="http://www.idbtool.com/"/>
-    <updated>2017-07-22T15:37:46-05:00</updated>
-    <id>http://www.idbtool.com/</id>
+    <link href="http://www.idbtool.com/idb/atom.xml" rel="self"/>
+    <link href="http://www.idbtool.com/idb/"/>
+    <updated>2017-07-22T15:46:43-05:00</updated>
+    <id>http://www.idbtool.com/idb/</id>
     <author>
         <name><![CDATA[idb]]></name>
         
@@ -15,9 +15,9 @@
     
     <entry>
         <title type="html"><![CDATA[New: Keychain Editor]]></title>
-        <link href="http://www.idbtool.com/blog/2015/04/20/new-keychain-editor/"/>
+        <link href="http://www.idbtool.com/idb/blog/2015/04/20/new-keychain-editor/"/>
         <updated>2015-04-20T16:40:01-05:00</updated>
-        <id>http://www.idbtool.com/blog/2015/04/20/new-keychain-editor</id>
+        <id>http://www.idbtool.com/idb/blog/2015/04/20/new-keychain-editor</id>
         <content type="html"><![CDATA[<p>For a while now, idb had the ability to dump the keychain of a jailbroken iDevice. So far, idb
 has been using the <code>keychain_dump</code> utility which is part of the
 <a href="https://code.google.com/p/iphone-dataprotection/">iphone-dataprotection</a> forensics tools to
@@ -78,10 +78,10 @@ keychain item.</li>
 
 <h2>The New Features in Detail</h2>
 
-<p><img src="http://www.idbtool.com/images/doc/idb_keychain.png" width="800" alt="Keychain" /></p>
+<p><img src="http://www.idbtool.com/idb/images/doc/idb_keychain.png" width="800" alt="Keychain" /></p>
 
 <p>Above is an overview screenshot of the new keychain tab and below is an excerpt from
-the <a href="http://www.idbtool.com/documentation/data_storage.html">updated documentation</a> explaining the new features.</p>
+the <a href="http://www.idbtool.com/idb/documentation/data_storage.html">updated documentation</a> explaining the new features.</p>
 
 <h3>Dump the Keychain</h3>
 
@@ -92,7 +92,7 @@ which requires a user to authenticate either via TouchID or by entering their pa
 item. Note that there is no known way for bypassing this check since data is in fact encrypted
  under the passcode and this processing happens in hardware through the Secure Enclave.</p>
 
-<p><img src="http://www.idbtool.com/images/doc/idb_keychain_dump.png" width="800" alt="dump of the keychain" /></p>
+<p><img src="http://www.idbtool.com/idb/images/doc/idb_keychain_dump.png" width="800" alt="dump of the keychain" /></p>
 
 <h3>View Keychain Entries</h3>
 
@@ -101,11 +101,11 @@ the case of binary plist data.</p>
 
 <h4>Text View</h4>
 
-<p><img src="http://www.idbtool.com/images/doc/idb_keychain_text.png" width="800" alt="Dump of the keychain" /></p>
+<p><img src="http://www.idbtool.com/idb/images/doc/idb_keychain_text.png" width="800" alt="Dump of the keychain" /></p>
 
 <h4>Hexdump View</h4>
 
-<p><img src="http://www.idbtool.com/images/doc/idb_keychain_hex.png" width="800" alt="Dump of the keychain" /></p>
+<p><img src="http://www.idbtool.com/idb/images/doc/idb_keychain_hex.png" width="800" alt="Dump of the keychain" /></p>
 
 <h4>Parsed Binary Plist View</h4>
 
@@ -113,13 +113,13 @@ the case of binary plist data.</p>
   painful to read it in its string presentation. This screen attempts to detect if a keychain item consists of
   a binary plist, converts it to a regular (xml) plist, and displays the data.</p>
 
-<p><img src="http://www.idbtool.com/images/doc/idb_keychain_plist.png" width="800" alt="Dump of the keychain" /></p>
+<p><img src="http://www.idbtool.com/idb/images/doc/idb_keychain_plist.png" width="800" alt="Dump of the keychain" /></p>
 
 <h3>Deletion</h3>
 
 <p>Deleting a keychain item as simple as it sounds: simply select the entry and click the &ldquo;Delete&rdquo; button.</p>
 
-<p><img src="http://www.idbtool.com/images/doc/idb_keychain_delete.png" width="800" alt="Delete keychain item" /></p>
+<p><img src="http://www.idbtool.com/idb/images/doc/idb_keychain_delete.png" width="800" alt="Delete keychain item" /></p>
 
 <h3>Editing</h3>
 
@@ -131,37 +131,37 @@ providing the
 data in Base64 format any external editor can be used to modify the data. After editing, simply paste
 the new Base64 data into idb and hit save.</p>
 
-<p><img src="http://www.idbtool.com/images/doc/idb_keychain_edit.png" width="800" alt="Edit keychain item" />
-<img src="http://www.idbtool.com/images/doc/idb_keychain_edit_text.png" width="400" alt="Edit keychain item" />
-<img src="http://www.idbtool.com/images/doc/idb_keychain_edit_base64.png" width="400" alt="Edit keychain item" /></p>
+<p><img src="http://www.idbtool.com/idb/images/doc/idb_keychain_edit.png" width="800" alt="Edit keychain item" />
+<img src="http://www.idbtool.com/idb/images/doc/idb_keychain_edit_text.png" width="400" alt="Edit keychain item" />
+<img src="http://www.idbtool.com/idb/images/doc/idb_keychain_edit_base64.png" width="400" alt="Edit keychain item" /></p>
 ]]></content>
     </entry>
     
     <entry>
         <title type="html"><![CDATA[New: Entitlements and Default Protection Class]]></title>
-        <link href="http://www.idbtool.com/blog/2015/02/26/new-entitlements-and-default-protection-class/"/>
+        <link href="http://www.idbtool.com/idb/blog/2015/02/26/new-entitlements-and-default-protection-class/"/>
         <updated>2015-02-26T11:04:12-06:00</updated>
-        <id>http://www.idbtool.com/blog/2015/02/26/new-entitlements-and-default-protection-class</id>
+        <id>http://www.idbtool.com/idb/blog/2015/02/26/new-entitlements-and-default-protection-class</id>
         <content type="html"><![CDATA[<p>The new version of idb now lists iOS app entitlements including the default data protection class.</p>
 ]]></content>
     </entry>
     
     <entry>
         <title type="html"><![CDATA[New: iOS 8 Support and UI Improvements]]></title>
-        <link href="http://www.idbtool.com/blog/2014/11/05/new-ios-8-support-and-ui-improvements/"/>
+        <link href="http://www.idbtool.com/idb/blog/2014/11/05/new-ios-8-support-and-ui-improvements/"/>
         <updated>2014-11-05T11:04:35-06:00</updated>
-        <id>http://www.idbtool.com/blog/2014/11/05/new-ios-8-support-and-ui-improvements</id>
+        <id>http://www.idbtool.com/idb/blog/2014/11/05/new-ios-8-support-and-ui-improvements</id>
         <content type="html"><![CDATA[<p>The new idb version now has iOS 8+ support and received a face-lift to make the UI more functional.</p>
 
-<p><img src="http://www.idbtool.com/images/2015-04-02-new-ios-8-support-and-ui-improvements/screenshot.png" width="800" alt="UI Improvements" /></p>
+<p><img src="http://www.idbtool.com/idb/images/2015-04-02-new-ios-8-support-and-ui-improvements/screenshot.png" width="800" alt="UI Improvements" /></p>
 ]]></content>
     </entry>
     
     <entry>
         <title type="html"><![CDATA[Video of Seminar at Toorcon 16]]></title>
-        <link href="http://www.idbtool.com/blog/2014/10/24/video-of-seminar-at-toorcon-16/"/>
+        <link href="http://www.idbtool.com/idb/blog/2014/10/24/video-of-seminar-at-toorcon-16/"/>
         <updated>2014-10-24T11:53:25-05:00</updated>
-        <id>http://www.idbtool.com/blog/2014/10/24/video-of-seminar-at-toorcon-16</id>
+        <id>http://www.idbtool.com/idb/blog/2014/10/24/video-of-seminar-at-toorcon-16</id>
         <content type="html"><![CDATA[<div class="embed-video-container"><iframe src="//www.youtube.com/embed/jHLxFKPIOj8" allowfullscreen></iframe></div>
 
 ]]></content>
@@ -169,18 +169,18 @@ the new Base64 data into idb and hit save.</p>
     
     <entry>
         <title type="html"><![CDATA[New Location for Configuration File]]></title>
-        <link href="http://www.idbtool.com/blog/2014/10/01/new-location-for-configuration-file/"/>
+        <link href="http://www.idbtool.com/idb/blog/2014/10/01/new-location-for-configuration-file/"/>
         <updated>2014-10-01T19:49:16-05:00</updated>
-        <id>http://www.idbtool.com/blog/2014/10/01/new-location-for-configuration-file</id>
+        <id>http://www.idbtool.com/idb/blog/2014/10/01/new-location-for-configuration-file</id>
         <content type="html"><![CDATA[<p>As of October 2014: idb now stores its configuration and temporary files in <code>~/.idb/</code></p>
 ]]></content>
     </entry>
     
     <entry>
         <title type="html"><![CDATA[Updated Talk at SOURCE Boston 2014]]></title>
-        <link href="http://www.idbtool.com/blog/2014/04/14/talk-at-source-boston-2014/"/>
+        <link href="http://www.idbtool.com/idb/blog/2014/04/14/talk-at-source-boston-2014/"/>
         <updated>2014-04-14T11:50:30-05:00</updated>
-        <id>http://www.idbtool.com/blog/2014/04/14/talk-at-source-boston-2014</id>
+        <id>http://www.idbtool.com/idb/blog/2014/04/14/talk-at-source-boston-2014</id>
         <content type="html"><![CDATA[<p>Last weekend I also spoke at <a href="http://sourceconference.com/boston/">SOURCE Boston</a> about idb and some of the new features. SOURCE is a great conference with excellent talks and an audience size that makes it personal enough to connect and engage with many of the attendees.</p>
 
 <p>Read more about the new idb features and see my updated slide deck after the jump.</p>
@@ -199,9 +199,9 @@ the new Base64 data into idb and hit save.</p>
     
     <entry>
         <title type="html"><![CDATA[New: Classdump, Certificate Installer, Hosts File Editor, Screenshot Utility]]></title>
-        <link href="http://www.idbtool.com/blog/2014/04/13/new-idb-features-classdump/"/>
+        <link href="http://www.idbtool.com/idb/blog/2014/04/13/new-idb-features-classdump/"/>
         <updated>2014-04-13T19:49:16-05:00</updated>
-        <id>http://www.idbtool.com/blog/2014/04/13/new-idb-features-classdump</id>
+        <id>http://www.idbtool.com/idb/blog/2014/04/13/new-idb-features-classdump</id>
         <content type="html"><![CDATA[<p>During the last weeks I released a few new features as well as stability and usability improvements for <a href="http://github.com/dmayer/idb">idb</a>.
 The more notable ones are:</p>
 
@@ -213,15 +213,15 @@ The more notable ones are:</p>
 </ul>
 
 
-<p>All of the features are now documented in the new <a href="http://www.idbtool.com/documentation">Documentation</a>.</p>
+<p>All of the features are now documented in the new <a href="http://www.idbtool.com/idb/documentation">Documentation</a>.</p>
 ]]></content>
     </entry>
     
     <entry>
         <title type="html"><![CDATA[ShmooCon 2014 Video Recording]]></title>
-        <link href="http://www.idbtool.com/blog/2014/02/10/shmoocon-2014-video-recording/"/>
+        <link href="http://www.idbtool.com/idb/blog/2014/02/10/shmoocon-2014-video-recording/"/>
         <updated>2014-02-10T10:35:38-06:00</updated>
-        <id>http://www.idbtool.com/blog/2014/02/10/shmoocon-2014-video-recording</id>
+        <id>http://www.idbtool.com/idb/blog/2014/02/10/shmoocon-2014-video-recording</id>
         <content type="html"><![CDATA[<p>The recording of my ShmooCon talk was now <a href="https://archive.org/details/ShmooCon2014_Introducing_idb_Simplified_Blackbox_iOS_App_Pentesting">posted on archive.org</a>. Below is the Youtube version of the video.</p>
 
 <div class="embed-video-container"><iframe src="//www.youtube.com/embed/y98mYDeSCOc" allowfullscreen></iframe></div>
@@ -231,9 +231,9 @@ The more notable ones are:</p>
     
     <entry>
         <title type="html"><![CDATA[idb - iOS Research / Pentesting Tool]]></title>
-        <link href="http://www.idbtool.com/blog/2014/01/23/idb-ios-research-slash-pentesting-tool/"/>
+        <link href="http://www.idbtool.com/idb/blog/2014/01/23/idb-ios-research-slash-pentesting-tool/"/>
         <updated>2014-01-23T19:09:00-06:00</updated>
-        <id>http://www.idbtool.com/blog/2014/01/23/idb-ios-research-slash-pentesting-tool</id>
+        <id>http://www.idbtool.com/idb/blog/2014/01/23/idb-ios-research-slash-pentesting-tool</id>
         <content type="html"><![CDATA[<p>Last weekend (January 17-19 2014) I gave a talk on blackbox iOS app pentesting at <a href="http://shmoocon.org">ShmooCon 2014</a>
  in Washington, D.C. The talk covered various common iOS app vulnerabilities, mitigation techniques, and also
  introduced a new tool called <code>idb</code> and demonstrated how it can be used to test for the discussed vulnerabilities.</p>

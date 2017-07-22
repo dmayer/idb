@@ -1,124 +1,124 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://www.idbtool.com/blog/2015/04/20/new-keychain-editor/</loc>
+    <loc>http://www.idbtool.com/idb/blog/2015/04/20/new-keychain-editor/</loc>
     <lastmod>2015-04-20T16:40:01-05:00</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://www.idbtool.com/blog/2015/02/26/new-entitlements-and-default-protection-class/</loc>
+    <loc>http://www.idbtool.com/idb/blog/2015/02/26/new-entitlements-and-default-protection-class/</loc>
     <lastmod>2015-02-26T11:04:12-06:00</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://www.idbtool.com/blog/2014/11/05/new-ios-8-support-and-ui-improvements/</loc>
+    <loc>http://www.idbtool.com/idb/blog/2014/11/05/new-ios-8-support-and-ui-improvements/</loc>
     <lastmod>2014-11-05T11:04:35-06:00</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://www.idbtool.com/blog/2014/10/24/video-of-seminar-at-toorcon-16/</loc>
+    <loc>http://www.idbtool.com/idb/blog/2014/10/24/video-of-seminar-at-toorcon-16/</loc>
     <lastmod>2014-10-24T11:53:25-05:00</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://www.idbtool.com/blog/2014/10/01/new-location-for-configuration-file/</loc>
+    <loc>http://www.idbtool.com/idb/blog/2014/10/01/new-location-for-configuration-file/</loc>
     <lastmod>2014-10-01T19:49:16-05:00</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://www.idbtool.com/blog/2014/04/14/talk-at-source-boston-2014/</loc>
+    <loc>http://www.idbtool.com/idb/blog/2014/04/14/talk-at-source-boston-2014/</loc>
     <lastmod>2014-04-14T11:50:30-05:00</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://www.idbtool.com/blog/2014/04/13/new-idb-features-classdump/</loc>
+    <loc>http://www.idbtool.com/idb/blog/2014/04/13/new-idb-features-classdump/</loc>
     <lastmod>2014-04-13T19:49:16-05:00</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://www.idbtool.com/blog/2014/02/10/shmoocon-2014-video-recording/</loc>
+    <loc>http://www.idbtool.com/idb/blog/2014/02/10/shmoocon-2014-video-recording/</loc>
     <lastmod>2014-02-10T10:35:38-06:00</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://www.idbtool.com/blog/2014/01/23/idb-ios-research-slash-pentesting-tool/</loc>
+    <loc>http://www.idbtool.com/idb/blog/2014/01/23/idb-ios-research-slash-pentesting-tool/</loc>
     <lastmod>2014-01-23T19:09:00-06:00</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://www.idbtool.com/documentation/app_analysis.html</loc>
-    <lastmod>2017-07-22T15:37:46-05:00</lastmod>
+    <loc>http://www.idbtool.com/idb/documentation/app_analysis.html</loc>
+    <lastmod>2017-07-22T15:46:43-05:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://www.idbtool.com/documentation/data_storage.html</loc>
-    <lastmod>2017-07-22T15:37:46-05:00</lastmod>
+    <loc>http://www.idbtool.com/idb/documentation/data_storage.html</loc>
+    <lastmod>2017-07-22T15:46:43-05:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://www.idbtool.com/blog/archives/</loc>
-    <lastmod>2017-07-22T15:37:46-05:00</lastmod>
+    <loc>http://www.idbtool.com/idb/blog/archives/</loc>
+    <lastmod>2017-07-22T15:46:43-05:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://www.idbtool.com/</loc>
-    <lastmod>2017-07-22T15:37:46-05:00</lastmod>
+    <loc>http://www.idbtool.com/idb/</loc>
+    <lastmod>2017-07-22T15:46:43-05:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>http://www.idbtool.com/blog/</loc>
-    <lastmod>2017-07-22T15:37:46-05:00</lastmod>
+    <loc>http://www.idbtool.com/idb/blog/</loc>
+    <lastmod>2017-07-22T15:46:43-05:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://www.idbtool.com/faq/</loc>
-    <lastmod>2017-07-22T15:37:46-05:00</lastmod>
+    <loc>http://www.idbtool.com/idb/faq/</loc>
+    <lastmod>2017-07-22T15:46:43-05:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://www.idbtool.com/installation/</loc>
-    <lastmod>2017-07-22T15:37:46-05:00</lastmod>
+    <loc>http://www.idbtool.com/idb/installation/</loc>
+    <lastmod>2017-07-22T15:46:43-05:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://www.idbtool.com/features/</loc>
-    <lastmod>2017-07-22T15:37:46-05:00</lastmod>
+    <loc>http://www.idbtool.com/idb/features/</loc>
+    <lastmod>2017-07-22T15:46:43-05:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://www.idbtool.com/documentation/</loc>
-    <lastmod>2017-07-22T15:37:46-05:00</lastmod>
+    <loc>http://www.idbtool.com/idb/documentation/</loc>
+    <lastmod>2017-07-22T15:46:43-05:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://www.idbtool.com/documentation/ipc.html</loc>
-    <lastmod>2017-07-22T15:37:46-05:00</lastmod>
+    <loc>http://www.idbtool.com/idb/documentation/ipc.html</loc>
+    <lastmod>2017-07-22T15:46:43-05:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://www.idbtool.com/documentation/setup.html</loc>
-    <lastmod>2017-07-22T15:37:46-05:00</lastmod>
+    <loc>http://www.idbtool.com/idb/documentation/setup.html</loc>
+    <lastmod>2017-07-22T15:46:43-05:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://www.idbtool.com/documentation/tools.html</loc>
-    <lastmod>2017-07-22T15:37:46-05:00</lastmod>
+    <loc>http://www.idbtool.com/idb/documentation/tools.html</loc>
+    <lastmod>2017-07-22T15:46:43-05:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://www.idbtool.com/google830be3d28e2977c1.html</loc>
+    <loc>http://www.idbtool.com/idb/google830be3d28e2977c1.html</loc>
     <lastmod>2017-07-22T14:30:28-05:00</lastmod>
     <priority>0.6</priority>
   </url>
