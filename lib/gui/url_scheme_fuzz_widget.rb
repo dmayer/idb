@@ -62,6 +62,10 @@ module Idb
         }
         input = @fuzzer.generate_inputs @fuzz_config_template.text, fuzz_strings
         input.each { |url|
+          if url.nil?
+            $log.warn "Skipping nil URL"
+            next
+          end
           #TODO: progress bar
           #TODO: kill app after each run
           #TODO: check for crash report
