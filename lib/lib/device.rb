@@ -65,18 +65,32 @@ module Idb
 
       @apps_dir_ios_9 = '/private/var/containers/Bundle/Application'
       @data_dir_ios_9 = @data_dir_ios_8
+      @application_state_ios_10 = "/User/Library/FrontBoard/applicationState.db"
 
-      if @ops.directory? @apps_dir_ios_9
+      $log.info "Checking iOS version"
+
+      @ops.execute"touch /tmp/daniel"
+
+      if @ops.file_exists? @application_state_ios_10
+        $log.info "iOS Version: 10 or newer"
+        @ios_version = 10
+        @apps_dir = @apps_dir_ios_9
+        @data_dir = @data_dir_ios_9
+
+      elsif @ops.directory? @apps_dir_ios_9
+        $log.info "iOS Version: 9"
         @ios_version = 9
         @apps_dir = @apps_dir_ios_9
         @data_dir = @data_dir_ios_9
 
       elsif @ops.directory? @apps_dir_ios_8
+        $log.info "iOS Version: 8"
         @ios_version = 8
         @apps_dir = @apps_dir_ios_8
         @data_dir = @data_dir_ios_8
 
       elsif @ops.directory? @apps_dir_ios_pre8
+        $log.info "iOS Version: 7 or earlier"
         @ios_version = 7 # 7 or earlier
         @apps_dir = @apps_dir_ios_pre8
         @data_dir = @apps_dir_ios_pre8

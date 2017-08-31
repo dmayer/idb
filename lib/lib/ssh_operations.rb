@@ -22,6 +22,13 @@ module Idb
       $log.info 'Establishing SFTP Session...'
       @sftp = Net::SFTP::Session.new @ssh
       @sftp.loop { @sftp.opening? }
+      unless @sftp.open?
+        $log.error 'SFTP connection could not be established.'
+        error = Qt::MessageBox.new
+        error.setInformativeText("SFTP connection could not be established. Ensure SFTP is available on the iOS device, e.g., by installing the OpenSSH package.")
+        error.setIcon(Qt::MessageBox::Critical)
+        error.exec
+      end
     rescue StandardError => ex
       error = Qt::MessageBox.new
       error.setInformativeText("SSH connection could not be established: #{ex.message}")
@@ -86,7 +93,8 @@ module Idb
     def file_exists?(path)
       @sftp.stat!(path)
       return true
-    rescue
+    rescue Exception => e
+      $log.debug("File not found: #{e.message}")
       return false
     end
 

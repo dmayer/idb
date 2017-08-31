@@ -213,7 +213,7 @@ module Idb
               $log.info "Device not seen before. Opening status page."
               error = Qt::MessageBox.new self
               error.setInformativeText("This device has not been configured yet. Opening Status page to verify all required tools are installed on the device.")
-              error.setIcon(Qt::MessageBox::Warning)
+              #error.setIcon(Qt::MessageBox::Warning)
               error.exec
               @device_status = DeviceStatusDialog.new
               @device_status.exec

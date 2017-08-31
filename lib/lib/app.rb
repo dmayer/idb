@@ -2,6 +2,7 @@ require_relative 'plist_util'
 require_relative 'app_binary'
 require_relative 'CgBI'
 require_relative 'ios8_last_launch_services_map_wrapper'
+require_relative 'ios10_application_state_db_wrapper'
 
 module Idb
   class App
@@ -19,16 +20,21 @@ module Idb
 
       parse_info_plist
 
-      if $device.ios_version >= 8
+
+      if $device.ios_version >= 10
+        @services_map = IOS10ApplicationStateDbWrapper.new
+        @data_dir = @services_map.data_path_by_bundle_id @info_plist.bundle_identifier
+
+      elsif $device.ios_version >= 8
         if $device.ios_version == 8
           mapping_file = "/var/mobile/Library/MobileInstallation/LastLaunchServicesMap.plist"
         else
           mapping_file = "/private/var/installd/Library/MobileInstallation/LastLaunchServicesMap.plist"
         end
+
         local_mapping_file = cache_file mapping_file
         @services_map = IOS8LastLaunchServicesMapWrapper.new local_mapping_file
         @data_dir = @services_map.data_path_by_bundle_id @info_plist.bundle_identifier
-        @keychain_access_groups = @services_map.keychain_access_groups_by_bundle_id @info_plist.bundle_identifier
 
       else
         @data_dir = @app_dir
@@ -165,11 +171,24 @@ module Idb
     end
 
     def keychain_access_groups
-      if @keychain_access_groups.nil?
-        "[iOS 8 specific]"
-      else
-        @keychain_access_groups.join "\n"
+      if $device.ios_version < 8
+        "[iOS 8+ specific]"
       end
+
+      ## return stored groups if we have them
+      unless @keychain_access_groups.nil?
+       return @keychain_access_groups.join ("\n")
+      end
+
+      if $device.ios_version >= 10
+        @keychain_access_groups = @services_map.keychain_access_groups_by_binary binary_path
+      end
+
+      if $device.ios_version >= 8
+        @keychain_access_groups = @services_map.keychain_access_groups_by_bundle_id @info_plist.bundle_identifier
+      end
+
+      @keychain_access_groups.join ("\n")
     end
 
     def data_directory
@@ -203,13 +222,18 @@ module Idb
     end
 
     def binary_path
-      $log.info "Locating application binary..."
-      dirs = $device.ops.dir_glob("#{@app_dir}/", "**")
-      dirs.select! do |f|
-        $device.ops.file_exists? "#{f}/#{binary_name}"
+      if @binary_path.nil?
+        $log.info "Locating application binary..."
+        dirs = $device.ops.dir_glob("#{@app_dir}/", "**")
+        dirs.select! do |f|
+          $device.ops.file_exists? "#{f}/#{binary_name}"
+        end
+
+        @binary_path = "#{dirs.first}/#{binary_name}"
+      else
+        @binary_path
       end
 
-      "#{dirs.first}/#{binary_name}"
     end
 
     def binary_name
@@ -270,6 +294,16 @@ module Idb
       end
     end
 
+
+    def entitlements
+      if $device.ios_version >= 10
+        @services_map.entitlements_by_binary(binary_path)
+      elsif $device.ios_version >= 8
+        @services_map.entitlements_by_bundle_id(bundle_id)
+      end
+
+    end
+
     private
 
     def parse_info_plist
@@ -307,5 +341,6 @@ module Idb
       $log.info "Info.plist found at #{plist_file}"
       plist_file
     end
+
   end
 end
