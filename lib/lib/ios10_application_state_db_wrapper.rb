@@ -1,6 +1,5 @@
 require 'plist4r'
 require 'sqlite3'
-require 'pry'
 
 class IOS10ApplicationStateDbWrapper
   def initialize
