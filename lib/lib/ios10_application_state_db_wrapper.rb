@@ -24,7 +24,7 @@ class IOS10ApplicationStateDbWrapper
       return ""
     end
 
-    plist = $device.ops.execute("#{@ldid_binary} -e #{binary_path}")
+    plist = $device.ops.execute("#{@ldid_binary} -e '#{binary_path}'")
     entitlements = Plist4r.new({:from_string => plist})
     puts entitlements
     entitlements
@@ -74,7 +74,7 @@ class IOS10ApplicationStateDbWrapper
       return ""
     end
 
-    plist = $device.ops.execute("#{@ldid_binary} -e #{binary_path}")
+    plist = $device.ops.execute("#{@ldid_binary} -e '#{binary_path}'")
     entitlements = Plist4r.new({:from_string => plist})
     puts entitlements["keychain-access-groups"]
     return entitlements["keychain-access-groups"]
