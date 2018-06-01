@@ -40,8 +40,22 @@ class IOS10ApplicationStateDbWrapper
     #puts bundle_id
     plist = ""
 
+    # first we have to look up what the ID for "compatibilityInfo" is; it is different between devices sometimes.
+    # someone who knows what they're doing with sql could probably get this into a single query with joins or whatnot.
+    stmnt = db.prepare "SELECT id FROM key_tab WHERE key='compatibilityInfo'";
+    rs = stmnt.execute
+    row = rs.next
+    if row.nil?
+      # TODO how does this app like to deal with errors?
+      $log.error "applicationState.db: cannot find key number for 'compatibilityInfo'"
+      return nil
+    end
+    kvs_key = row[0]
+
     # I fail to get prepared statements to work with SQLite... So using strig concatenation instead. here be dragons
-    stmnt = db.prepare "SELECT kvs.value FROM application_identifier_tab left join kvs on application_identifier_tab.id = kvs.application_identifier where kvs.key = 2 and application_identifier_tab.application_identifier='#{bundle_id}'"
+    stmnt = db.prepare "SELECT kvs.value FROM application_identifier_tab left join kvs on application_identifier_tab.id = kvs.application_identifier where kvs.key = #{kvs_key} and application_identifier_tab.application_identifier='#{bundle_id}'"
+    # problem: this db doesn't update until device reboot (or maybe just respring?). an explicit check & descriptive error message here would help a lot for that.
+
     # stmnt.bind_params(bundle_id)
     rs = stmnt.execute
     #
