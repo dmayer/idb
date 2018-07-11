@@ -71,33 +71,54 @@ module Idb
 
       @ops.execute"touch /tmp/daniel"
 
-      if @ops.file_exists? @application_state_ios_10
+      str_ios_version = @ops.execute("sw_vers | grep ProductVersion | cut -d' ' -f2 | cut -d'.' -f1")
+      str_ios_version = str_ios_version.gsub!(/[\s\n]+/, "")
+      @ios_version = str_ios_version.to_i
+
+      # failover in case the sw_vers method fails to return a valid major version
+      if @ios_version.to_s != str_ios_version
+
+        # this check is buggy: FrontBoard found in 9.3.3
+        # FIXME: would removing the FrontBoard check cause problems later?
+        #        e.g. assuming version 9 or later (and setting up ios_version = 9)
+        #        when @apps_dir_ios_9 dir exists
+        if @ops.file_exists? @application_state_ios_10
+          @ios_version = 10
+
+        elsif @ops.directory? @apps_dir_ios_9
+          @ios_version = 9
+
+        elsif @ops.directory? @apps_dir_ios_8
+          @ios_version = 8
+
+        elsif @ops.directory? @apps_dir_ios_pre8
+          @ios_version = 7 # 7 or earlier
+
+        else
+          $log.error "Unsupported iOS Version."
+          raise
+        end
+      end
+
+      if @ios_version >= 10
         $log.info "iOS Version: 10 or newer"
-        @ios_version = 10
         @apps_dir = @apps_dir_ios_9
         @data_dir = @data_dir_ios_9
 
-      elsif @ops.directory? @apps_dir_ios_9
+      elsif @ios_version == 9
         $log.info "iOS Version: 9"
-        @ios_version = 9
         @apps_dir = @apps_dir_ios_9
         @data_dir = @data_dir_ios_9
 
-      elsif @ops.directory? @apps_dir_ios_8
+      elsif @ios_version == 8
         $log.info "iOS Version: 8"
-        @ios_version = 8
         @apps_dir = @apps_dir_ios_8
         @data_dir = @data_dir_ios_8
 
-      elsif @ops.directory? @apps_dir_ios_pre8
+      else
         $log.info "iOS Version: 7 or earlier"
-        @ios_version = 7 # 7 or earlier
         @apps_dir = @apps_dir_ios_pre8
         @data_dir = @apps_dir_ios_pre8
-
-      else
-        $log.error "Unsupported iOS Version."
-        raise
       end
       $log.info "iOS Version: #{@ios_version} with apps dir: #{@apps_dir} and data dir: #{@data_dir}"
 
